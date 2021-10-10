@@ -1,6 +1,6 @@
 # GULP WEBSITE BUILDER
 
-For Gulp 4, tested on Windows
+> **_For Gulp 4, tested on Windows_**
 
 ## GNU GENERAL PUBLIC LICENSE
 
@@ -36,8 +36,8 @@ For Gulp 4, tested on Windows
 
 ### Gulp
 
--  watch for file changes and run the appropriate task
--  restart gulp on any config change and use new settings
+-  watch for file changes and run the appropriate task on ach file change (save, delete, new file)
+-  restart gulp on any config change and apply new settings
 -  tasks don't break on plugin errors (gulp-plumber)
 -  web server with streaming CSS files on change, and reloading page on HTML and JS change
 
@@ -45,35 +45,36 @@ For Gulp 4, tested on Windows
 
 -  process Nunjucks, SCSS, JavaSript, images, minify and inline svg, create svg sprites
 -  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (in src dir)
--  create sourcemaps (SCSS and JS)
+-  sourcemaps (SCSS and JS)
 -  create humans.txt file
--  notification on errors (so you don't have to keep the console open)
+-  notification on plugin errors (so you don't have to keep the console open)
 -  sound on task completion (so you don't have to keep the console open)
 
 ### Nunjucks
 
--  configure global variables and filters for useage in .njk files
+-  configure global variables and filters for usage in .njk files
 -  format output HTML
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  humans.txt is being updated on each build
 
-> Always build html after bulding CSS and Javascript, to update their cachebust.
+> Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src:"/main.js?20211010212110").
 > Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
 
 ### SCSS
 
 -  clean output folder before every build
--  choose what comments to keep in non-minified files (minifyer removes them all)
--  prefix and format CSS
--  remove unused selectors from CSS (purgeCSS)
--  get removed selectors from CSS in a .rejected.css (purgeCSS)
+-  sourcemaps
+-  choose what comments to keep in non-minified files (minifier removes them all)
+-  prefix CSS with autoprefixer
+-  format CSS
+-  remove unused selectors from CSS (purgeCss)
+-  get removed selectors from CSS in a .rejected.css (purgeCss)
 -  group media queries in CSS
 -  fix flex bugs <https://github.com/philipwalton/flexbugs>
 -  minify and inline svg files <https://www.npmjs.com/package/postcss-inline-svg>
--  doiuse .txt file in the root, with CSS features that are not supported by some browsers
+-  doiuse .txt file in the root, with CSS features that are not supported by certain browsers
 -  minify with CSSO
--  sourcemaps
--  cachebusting (in a JSON file)
+-  cachebusting (JSON file for usage with HTML processor)
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  add developer info (in a comment) at the top of CSS files (in 'prod' environment)
 -  humans.txt is being updated on each build
@@ -85,7 +86,7 @@ For Gulp 4, tested on Windows
 -  different output folder can be set for each bundle
 -  transpile JS and create multiple bundles with multiple transpilations
 -  sourcemaps
--  cachebusting (in a JSON file)
+-  cachebusting (JSON file for usage with HTML processor)
 -  minification (uglify)
 -  console logs are being removed from the code during minification
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
@@ -97,7 +98,7 @@ For Gulp 4, tested on Windows
 -  clean output folder before every build
 -  keep or remove metadata
 -  blurred placeholder SVG, base64 encoded, placed in scss variables (\_placeholders.scss)
--  create different image sizes, compress, crop if required
+-  create different image sizes (from one image), compress, crop if required
 -  compress images (jpg, png, webp, svg)
 -  humans.txt is being updated on each build
 
@@ -106,6 +107,7 @@ For Gulp 4, tested on Windows
 ### SVG Sprites
 
 -  set folders whose content (SVG files) will be merged into a 'sprite'
+-  create multiple sprites
 -  minify SVGs
 
 > Read more about SVG sprites at <https://css-tricks.com/svg-symbol-good-choice-icons/>
@@ -117,28 +119,26 @@ For Gulp 4, tested on Windows
 
 ## INSTALLATION
 
-Place this repository in your project root directory. File/folder structure should be like this (with defalut config):
+Place this repository in your project root directory. File/folder structure should be like this (with default config):
 
-> .git
-> .vscode
-> htdocs (will be created)
-> &nbsp;&nbsp;&nbsp;assets (will be created)
-> &nbsp;&nbsp;&nbsp;...
-> gulp-wsb
-> &nbsp;&nbsp;&nbsp;build-modules
-> &nbsp;&nbsp;&nbsp;common-fn
-> &nbsp;&nbsp;&nbsp;...
-> src
-> &nbsp;&nbsp;&nbsp;img
-> &nbsp;&nbsp;&nbsp;js
-> &nbsp;&nbsp;&nbsp;nunjucks
-> &nbsp;&nbsp;&nbsp;scss
-> &nbsp;&nbsp;&nbsp;...
-> gulpfile.js
-> LICENSE
-> README.md
-
----
+-  .git
+-  .vscode
+-  htdocs (will be created)
+   -  assets (will be created)
+   -  ... (other files/folders)
+-  gulp-wsb
+   -  build-modules
+   -  common-fn
+   -  ... (other files)
+-  src
+   -  img
+   -  js
+   -  nunjucks
+   -  scss
+   -  ... (other files/folders)
+   -  gulpfile.js
+   -  LICENSE
+   -  README.md
 
 > Gulp-cli has to be installed globally.
 
@@ -160,7 +160,7 @@ npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass pos
 
 It's understood that you navigate in your console where you want to install node_modules.
 
-Each module's README file contains all node modules required for it.
+> Each module's README file contains all node modules required for it.
 
 ### Add/remove a module
 
@@ -192,18 +192,18 @@ On every config change the gulp process will restart and apply the new config.
 3. Import in `gulpfile.js` (already done) like:
 
    ```javascript
-   const gwsap = require("./gulp-wsap");
+   const gwsb = require("./gulp-wsb");
    ```
 
 4. Set \*.run task as default, like:
 
    ```javascript
-   exports.default = gwsap.run;
+   exports.default = gwsb.run;
    ```
 
 Now just navigate in your console to your project folder and type 'gulp'.
 
-If you rename the `gulp-wsap` folder, just replace it in `gulpfile.js`, that's all. Use provided gulpfile.js as an example.
+If you rename the `gulp-wsb` folder, just replace it in `gulpfile.js`, that's all. Use provided gulpfile.js as an example.
 All found modules are imported automatically.
 
 Each module has a README with usage information.

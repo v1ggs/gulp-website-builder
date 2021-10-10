@@ -33,7 +33,8 @@
 
 ---
 
-> Always build html after bulding CSS and Javascript, to update their cachebust. Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
+> Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src:"/main.js?20211010212110").
+> Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
 
 ## INSTALLATION
 

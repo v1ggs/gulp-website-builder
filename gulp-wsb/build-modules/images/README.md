@@ -16,7 +16,7 @@
 -  clean output folder before every build
 -  keep or remove metadata
 -  blurred placeholder SVG, base64 encoded, placed in scss variables (\_placeholders.scss)
--  create different image sizes, compress, crop if required
+-  create different image sizes (from one image), compress, crop if required
 -  compress images (jpg, png, webp, svg)
 -  humans.txt is being updated on each build
 

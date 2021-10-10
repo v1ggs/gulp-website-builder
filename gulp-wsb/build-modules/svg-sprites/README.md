@@ -14,6 +14,7 @@
 ## Features
 
 -  set folders whose content (SVG files) will be merged into a 'sprite'
+-  create multiple sprites
 -  minify SVGs
 
 > Read more about SVG sprites at <https://css-tricks.com/svg-symbol-good-choice-icons/>

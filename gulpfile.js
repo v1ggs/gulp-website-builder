@@ -1,9 +1,9 @@
 // gulp-website-builder
-const gwsap = require("./gulp-wsb");
+const gwsb = require("./gulp-wsb");
 
 // main task - all modules \\
-exports.default = gwsap.run;
+exports.default = gwsb.run;
 
 // *** required *** \\
 // *** don't use *** \\
-exports.watch = gwsap.watch;
+exports.watch = gwsb.watch;

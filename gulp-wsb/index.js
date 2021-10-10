@@ -113,7 +113,7 @@ const gulpDefault = function (cb) {
    }
 }
 
-// the default task in gulpfile.js: exports.default = gwsap.gulpDefault;
+// the default task in gulpfile.js
 exports.run = gulpDefault;
-// also required in gulpfile.js: exports.watch = gwsap.watch;
+// also required in gulpfile.js
 exports.watch = allTasks;

@@ -25,7 +25,7 @@ Choose what to write.
 
 ### config.header
 
-Header content for JS and CSS. If minifyers don't remove 'important' comments, then don't set it as 'important' (`/*! *comment* */`). This will produce duplicate header in minified files.
+Header content for JS and CSS. If minifiers don't remove 'important' comments, then don't set it as 'important' (`/*! *comment* */`). This will produce duplicate header in minified files.
 
 ### config.humans
 

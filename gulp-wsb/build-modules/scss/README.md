@@ -21,7 +21,7 @@
 -  It's possible to fix flex bugs (https://github.com/philipwalton/flexbugs)
 -  CSS minification (csso) can be enabled, it always removes all css comments
 -  A cachebusting file for CSS/JS can be created (here configured for nunjucks)
--  It's possible to inline svg images into CSS and minify them there (see https://www.npmjs.com/package/postcss-inline-svg for usage), svg minifyer uses default preset
+-  It's possible to inline svg images into CSS and minify them there (see https://www.npmjs.com/package/postcss-inline-svg for usage), svg minifier uses default preset
 -  Doiuse info provided in console and in a .txt file with all used css features that are not supported by certain browsers
 -  A .txt file is created in the project root, with all TODOs and FIXMEs that you create in .scss files
 -  Humans.txt is being updated on each build
