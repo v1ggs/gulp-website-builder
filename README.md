@@ -1,26 +1,38 @@
-# GULP WEBSITE ASSETS PROCESSOR (Gulp 4, tested on Windows)
+# GULP WEBSITE BUILDER
+
+For Gulp 4, tested on Windows
 
 ## GNU GENERAL PUBLIC LICENSE
 
 ## GENERAL INFO
 
-If you want to use this assets processor it is required that you're familiar with Gulp.
-It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
+> If you want to use this repository it is required that you're familiar with Gulp.
+> It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
 
-If you're familiar with Gulp and JavaScript then it's very easy for you to add new modules or modify modules behaviour.
+---
 
-Try not to modify any other but `config.js` files, unless you know what you are doing.
+> If you're familiar with Gulp and JavaScript then it's very easy for you to add new modules or modify modules behaviour.
 
-Browserslistrc file (.browserslistrc) is not used, because babel (for JS) has two different transpilations, whose settings are different from those for autoprefixer.
+---
 
-Use TODOs like: `TODO:` or `FIXME:` in an appropriate comment.
-Read more at: <https://www.npmjs.com/package/gulp-todo>
+> Try not to modify any other but `config.js` files, unless you know what you are doing.
+
+---
+
+> Browserslistrc file (.browserslistrc) is not used, because babel (for JS) has two different transpilations, whose settings are different from those for autoprefixer.
+
+---
+
+> Use TODOs like: `TODO:` or `FIXME:` in an appropriate comment.
+> Read more at: <https://www.npmjs.com/package/gulp-todo>
 
 ## FEATURES
 
-Everything is configurable.
+> Everything is configurable.
 
-Configuration files (`config.js`) should be well commented for explanations.
+---
+
+> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
 
 ### Gulp
 
@@ -45,7 +57,8 @@ Configuration files (`config.js`) should be well commented for explanations.
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  humans.txt is being updated on each build
 
-Always build html after bulding CSS and Javascript, to update their cachebust. Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
+> Always build html after bulding CSS and Javascript, to update their cachebust.
+> Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
 
 ### SCSS
 
@@ -88,57 +101,46 @@ Always build html after bulding CSS and Javascript, to update their cachebust. A
 -  compress images (jpg, png, webp, svg)
 -  humans.txt is being updated on each build
 
-Read more about SVG placeholders at <https://css-tricks.com/the-blur-up-technique-for-loading-background-images/>
+> Read more about SVG placeholders at <https://css-tricks.com/the-blur-up-technique-for-loading-background-images/>
 
 ### SVG Sprites
 
 -  set folders whose content (SVG files) will be merged into a 'sprite'
 -  minify SVGs
 
-Read more about SVG sprites at <https://css-tricks.com/svg-symbol-good-choice-icons/>
+> Read more about SVG sprites at <https://css-tricks.com/svg-symbol-good-choice-icons/>
 
 ### File Copy
 
 -  clean output folders before every copy
 -  set array of folders in the 'src' folder to copy files without processing them
 
-## USAGE
-
-1. Use project config:
-
-   -  Set basic project info in `config-project.js`
-   -  Set development environment in `config.build.env: 'dev'`
-   -  `config.build.type` configures output folder (for server and assets links )
-   -  set main directories in `config.dirname` (folder name, not path)
-   -  set source directories `const dirs` (path)
-   -  set specific files `const files` (path)
-
-2. Configure each module's in its configuration file.
-
-3. Import in `gulpfile.js` (already done) like:
-
-   ```javascript
-   const gwsap = require("./gulp-wsap");
-   ```
-
-4. Set \*.run task as default, like:
-
-   ```javascript
-   exports.default = gwsap.run;
-   ```
-
-Now just navigate in your console to your project folder and type 'gulp'.
-
-If you rename the `gulp-wsap` folder, just replace it in `gulpfile.js`, that's all. Use provided gulpfile.js as an example.
-All found modules are imported automatically.
-
-Each module has a README with usage information.
-
-Configuration files (`config.js`) should be well commented for explanations.
-
 ## INSTALLATION
 
-\*\*\* Gulp-cli has to be installed globally.
+Place this repository in your project root directory. File/folder structure should be like this (with defalut config):
+
+> .git
+> .vscode
+> htdocs (will be created)
+> &nbsp;&nbsp;&nbsp;assets (will be created)
+> &nbsp;&nbsp;&nbsp;...
+> gulp-wsb
+> &nbsp;&nbsp;&nbsp;build-modules
+> &nbsp;&nbsp;&nbsp;common-fn
+> &nbsp;&nbsp;&nbsp;...
+> src
+> &nbsp;&nbsp;&nbsp;img
+> &nbsp;&nbsp;&nbsp;js
+> &nbsp;&nbsp;&nbsp;nunjucks
+> &nbsp;&nbsp;&nbsp;scss
+> &nbsp;&nbsp;&nbsp;...
+> gulpfile.js
+> LICENSE
+> README.md
+
+---
+
+> Gulp-cli has to be installed globally.
 
 ```cmd
 npm install --global gulp-cli
@@ -173,6 +175,40 @@ It is also possible to add your own module for a specific language:
 That's all.
 Then just navigate in your console to your project folder and type 'gulp'.
 On every config change the gulp process will restart and apply the new config.
+
+## USAGE
+
+1. Use project config:
+
+   -  Set basic project info in `config-project.js`
+   -  Set development environment in `config.build.env: 'dev'`
+   -  `config.build.type` configures output folder (for server and assets links )
+   -  set main directories in `config.dirname` (folder name, not path)
+   -  set source directories `const dirs` (path)
+   -  set specific files `const files` (path)
+
+2. Configure each module's in its configuration file.
+
+3. Import in `gulpfile.js` (already done) like:
+
+   ```javascript
+   const gwsap = require("./gulp-wsap");
+   ```
+
+4. Set \*.run task as default, like:
+
+   ```javascript
+   exports.default = gwsap.run;
+   ```
+
+Now just navigate in your console to your project folder and type 'gulp'.
+
+If you rename the `gulp-wsap` folder, just replace it in `gulpfile.js`, that's all. Use provided gulpfile.js as an example.
+All found modules are imported automatically.
+
+Each module has a README with usage information.
+
+Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
 
 ## Author
 

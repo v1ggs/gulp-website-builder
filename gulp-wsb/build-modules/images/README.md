@@ -4,10 +4,12 @@
 
 ## GENERAL INFO
 
-If you want to use this assets processor it is required that you're familiar with Gulp.
-It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
+> If you want to use this repository it is required that you're familiar with Gulp.
+> It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
 
-Try not to modify any other but `config.js` files, unless you know what you are doing.
+---
+
+> Try not to modify any other but `config.js` files, unless you know what you are doing.
 
 ## Features
 
@@ -18,13 +20,15 @@ Try not to modify any other but `config.js` files, unless you know what you are 
 -  compress images (jpg, png, webp, svg)
 -  humans.txt is being updated on each build
 
-Read more about SVG placeholders at <https://css-tricks.com/the-blur-up-technique-for-loading-background-images/>
+> Read more about SVG placeholders at <https://css-tricks.com/the-blur-up-technique-for-loading-background-images/>
 
 ## USAGE
 
-Everything is configurable.
+> Everything is configurable.
 
-Configuration files (`config.js`) should be well commented for explanations.
+---
+
+> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
 
 ## INSTALLATION
 

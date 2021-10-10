@@ -4,10 +4,12 @@
 
 ## GENERAL INFO
 
-If you want to use this assets processor it is required that you're familiar with Gulp.
-It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
+> If you want to use this repository it is required that you're familiar with Gulp.
+> It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
 
-Try not to modify any other but `config.js` files, unless you know what you are doing.
+---
+
+> Try not to modify any other but `config.js` files, unless you know what you are doing.
 
 ## Features
 
@@ -23,11 +25,15 @@ Try not to modify any other but `config.js` files, unless you know what you are 
 
 ## USAGE
 
-Everything is configurable.
+> Everything is configurable.
 
-Configuration files (`config.js`) should be well commented for explanations.
+---
 
-Always build html after bulding CSS and Javascript, to update their cachebust. Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
+> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+
+---
+
+> Always build html after bulding CSS and Javascript, to update their cachebust. Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
 
 ## INSTALLATION
 

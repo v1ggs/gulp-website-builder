@@ -9,9 +9,11 @@ Humans.txt has to be built with each task, because it contains site's 'last upda
 
 Find all settings in the `config.js` file.
 
-Everything is configurable.
+> Everything is configurable.
 
-Configuration files (`config.js`) should be well commented for explanations.
+---
+
+> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
 
 ## USAGE
 
