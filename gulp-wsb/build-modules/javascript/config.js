@@ -1,0 +1,100 @@
+/* ***************  J S   C O N F I G  *************** */
+
+/* *************************************************** */
+// import config
+const proj = require('../../project-config.js');
+const _fn = require('../../common-fn');
+const _src = proj.dirs.src.javascript;
+const _dist = _fn.serverCfg().assetsDist;
+/* *************************************************** */
+
+const files = {
+   // files to watch for changes and build todos/fixmes file
+   watch: [_src + '/**/*.js'],
+   // output folder
+   output: _dist + '/js',
+}
+
+// CONFIG
+const config = {
+   build: {
+      cleanDist: true, // clean output dir
+      minify: true, // minify files (can be slow, better use only in production)
+   },
+
+   // ADD OR REMOVE BUNDLES AS REQUIRED
+   // BUNDLE NAME IS FILE NAME
+   // files will be concatenated in the same order as in the src array
+   // a bundle will be created for each type (each value in the array)
+   // unknonwn or [''] or false|null|undefined type will produce untranspiled bundle
+   // bundle filenames get suffix from transpilation type (except for 'default')
+   bundles: {
+      lib: {
+         // {array | false|null|undefined} transpilation config (config.transpilation)
+         // false for untranspiled, 'default' for default
+         type: false,
+
+         // {array} src files, order will be respected
+         src: [
+            _src + '/polyfills/**/*.js',
+            _src + '/libs/**/*.js',
+            _src + '/plugins/**/*.js',
+         ],
+
+         // {string | false|null|undefined} make dir in the dist (dir name, no slashes)
+         outDir: false,
+      },
+
+      main: {
+         // {array | false|null|undefined} transpilation config (config.transpilation)
+         // false for untranspiled, 'default' for default
+         type: ['default', 'es5'],
+
+         // {array} src files, order will be respected
+         src: [
+            _src + '/core/**/*.js',
+            _src + '/components/**/*.js',
+         ],
+
+         // {string | false|null|undefined} make dir in the dist (dir name, no slashes)
+         outDir: false,
+      },
+   },
+
+
+   // Transpilation name (key) is the filename suffix, except for the 'default', which goes without suffix.
+   transpilation: {
+      // These are being used in config.bundles.<bundle_name>.type array
+
+      default: {
+         compact: false, // a kind of minify
+         presets: [['@babel/env', {
+            modules: 'auto',
+            targets: [
+               'Chrome >= 60',
+               'Safari >= 10.1',
+               'iOS >= 10.3',
+               'Firefox >= 54',
+               'Edge >= 15',
+            ],
+         }]]
+      },
+
+      es5: {
+         compact: false, // a kind of minify
+         presets: [['@babel/env', {
+            modules: 'auto',
+            targets: [
+               '> 0.5%',
+               'last 2 versions',
+               'firefox esr',
+               'not dead',
+            ]
+         }]],
+      },
+   },
+}
+
+
+exports.files = files;
+exports.config = config;
