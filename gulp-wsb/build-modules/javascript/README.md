@@ -13,15 +13,16 @@
 
 ## Features
 
--  Sourcemaps are created for easier debugging
--  Assets folder can be cleaned before every build
--  A cachebusting file for CSS/JS can be created (here configured for nunjucks)
--  Javascript minification (uglify) can be enabled
--  Different bundles can be created, with their own config (transpilation, source files, output folder)
--  Console logs are being removed from the code during minification
--  A .txt file is created in the project root, with all TODOs and FIXMEs that you create in .js files
--  Humans.txt is being updated on each build
--  A header with developers info can be prepended to JS files (in production environment)
+-  clean output folder before every build
+-  multiple bundles can be created, with multiple transpilations for each
+-  different output folder can be set for each bundle
+-  sourcemaps
+-  cachebusting (JSON file for usage with HTML processor)
+-  minification [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
+-  console logs are being removed from the code during minification
+-  a TODO file (.txt) with all todos and fixmes in the project's root folder
+-  add developer info (in a comment) at the top of JS bundles (in 'prod' environment)
+-  humans.txt is being updated on each build
 
 ## USAGE
 

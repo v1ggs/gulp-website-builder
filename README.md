@@ -82,12 +82,11 @@
 ### JavaScript
 
 -  clean output folder before every build
--  different bundles can be created, with multiple transpilations
+-  multiple bundles can be created, with multiple transpilations for each
 -  different output folder can be set for each bundle
--  transpile JS and create multiple bundles with multiple transpilations
 -  sourcemaps
 -  cachebusting (JSON file for usage with HTML processor)
--  minification (uglify)
+-  minification [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
 -  console logs are being removed from the code during minification
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  add developer info (in a comment) at the top of JS bundles (in 'prod' environment)
@@ -124,23 +123,25 @@ Place this repository in your project root directory. File/folder structure shou
 -  .git
 -  .vscode
 -  htdocs (will be created)
-   -  assets (will be created)
+   -  assets
+   -  humans.txt
    -  ... (other files/folders)
 -  gulp-wsb
    -  build-modules
    -  common-fn
-   -  ... (other files)
+   -  index.js
+   -  project-config.js
 -  src
    -  img
    -  js
    -  nunjucks
    -  scss
    -  ... (other files/folders)
-   -  gulpfile.js
-   -  LICENSE
-   -  README.md
+-  gulpfile.js
+-  LICENSE
+-  README.md
 
-> Gulp-cli has to be installed globally.
+### Gulp-cli has to be installed globally
 
 ```cmd
 npm install --global gulp-cli
@@ -172,10 +173,6 @@ It is also possible to add your own module for a specific language:
 -  Use existing files from other modules as an example for how to create config and index files
 -  Include this new module in the main index file (next to `project-config.js`), in the 'M O D U L E S' section (search for 'ADD ALL MODULES HERE'), and create a watcher, if required.
 
-That's all.
-Then just navigate in your console to your project folder and type 'gulp'.
-On every config change the gulp process will restart and apply the new config.
-
 ## USAGE
 
 1. Use project config:
@@ -195,15 +192,17 @@ On every config change the gulp process will restart and apply the new config.
    const gwsb = require("./gulp-wsb");
    ```
 
-4. Set \*.run task as default, like:
+4. Set `run` task as default, like:
 
    ```javascript
    exports.default = gwsb.run;
    ```
 
+That's all.
 Now just navigate in your console to your project folder and type 'gulp'.
+On every config change the gulp process will restart and apply the new config.
 
-If you rename the `gulp-wsb` folder, just replace it in `gulpfile.js`, that's all. Use provided gulpfile.js as an example.
+If you rename the `gulp-wsb` folder, just replace it in `gulpfile.js`, that's all. Use provided `gulpfile.js` as an example.
 All found modules are imported automatically.
 
 Each module has a README with usage information.
