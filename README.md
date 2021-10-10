@@ -175,6 +175,8 @@ It is also possible to add your own module for a specific language:
 
 ## USAGE
 
+> Default config should be good for many users. Only source files/folders have to be modified.
+
 1. Use project config:
 
    -  Set basic project info in `config-project.js`
@@ -207,7 +209,7 @@ All found modules are imported automatically.
 
 Each module has a README with usage information.
 
-Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
 
 ## Author
 
