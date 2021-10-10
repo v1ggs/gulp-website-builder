@@ -175,7 +175,7 @@ It is also possible to add your own module for a specific language:
 
 ## USAGE
 
-> Default config should be good for many users. Only source files/folders have to be modified.
+> **_Default config should be good for many users. Only source files/folders have to be modified._**
 
 1. Use project config:
 
