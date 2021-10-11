@@ -44,9 +44,7 @@ Required node modules: 'General Node Modules', gulp-babel, gulp-strip-debug, gul
 npm install --save-dev gulp-babel gulp-strip-debug gulp-uglify
 ```
 
-## Author
-
-[vIGGS](https://www.igorvracar.com)
+## © 2021 [Igor Vračar](https://www.igorvracar.com)
 
 ## License
 

@@ -211,9 +211,7 @@ Each module has a README with usage information.
 
 > Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
 
-## Author
-
-[vIGGS](https://www.igorvracar.com)
+## © 2021 [Igor Vračar](https://www.igorvracar.com)
 
 ## License
 

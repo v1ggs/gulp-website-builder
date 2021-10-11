@@ -24,9 +24,7 @@ Configuration files (`config.js`) are commented for explanations. That should be
 
 Only 'General Node Modules'.
 
-## Author
-
-[vIGGS](https://www.igorvracar.com)
+## © 2021 [Igor Vračar](https://www.igorvracar.com)
 
 ## License
 

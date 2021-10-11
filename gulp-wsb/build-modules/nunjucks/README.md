@@ -48,9 +48,7 @@ Required node modules: 'General Node Modules', gulp-nunjucks-render, gulp-jsbeau
 npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier
 ```
 
-## Author
-
-[vIGGS](https://www.igorvracar.com)
+## © 2021 [Igor Vračar](https://www.igorvracar.com)
 
 ## License
 

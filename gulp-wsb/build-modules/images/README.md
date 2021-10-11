@@ -42,9 +42,7 @@ Required node modules: 'General Node Modules', sharp, gulp-svgmin.
 npm install --save-dev sharp gulp-svgmin
 ```
 
-## Author
-
-[vIGGS](https://www.igorvracar.com)
+## © 2021 [Igor Vračar](https://www.igorvracar.com)
 
 ## License
 
