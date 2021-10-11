@@ -47,7 +47,9 @@ Required node modules: 'General Node Modules', sass, gulp-sass, postcss, gulp-po
 npm install --save-dev sass gulp-sass postcss gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss
 ```
 
-## © 2021 [Igor Vračar](https://www.igorvracar.com)
+## Copyright
+
+**© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
 ## License
 

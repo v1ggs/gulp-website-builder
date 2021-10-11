@@ -39,7 +39,9 @@ Required node modules: 'General Node Modules', gulp-svgstore, gulp-svgmin.
 npm install --save-dev gulp-svgstore gulp-svgmin
 ```
 
-## © 2021 [Igor Vračar](https://www.igorvracar.com)
+## Copyright
+
+**© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
 ## License
 

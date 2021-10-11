@@ -37,7 +37,9 @@ Humans.txt content.
 
 Only 'General Node Modules'.
 
-## © 2021 [Igor Vračar](https://www.igorvracar.com)
+## Copyright
+
+**© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
 ## License
 
