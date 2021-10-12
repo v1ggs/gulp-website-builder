@@ -30,12 +30,9 @@
 
 ---
 
-> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
 
 ## INSTALLATION
-
-> If adding a new plugin in the pipeline, if you're using Sourcemaps, the new plugin has to be compatible with gulp-sourcemaps.
-> [Plugins with gulp sourcemaps support](https://github.com/gulp-sourcemaps/gulp-sourcemaps/wiki/Plugins-with-gulp-sourcemaps-support)
 
 ### Required node modules
 
@@ -44,8 +41,11 @@ Required node modules: 'General Node Modules', gulp-babel, gulp-strip-debug, gul
 #### Install
 
 ```cmd
-npm install --save-dev gulp-babel gulp-strip-debug gulp-uglify
+npm install --save-dev gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify
 ```
+
+> If adding a new plugin in the pipeline, if you're using Sourcemaps, the new plugin has to be compatible with gulp-sourcemaps.
+> [Plugins with gulp sourcemaps support](https://github.com/gulp-sourcemaps/gulp-sourcemaps/wiki/Plugins-with-gulp-sourcemaps-support)
 
 ## Copyright
 

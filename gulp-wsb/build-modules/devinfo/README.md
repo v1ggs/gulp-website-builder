@@ -4,7 +4,7 @@
 
 ## GENERAL INFO
 
-Devinfo module writes humans.txt (https://humanstxt.org) in the site's public folder, and appends developer(s) header to JS and CSS, if requested in config (in production environment only). This header can also be used to add links to third party licenses.
+Devinfo module writes humans.txt (https://humanstxt.org) in the site's public folder, and appends developer(s) header to JS and CSS, if requested in config (in production environment only). This header can also be used to add links to third party credits licenses.
 Humans.txt has to be built with each task, because it contains site's 'last update time'.
 
 Find all settings in the `config.js` file.
@@ -13,7 +13,7 @@ Find all settings in the `config.js` file.
 
 ---
 
-> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
 
 ## USAGE
 

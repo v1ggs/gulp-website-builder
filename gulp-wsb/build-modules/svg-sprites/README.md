@@ -25,7 +25,7 @@
 
 ---
 
-> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
 
 ## INSTALLATION
 

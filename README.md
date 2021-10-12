@@ -1,6 +1,6 @@
 # GULP WEBSITE BUILDER
 
-> **_For Gulp 4, tested on Windows_**
+> **_For Gulp 4, tested on Windows - Node.js 14_**
 
 ## GNU GENERAL PUBLIC LICENSE
 
@@ -32,7 +32,7 @@
 
 ---
 
-> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
 
 ### Gulp
 
@@ -159,7 +159,7 @@ npm install --save-dev gulp gulp-plumber del gulp-rename gulp-sourcemaps gulp-co
 ### All other Node Modules
 
 ```cmd
-npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass postcss gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel gulp-strip-debug gulp-uglify sharp gulp-svgmin gulp-svgstore
+npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass postcss gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify sharp gulp-svgmin gulp-svgstore
 ```
 
 It's understood that you navigate in your console where you want to install node_modules.
@@ -212,7 +212,7 @@ All found modules are imported automatically.
 
 Each module has a README with usage information.
 
-> Configuration files (`config.js`) are commented for explanations. That should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
 
 ## Copyright
 
