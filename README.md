@@ -153,7 +153,7 @@ npm install --global gulp-cli
 ### General Node Modules
 
 ```cmd
-npm install --save-dev gulp, gulp-plumber, del, gulp-rename, gulp-sourcemaps, gulp-concat, gulp-if, gulp-header, gulp-todo, merge2, browser-sync, gulp-notify
+npm install --save-dev gulp gulp-plumber del gulp-rename gulp-sourcemaps gulp-concat gulp-if gulp-header gulp-todo merge2 browser-sync gulp-notify
 ```
 
 ### All other Node Modules
