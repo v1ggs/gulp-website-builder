@@ -17,7 +17,7 @@ const svgmin = require('gulp-svgmin');
 
 // ============== S E T T I N G S ============== \\
 // set options using settings from main config
-const sharpResizeOptions = function (size) {
+let sharpResizeOptions = function (size) {
     let options = {
         width: size.width,
         fit: size.fit,
@@ -131,6 +131,19 @@ const sharpOutput = function (sharpInstance, filename, dir) {
 }
 
 
+// output file
+const imgFileName = function (pathObj, suffix) {
+    // create new filename with the size suffix
+    let newFilename = pathObj.name.replace(
+        /\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, ''
+    );
+    newFilename = newFilename.replace(/\.|_| /gi, '-');
+    newFilename = (newFilename + suffix + pathObj.ext).toLowerCase();
+
+    return newFilename;
+}
+
+
 // svg template
 const makeSvg = function (width, height, href) {
     // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
@@ -228,6 +241,7 @@ async function placeholder(sharpInstance, meta, pathObj, appendToFile, q, s, cb)
         'url(data:image/svg+xml;charset=utf-8,' + svgEnc + ');\n\n';
 
     /*
+    // EXPORT REAL SVG PLACEHOLDER FILES
     let svgExportDir = files.svgDist;
 
     _fn.rem(svgExportDir, false);
@@ -249,18 +263,7 @@ const initializeScss = function (cb) {
     // data to write
     let data = '// technique explained on css tricks:\n// https://css-tricks.com/the-blur-up-technique-for-loading-background-images/\n\n// Import this file in your main.scss to be able to use these variables, like:\n// background-image: $svg-b46-some-img-jpg-small;\n\n';
 
-    // parse path to get dir
-    let dest = _fn.path.parse(proj.files.svgPlaceholders);
-
-    // make dir
-    mkdir(dest.dir, cb);
-
-    // open file for writing - flags: 'a' - append, 'w' - write
-    let stream = _fn.fs.createWriteStream(proj.files.svgPlaceholders, { flags: 'w' });
-
-    // write data
-    stream.write(data);
-    stream.end(); // not required
+    _fn.writeFile(proj.files.svgPlaceholders, data);
 
     cb();
 }
@@ -278,15 +281,15 @@ const processSvg = function (cb) {
 
 
 // process all image sizes
-async function processSizes(sharpInstance, imgMeta, sizesArr, suffixesArr, file, cb) {
+async function processSizes(sharpInstance, sizesArr, suffixesArr, file, cb) {
     // parse path to each file
-    let filePath = _fn.path.parse(file);
+    const filePath = _fn.path.parse(file);
 
     // img parent folder
-    let parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir);
+    const parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir);
 
     // get path to each file, relative to img dir
-    let newDir = files.dist + '/' + parentFolder;
+    const newDir = files.dist + '/' + parentFolder;
 
     // create destination folder, if not there
     mkdir(newDir, cb);
@@ -294,37 +297,37 @@ async function processSizes(sharpInstance, imgMeta, sizesArr, suffixesArr, file,
     // display the file being processed
     console.log('========== Processing image: ' + filePath.name + filePath.ext);
 
-    // img metadata
-    let metadata = await imgMeta;
+    // image metadata
+    const metadata = await sharpInstance.metadata();
 
     // number of sizes
-    let numOfSizes = sizesArr.length;
+    const numOfSizes = sizesArr.length;
 
     for (let i = 0; i < numOfSizes; i++) {
+        // processing options - dimensions, crop, fit... (object)
+        let options = sharpResizeOptions(sizesArr[i]);
+
+        // new filename suffix
+        let suffix = '-' + suffixesArr[i];
+
         // if doNotEnlarge true and required size is larger then the original image
         if (build.doNotEnlarge && sizesArr[i].width > metadata.width) {
             // set original image width
-            sizesArr[i].width = metadata.width;
+            options.width = metadata.width;
+            suffix = '';
         }
 
-        // create new filename with the size suffix
-        let newFilename = filePath.name.replace(
-            /\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, ''
-        );
-        newFilename = newFilename.replace(/\.|_| /gi, '-');
-        newFilename = (newFilename + '-' + suffixesArr[i] + filePath.ext).toLowerCase();
-
-        // get processing options - dimensions, crop, fit... (object)
-        let options = sharpResizeOptions(sizesArr[i]);
+        // new filename
+        const newFileName = imgFileName(filePath, suffix);
 
         // rotate image (by EXIF), then resize, crop, fit
-        let resizeImg = sharpResize(sharpInstance, options);
+        const resizeImg = sharpResize(sharpInstance, options);
 
         // compress
-        let compressImg = sharpCompress(resizeImg, filePath.ext);
+        const compressImg = sharpCompress(resizeImg, filePath.ext);
 
         // output
-        let outputFile = sharpOutput(compressImg, newFilename, newDir);
+        const outputFile = sharpOutput(compressImg, newFileName, newDir);
     }
 
     cb();
@@ -333,23 +336,20 @@ async function processSizes(sharpInstance, imgMeta, sizesArr, suffixesArr, file,
 
 // jpg, jpeg, png, webp files
 const main = function (cb) {
+    // get all image filename suffixes
+    const suffixes = Object.keys(imgSizes);
+
+    // get all image sizes
+    const sizes = Object.values(imgSizes);
+
+    // get all images
+    const sourceFiles = _fn.glob.sync(files.src);
 
     // create folder
     mkdir(files.dist, cb);
 
     // initialize the scss file if required
-    if (build.svgPlaceholders) {
-        initializeScss(cb);
-    }
-
-    // get all image filename suffixes
-    let suffixes = Object.keys(imgSizes);
-
-    // get all image sizes
-    let sizes = Object.values(imgSizes);
-
-    // get all images
-    let sourceFiles = _fn.glob.sync(files.src);
+    if (build.svgPlaceholders) { initializeScss(cb); }
 
     // scss file for svg placeholders
     let appendToFile;
@@ -361,16 +361,16 @@ const main = function (cb) {
     // process each file
     sourceFiles.forEach(function (file) {
         // parse path to each file
-        let filePath = _fn.path.parse(file);
+        const filePath = _fn.path.parse(file);
 
         // get file with sharp
-        let sharpInstance = sharpGetFile(file);
+        const sharpInstance = sharpGetFile(file);
 
         // get image metadata - handle in async function (returns a promise)
-        let imgMeta = sharpInstance.metadata();
+        const imgMeta = sharpInstance.metadata();
 
         // process and output all image sizes
-        processSizes(sharpInstance, imgMeta, sizes, suffixes, file, cb);
+        processSizes(sharpInstance, sizes, suffixes, file, cb);
 
         // create placeholder image if required
         // placeholder(source, imgMetadata, pathObject, scssFile, svgQuality, svgSize, callback)
