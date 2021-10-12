@@ -118,6 +118,9 @@
 
 ## INSTALLATION
 
+> If adding a new plugin in the pipeline, if you're using Sourcemaps, the new plugin has to be compatible with gulp-sourcemaps.
+> [Plugins with gulp sourcemaps support](https://github.com/gulp-sourcemaps/gulp-sourcemaps/wiki/Plugins-with-gulp-sourcemaps-support)
+
 Place this repository in your project root directory. File/folder structure should be like this (with default config):
 
 -  .git

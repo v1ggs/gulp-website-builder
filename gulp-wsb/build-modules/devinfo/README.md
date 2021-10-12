@@ -4,7 +4,7 @@
 
 ## GENERAL INFO
 
-Devinfo module writes humans.txt (https://humanstxt.org) in the site's public folder, and appends developer(s) header to JS and CSS, if requested in config (in production environment only).
+Devinfo module writes humans.txt (https://humanstxt.org) in the site's public folder, and appends developer(s) header to JS and CSS, if requested in config (in production environment only). This header can also be used to add links to third party licenses.
 Humans.txt has to be built with each task, because it contains site's 'last update time'.
 
 Find all settings in the `config.js` file.
