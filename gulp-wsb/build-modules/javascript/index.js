@@ -162,8 +162,10 @@ const main = function (cb) {
                 // remove console, alert, and debugger statements
                 // replaced with: "void 0;" for safety, uglify removes it wherever ok
                 .pipe(_fn.gulpif(cfg.build.minify,
-                    stripDebug()
-                ))
+                    // do not strip with sourcemaps, they will break
+                    _fn.gulpif(!checkSourcemaps,
+                        stripDebug()
+                    )))
                 // minify
                 .pipe(_fn.gulpif(cfg.build.minify,
                     uglify()
