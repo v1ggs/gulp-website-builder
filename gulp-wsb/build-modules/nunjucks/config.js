@@ -10,21 +10,41 @@ const _src = proj.dirs.src.html;
 const _dist = serverCfg.htmlDist;
 /* *************************************************** */
 
+const files = {
+   // src files to build
+   src: [_src + '/pages/*.{njk,nj,nunjucks}'],
+   // files to watch for changes and build todos/fixmes file
+   watch: [_src + '/**/*.{njk,nj,nunjucks}'],
+   // output
+   output: _dist,
+}
+
 // nunjucks globals - set here and use across .njk files as variables or filters
 const manageEnvironment = function (environment) {
    // ------------ global variables ------------ \\
-   environment.addGlobal('projectName', proj.config.project.name);
-   environment.addGlobal('domain', 'https://www.' + proj.config.project.domain);
-   environment.addGlobal('description', proj.config.project.description);
-   environment.addGlobal('title', proj.config.project.name);
-   environment.addGlobal('sep', ' | '); // title separator
-   // use as variable in .njk files, like: {{ assets }}/css/style.min.css
-   environment.addGlobal('assets', assets);
+   // project info - mught be needed
+   environment.addGlobal('project', {
+      name: proj.config.project.name,
+      desription: proj.config.project.description,
+      domain: 'https://www.' + proj.config.project.domain, // notice 'https'
+   });
+
+   // assets folders, use like e.g. "{{ assets.css }}/style.min.css"
+   environment.addGlobal('assets', {
+      root: assets,
+      css: assets + "/css",
+      js: assets + "/js",
+      img: assets + "/img",
+      fonts: assets + "/fonts",
+      ico: assets + "/icons",
+      sounds: assets + "/sounds",
+      videos: assets + "/videos"
+   });
 
    // ------------ custom filters ------------ \\
    // get array from a space separated string
    environment.addFilter('split', function (string) {
-      var txt = string.split(" ");
+      var txt = string.split(' ');
       return txt;
    });
 
@@ -39,15 +59,12 @@ const manageEnvironment = function (environment) {
    environment.addFilter('slug', function (str) {
       return str && str.replace(/\s/g, '-', str).toLowerCase();
    });
-}
 
-const files = {
-   // src files to build
-   src: [_src + '/pages/*.{njk,nj,nunjucks}'],
-   // files to watch for changes and build todos/fixmes file
-   watch: [_src + '/**/*.{njk,nj,nunjucks}'],
-   // output
-   output: _dist,
+   // convert to JSON
+   environment.addFilter("json", function (value) {
+      // convert the complete string imported by Nunjucks into JSON and return
+      return JSON.parse(value);
+   });
 }
 
 // do not place before manageEnvironment
