@@ -10,7 +10,7 @@ const _dist = _fn.serverCfg().assetsDist;
 
 const files = {
    src: _src + '/**/*.{jpg,jpeg,png,webp}',
-   svg: _src + '/**/*.svg',
+   svg: _src + '/svg/*.svg',
    dist: _dist + '/img',
 }
 

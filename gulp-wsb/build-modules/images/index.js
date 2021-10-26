@@ -72,7 +72,7 @@ const mkdir = function (path, cb) {
     }
 
     if (!_fn.fs.existsSync(p)) {
-        _fn.fs.mkdir(p, { recursive: true }, (err) => {
+        _fn.fs.mkdirSync(p, { recursive: true }, (err) => {
             if (err) { console.log(err); }
         });
     }
@@ -281,10 +281,7 @@ const processSvg = function (cb) {
 
 
 // process all image sizes
-async function processSizes(sharpInstance, sizesArr, suffixesArr, file, cb) {
-    // parse path to each file
-    const filePath = _fn.path.parse(file);
-
+async function processSizes(sharpInstance, sizesArr, suffixesArr, filePath, cb) {
     // img parent folder
     const parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir);
 
@@ -295,15 +292,19 @@ async function processSizes(sharpInstance, sizesArr, suffixesArr, file, cb) {
     mkdir(newDir, cb);
 
     // display the file being processed
-    console.log('========== Processing image: ' + filePath.name + filePath.ext);
+    console.log('========== Processing image: ' + filePath.dir + '/' + filePath.name + filePath.ext);
 
     // image metadata
     const metadata = await sharpInstance.metadata();
 
     // number of sizes
-    const numOfSizes = sizesArr.length;
+    const sizesCount = sizesArr.length;
 
-    for (let i = 0; i < numOfSizes; i++) {
+    // used to prevent overwritting files when original size is
+    // smaller than requested, and no enlarge enabled
+    let lastFilePath = '';
+
+    for (let i = 0; i < sizesCount; i++) {
         // processing options - dimensions, crop, fit... (object)
         let options = sharpResizeOptions(sizesArr[i]);
 
@@ -320,14 +321,22 @@ async function processSizes(sharpInstance, sizesArr, suffixesArr, file, cb) {
         // new filename
         const newFileName = imgFileName(filePath, suffix);
 
-        // rotate image (by EXIF), then resize, crop, fit
-        const resizeImg = sharpResize(sharpInstance, options);
+        if (newDir + '/' + newFileName == lastFilePath) {
+            // console.log('========== skip file: ' + newDir + '/' + newFileName);
+        } else {
+            // set new file path
+            lastFilePath = newDir + '/' + newFileName;
 
-        // compress
-        const compressImg = sharpCompress(resizeImg, filePath.ext);
+            // rotate image (by EXIF), then resize, crop, fit
+            const resizeImg = sharpResize(sharpInstance, options);
 
-        // output
-        const outputFile = sharpOutput(compressImg, newFileName, newDir);
+            // compress and output
+            sharpCompress(resizeImg, filePath.ext)
+                .toFile(newDir + '/' + newFileName, (err, info) => {
+                    // console.log(info);
+                    if (err) { console.log(err); }
+                });
+        }
     }
 
     cb();
@@ -348,12 +357,13 @@ const main = function (cb) {
     // create folder
     mkdir(files.dist, cb);
 
-    // initialize the scss file if required
-    if (build.svgPlaceholders) { initializeScss(cb); }
-
     // scss file for svg placeholders
     let appendToFile;
+
+    // initialize the scss file if required
     if (build.svgPlaceholders) {
+        initializeScss(cb);
+
         // open file for writing - flags: 'a' - append, 'w' - write
         appendToFile = _fn.fs.createWriteStream(proj.files.svgPlaceholders, { flags: 'a' });
     }
@@ -370,7 +380,7 @@ const main = function (cb) {
         const imgMeta = sharpInstance.metadata();
 
         // process and output all image sizes
-        processSizes(sharpInstance, sizes, suffixes, file, cb);
+        processSizes(sharpInstance, sizes, suffixes, filePath, cb);
 
         // create placeholder image if required
         // placeholder(source, imgMetadata, pathObject, scssFile, svgQuality, svgSize, callback)
