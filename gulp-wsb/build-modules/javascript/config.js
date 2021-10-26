@@ -65,22 +65,7 @@ const config = {
    // Transpilation name (key) is the filename suffix, except for the 'default', which goes without suffix.
    transpilation: {
       // These are being used in config.bundles.<bundle_name>.type array
-
       default: {
-         compact: false, // a kind of minify
-         presets: [['@babel/env', {
-            modules: 'auto',
-            targets: [
-               'Chrome >= 60',
-               'Safari >= 10.1',
-               'iOS >= 10.3',
-               'Firefox >= 54',
-               'Edge >= 15',
-            ],
-         }]]
-      },
-
-      es5: {
          compact: false, // a kind of minify
          presets: [['@babel/env', {
             modules: 'auto',
@@ -90,7 +75,47 @@ const config = {
                'firefox esr',
                'not dead',
             ]
-         }]],
+         }]]
+      },
+
+      // rename as required (e.g. es6)
+      modulesSupport: {
+         compact: false, // a kind of minify
+         presets: [['@babel/env', {
+            modules: 'auto',
+            targets: [
+               // support modules by default
+               // https://caniuse.com/?search=modules
+               'Chrome >= 61',
+               'Safari >= 11',
+               // 'Safari >= 10.1',
+               'iOS >= 11',
+               // 'iOS >= 10.3',
+               'Firefox >= 60',
+               'Edge >= 16',
+               'Opera >= 48',
+            ],
+         }]]
+      },
+
+      // rename as required (e.g. es5)
+      noModulesSupport: {
+         compact: false, // a kind of minify
+         presets: [['@babel/env', {
+            modules: 'auto',
+            targets: [
+               // do not support modules at all
+               // https://caniuse.com/?search=modules
+               'Chrome <= 59',
+               'Safari <= 10',
+               // 'Safari <= 10.1',
+               'iOS <= 10',
+               // 'iOS <= 10.3',
+               'Firefox <= 53',
+               'Edge <= 14',
+               'Opera <= 46',
+            ]
+         }]]
       },
    },
 }
