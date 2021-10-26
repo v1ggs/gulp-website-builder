@@ -85,11 +85,6 @@ const serverCfg = function () {
       // but server's root remains in the site's root
       htmlDist = './' + proj.config.dirname.public_html + wpDir;
       assetsReference = wpDir;
-   } else if (proj.config.build.type === 3) {
-      // NOT FINISHED YET
-      // proxy a site (WordPress)
-      htmlDist = './' + proj.config.dirname.public_html + wpDir;
-      assetsReference = wpDir;
    }
 
    // assets dist dir
@@ -105,6 +100,14 @@ const serverCfg = function () {
    if (proj.config.build.type === 2) {
       // static design for future use with WordPress
       _index = wpDir + '/' + proj.config.build.serve;
+   }
+
+   // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
+   // to be able to inject CSS/JS, and stream/reload page on save
+   if (proj.config.build.proxy) {
+      _server = false;
+      _proxy = proj.config.build.proxy;
+      _index = false;
    }
 
    cfg = {
