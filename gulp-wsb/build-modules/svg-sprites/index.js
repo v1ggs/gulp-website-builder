@@ -39,14 +39,15 @@ const watcher = function () {
 
     // watch files array
     let watchFiles = [];
+    let srcCount = source.length;
 
     // get source for each sprite, and place it into the array
-    for (let i = 0; i < source.length; i++) {
+    for (let i = 0; i < srcCount; i++) {
         if (Array.isArray(source[i])) {
 
-            source[i].forEach(function (source) {
-                watchFiles.push(source);
-            })
+            source[i].forEach(function (files) {
+                watchFiles.push(files);
+            });
 
         } else {
             watchFiles.push(source[i]);
