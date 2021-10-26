@@ -27,6 +27,11 @@
 -  Humans.txt is being updated on each build
 -  A header with developers info can be prepended to CSS files (in production environment)
 
+> If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
+> It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').
+> Such selectors purgeCSS can't see.
+> Use SCSS config to add selectors that should always be kept.
+
 ## USAGE
 
 > Everything is configurable.

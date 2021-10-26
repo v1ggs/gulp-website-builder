@@ -79,6 +79,11 @@
 -  add developer info (in a comment) at the top of CSS files (in 'prod' environment)
 -  humans.txt is being updated on each build
 
+> If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
+> It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').
+> Such selectors purgeCSS can't see.
+> Use SCSS config to add selectors that should always be kept.
+
 ### JavaScript
 
 -  clean output folder before every build
