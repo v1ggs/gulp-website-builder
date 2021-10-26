@@ -9,7 +9,7 @@ const cfg = config.config;
 const files = config.config.files;
 
 // Gulp
-const sass = require("gulp-sass");
+const sass = require("gulp-sass")(require('sass'));
 const postcss = require('gulp-postcss');
 const fixFlexbugs = require("postcss-flexbugs-fixes");
 // https://www.npmjs.com/package/postcss-inline-svg

@@ -20,7 +20,7 @@ const config = {
       // (boolean) remove unused selectors with purgecss (if true, see config below)
       purge: true,
       // (false | 'mobile-first' | 'desktop-first') combine and sort media queries
-      combineMQ: true,
+      combineMQ: 'desktop-first',
       // fix flex bugs
       fixFlexbugs: true,
       // (boolean) minify files
