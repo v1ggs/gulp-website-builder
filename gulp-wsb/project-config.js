@@ -15,8 +15,12 @@ const config = {
       env: 'dev',
       // build type: 1: static page, 2: design for WordPress
       type: 1,
-      // serve page (for server, when developing for WP: index.html, category.html ...)
+      // serve file (e.g. 'index.html') or proxy a domain (local dev, e.g. dev-yourdomain.com), if type === 3
       serve: 'index.html',
+      // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
+      // to be able to inject CSS/JS, and stream/reload page on save
+      // default: false
+      proxy: 'dev-yourdomain.com',
       // make sound on task completion
       signalEnd: true,
    },
