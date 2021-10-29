@@ -8,7 +8,6 @@ const config = require('./config.js');
 const build = config.config.build;
 const format = config.config.formats;
 const imgSizes = config.config.sizes;
-const files = config.files;
 
 // Gulp
 const sharp = require('sharp');
@@ -45,7 +44,7 @@ const consoleInfo = function (cb) {
 
 // delete the output folder
 const cleanDist = function (cb) {
-    if (build.cleanDist) { _fn.rem(files.dist, cb); }
+    if (build.cleanDist) { _fn.rem(config.files.dist, cb); }
 
     cb();
 }
@@ -62,7 +61,7 @@ const humans = function (cb) {
 
 
 // make dir if not exist - pass path to file or dir
-const mkdir = function (path, cb) {
+const mkdir = function (path) {
     let p, pathObj = _fn.path.parse(path);
 
     if (pathObj.ext) {
@@ -72,12 +71,12 @@ const mkdir = function (path, cb) {
     }
 
     if (!_fn.fs.existsSync(p)) {
-        _fn.fs.mkdirSync(p, { recursive: true }, (err) => {
+        return _fn.fs.mkdirSync(p, { recursive: true }, (err) => {
             if (err) { console.log(err); }
         });
     }
 
-    cb();
+    return;
 }
 
 
@@ -95,6 +94,23 @@ const sharpGetFile = function (file) {
     }
 
     return sharpInstance;
+}
+
+
+// prepare file with sharp
+const sharpPrepareFile = function (sharpInstance, quality) {
+    // The use of rotate implies the removal of the EXIF Orientation tag, if any.
+    // If no angle is provided, it is determined from the EXIF data.
+    // Mirroring is supported and may infer the use of a flip operation.
+    return sharpInstance
+        .rotate()
+        .jpeg({ quality: quality, progressive: false, normalise: false, density: 72, optimiseCoding: true, chromaSubsampling: '4:2:0', force: true })
+        .resize({ width: 40 })
+        // Resolve the Promise with an Object containing data and info properties instead of resolving only with data.
+        .toBuffer({ resolveWithObject: true })
+        .then(function (img) {
+            return img; // return the image data and info
+        });
 }
 
 
@@ -124,14 +140,6 @@ const sharpCompress = function (sharpInstance, ext) {
 
 
 // output file
-const sharpOutput = function (sharpInstance, filename, dir) {
-    return sharpInstance
-        .toFile(dir + '/' + filename)
-        .catch((err) => { if (err) { console.log(err); } });
-}
-
-
-// output file
 const imgFileName = function (pathObj, suffix) {
     // create new filename with the size suffix
     let newFilename = pathObj.name.replace(
@@ -147,18 +155,27 @@ const imgFileName = function (pathObj, suffix) {
 // svg template
 const makeSvg = function (width, height, href) {
     // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
-    return svgFile = '<svg xmlns="http://www.w3.org/2000/svg" ' +
-        'xmlns:xlink="http://www.w3.org/1999/xlink" ' +
-        'width="' + width + '" height="' + height + '" ' +
-        'viewBox="0 0 ' + width + ' ' + height + '">' +
-        '<filter id="blur" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">' +
-        '<feGaussianBlur stdDeviation="20 20" edgeMode="duplicate" />' +
-        '<feComponentTransfer>' +
-        '<feFuncA type="discrete" tableValues="1 1" />' +
-        '</feComponentTransfer>' +
-        '</filter>' +
-        '<image filter="url(#blur)" xlink:href="' + href +
-        '" x="0" y="0" height="100%" width="100%" /></svg>';
+    return svgFile = "<svg xmlns='http://www.w3.org/2000/svg' " +
+        "xmlns:xlink='http://www.w3.org/1999/xlink' " +
+        "width='" + width + "' height='" + height + "' " +
+        "viewBox='0 0 " + width + " " + height + "'>" +
+        "<filter id='blur' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'>" +
+        "<feGaussianBlur stdDeviation='20 20' edgeMode='duplicate' />" +
+        "<feComponentTransfer>" +
+        "<feFuncA type='discrete' tableValues='1 1' />" +
+        "</feComponentTransfer>" +
+        "</filter>" +
+        "<image filter='url(#blur)' xlink:href='" + href +
+        "' x='0' y='0' height='100%' width='100%' /></svg>";
+}
+
+
+// initialize the scss file
+const initializeScss = function (file, _map) {
+    // data to write
+    let data = `// technique explained on css tricks:\n// https://css-tricks.com/the-blur-up-technique-for-loading-background-images/\n\n// Import this file in your main.scss to be able to use these SVGs, like:\n// background-image: map-get($svg-b64-large-placeholders, "some-img-#{$i}-small-jpg");\n\n${_map}: (\n`;
+
+    return _fn.writeFile(file, data);
 }
 
 
@@ -166,104 +183,195 @@ const makeSvg = function (width, height, href) {
 // and use it as background (scss file)
 // explained on css tricks:
 // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
-// placeholder(source, imgMetadata, pathObject, scssFile, svgQuality, svgSize, callback)
-async function placeholder(sharpInstance, meta, pathObj, appendToFile, q, s, cb) {
-    // process image and then get all the data from it (promise)
-    let smallImgObj = await sharpInstance
-        // The use of rotate implies the removal of the EXIF Orientation tag, if any.
-        // If no angle is provided, it is determined from the EXIF data.
-        // Mirroring is supported and may infer the use of a flip operation.
-        .rotate()
-        .jpeg({ quality: q, progressive: false, normalise: false, density: 72, optimiseCoding: true, chromaSubsampling: '4:2:0', force: true })
-        .resize({ width: 40 })
-        // Resolve the Promise with an Object containing data and info properties instead of resolving only with data.
-        .toBuffer({ resolveWithObject: true })
-        .then(function (img) {
-            return img; // return the image data and info
-        });
+async function placeholdersLarge(cb) {
+    // initialize the scss file if required
+    if (build.svgPlaceholders) {
+        if (proj.files.placeholdersLarge) {
+            initializeScss(proj.files.placeholdersLarge, '$svg-b64-large-placeholders');
 
-    // get original metadata (for svg dimensions, for correct aspect ratio)
-    let originalImgMetadata = await meta;
+            // get all images
+            const sourceFiles = _fn.glob.sync(config.files.src);
 
-    // parent folder name for svg variable name in scss
-    let parentFolder = _fn.path.relative(proj.dirs.src.images, pathObj.dir);
+            // put files into an array
+            const filesArray = Array.from(sourceFiles);
+            const filesCount = filesArray.length;
 
-    // create filename
-    let filename = (pathObj.name + pathObj.ext);
-    filename = filename.replace(/\.|_| /gi, '-');
-    filename = filename.replace(
-        /\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, ''
-    ).toLowerCase();
+            // process each file
+            for (let i = 0; i < filesCount; i++) {
+                // parse path to each file
+                const filePath = _fn.path.parse(filesArray[i]);
 
-    // path for info in comments
-    let fullFilePath = pathObj.dir + '/' + filename;
+                // get file with sharp
+                const sharpInstance = sharpGetFile(filesArray[i]);
 
-    // encode image to base64
-    let imgBase64 = smallImgObj.data.toString('base64');
+                // get original metadata (for svg dimensions, for correct aspect ratio)
+                const metadata = await sharpInstance.metadata();
 
-    // format to use in svg href
-    let imgFormat = smallImgObj.info.format;
+                // process image and then get all the data from it (promise)
+                const placeholderObj = await sharpPrepareFile(sharpInstance, 94);
 
-    // size in bytes for developer info
-    let imgSize = smallImgObj.info.size;
+                // parent folder name for map key in scss
+                const parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir)
+                    // clean path for usage in map key
+                    .replace(/\\|\/| |_/gi, '-')
+                    .replace(/\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, '')
+                    .toLowerCase();
 
-    // original width for svg
-    let imgW = originalImgMetadata.width;
+                // create clean filename
+                const filename = (filePath.name + filePath.ext)
+                    .replace(/\.|_| /gi, '-')
+                    .replace(/\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, '')
+                    .toLowerCase();
 
-    // original height for svg
-    let imgH = originalImgMetadata.height;
+                // path for info in comments
+                let fullFilePath = filePath.dir + '/' + filename;
 
-    // make svg href
-    let svgHref = 'data:image/' + imgFormat + ';base64,' + imgBase64;
+                // encode image to base64
+                let imgBase64 = placeholderObj.data.toString('base64');
 
-    // make svg
-    let svgFile = makeSvg(imgW, imgH, svgHref);
+                // format to use in svg href
+                let imgFormat = placeholderObj.info.format;
 
-    /* https://codepen.io/yoksel/details/JDqvs/
-    We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers. If encode SVG using encodeURIComponent() it will work everywhere.
-    SVG must have attribute xmlns like this: xmlns='http://www.w3.org/2000/svg'. */
-    let svgEnc = encodeURIComponent(svgFile);
+                // size in bytes for developer info
+                let imgSize = placeholderObj.info.size;
 
-    // image size for scss mixin name
-    let scssVarSuffix; if (s === 's') { scssVarSuffix = '-small'; }
-    else if (s === 'l') { scssVarSuffix = '-large'; } else { scssVarSuffix = ''; }
+                // original width for svg
+                let imgW = metadata.width;
 
-    // create a name for scss variable, prefixed (svg-b64-) for autocomplete
-    let scssVarName = '$svg-b64-' + parentFolder + '-' + filename + scssVarSuffix;
+                // original height for svg
+                let imgH = metadata.height;
 
-    // css comment with image info for the developer
-    let cssComments =
-        '// Original file: "' + fullFilePath + '"\n' +
-        '// ' + imgFormat + ' size: ' + imgSize + ' bytes\n';
+                // make svg href
+                let svgHref = 'data:image/' + imgFormat + ';base64,' + imgBase64;
 
-    // create scss variable
-    let scssContent = cssComments + scssVarName + ': ' +
-        'url(data:image/svg+xml;charset=utf-8,' + svgEnc + ');\n\n';
+                // make svg
+                let svgFile = makeSvg(imgW, imgH, svgHref);
 
-    /*
-    // EXPORT REAL SVG PLACEHOLDER FILES
-    let svgExportDir = files.svgDist;
+                /* https://codepen.io/yoksel/details/JDqvs/
+                We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers. If encode SVG using encodeURIComponent() it will work everywhere.
+                SVG must have attribute xmlns like this: xmlns='http://www.w3.org/2000/svg'. */
+                let svgEnc = encodeURIComponent(svgFile);
 
-    _fn.rem(svgExportDir, false);
-    mkdir(svgExportDir);
+                // create a name for scss map key, prefixed (svg-b64-) for autocomplete
+                let scssMapKey = '"' + parentFolder + '-' + filename + '"';
 
-    // write svg to be able to open them in browser
-    writeDataIntoFile(`${svgExportDir}/${nameBase}.svg`, svgFile, 'w');
-    */
+                // css comment with image info for the developer
+                let cssComments =
+                    '// Original file: "' + fullFilePath + '"\n' +
+                    '// ' + imgFormat + ' size: ' + imgSize + ' bytes\n';
 
-    // write data
-    appendToFile.write(scssContent);
+                // info comment and map key
+                let scssContent = cssComments + scssMapKey + ': ' +
+                    'url("data:image/svg+xml;charset=utf-8,' + svgEnc + '"),\n\n';
+
+                _fn.fs.appendFileSync(proj.files.placeholdersLarge, scssContent);
+
+                /*
+                // EXPORT REAL SVG FILES
+                // to be able to open them in browser
+                let svgExportDir = config.files.dist + '/svg';
+                mkdir(svgExportDir);
+                _fn.fs.writeFileSync(`${svgExportDir}/${filename}.svg`, svgFile);
+                */
+            }
+
+            // finalise scss file
+            _fn.fs.appendFileSync(proj.files.placeholdersLarge, ");");
+        }
+    }
 
     cb();
 }
 
 
-// initialize the scss file
-const initializeScss = function (cb) {
-    // data to write
-    let data = '// technique explained on css tricks:\n// https://css-tricks.com/the-blur-up-technique-for-loading-background-images/\n\n// Import this file in your main.scss to be able to use these variables, like:\n// background-image: $svg-b46-some-img-jpg-small;\n\n';
+async function placeholdersSmall(cb) {
+    // initialize the scss file if required
+    if (build.svgPlaceholders) {
+        if (proj.files.placeholdersSmall) {
+            initializeScss(proj.files.placeholdersSmall, '$svg-b64-small-placeholders');
 
-    _fn.writeFile(proj.files.svgPlaceholders, data);
+            // get all images
+            const sourceFiles = _fn.glob.sync(config.files.src);
+
+            // put files into an array
+            const filesArray = Array.from(sourceFiles);
+            const filesCount = filesArray.length;
+
+            // process each file
+            for (let i = 0; i < filesCount; i++) {
+                // parse path to each file
+                const filePath = _fn.path.parse(filesArray[i]);
+
+                // get file with sharp
+                const sharpInstance = sharpGetFile(filesArray[i]);
+
+                // get original metadata (for svg dimensions, for correct aspect ratio)
+                const metadata = await sharpInstance.metadata();
+
+                // process image and then get all the data from it (promise)
+                const placeholderObj = await sharpPrepareFile(sharpInstance, 36);
+
+                // parent folder name for map key in scss
+                const parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir)
+                    // clean path for usage in map key
+                    .replace(/\\|\/| |_/gi, '-')
+                    .replace(/\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, '')
+                    .toLowerCase();
+
+                // create clean filename
+                const filename = (filePath.name + filePath.ext)
+                    .replace(/\.|_| /gi, '-')
+                    .replace(/\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,/gi, '')
+                    .toLowerCase();
+
+                // path for info in comments
+                let fullFilePath = filePath.dir + '/' + filename;
+
+                // encode image to base64
+                let imgBase64 = placeholderObj.data.toString('base64');
+
+                // format to use in svg href
+                let imgFormat = placeholderObj.info.format;
+
+                // size in bytes for developer info
+                let imgSize = placeholderObj.info.size;
+
+                // original width for svg
+                let imgW = metadata.width;
+
+                // original height for svg
+                let imgH = metadata.height;
+
+                // make svg href
+                let svgHref = 'data:image/' + imgFormat + ';base64,' + imgBase64;
+
+                // make svg
+                let svgFile = makeSvg(imgW, imgH, svgHref);
+
+                /* https://codepen.io/yoksel/details/JDqvs/
+                We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers. If encode SVG using encodeURIComponent() it will work everywhere.
+                SVG must have attribute xmlns like this: xmlns='http://www.w3.org/2000/svg'. */
+                let svgEnc = encodeURIComponent(svgFile);
+
+                // create a name for scss map key, prefixed (svg-b64-) for autocomplete
+                let scssMapKey = '"' + parentFolder + '-' + filename + '"';
+
+                // css comment with image info for the developer
+                let cssComments =
+                    '// Original file: "' + fullFilePath + '"\n' +
+                    '// ' + imgFormat + ' size: ' + imgSize + ' bytes\n';
+
+                // info comment and map key
+                let scssContent = cssComments + scssMapKey + ': ' +
+                    'url("data:image/svg+xml;charset=utf-8,' + svgEnc + '"),\n\n';
+
+                _fn.fs.appendFileSync(proj.files.placeholdersSmall, scssContent);
+            }
+
+            // finalise scss file
+            _fn.fs.appendFileSync(proj.files.placeholdersSmall, ");");
+        }
+    }
 
     cb();
 }
@@ -271,9 +379,22 @@ const initializeScss = function (cb) {
 
 // svg files
 const processSvg = function (cb) {
-    let svgs = _fn.src(files.svg, { base: proj.dirs.src.images, allowEmpty: true })
+    // get all exclude folders
+    let exclude = config.files.exclude;
+    let excludeCount = exclude.length;
+
+    // src files array
+    let srcFiles = [];
+    srcFiles[0] = config.files.svg;
+
+    // get exclude folders, and place them into the array
+    for (let i = 0; i < excludeCount; i++) {
+        srcFiles.push('!' + exclude[i]);
+    }
+
+    let svgs = _fn.src(srcFiles, { base: proj.dirs.src.images, allowEmpty: true })
         .pipe(svgmin(format.svg))
-        .pipe(_fn.dest(files.dist));
+        .pipe(_fn.dest(config.files.dist));
 
     // signal completion to gulp
     cb();
@@ -281,61 +402,85 @@ const processSvg = function (cb) {
 
 
 // process all image sizes
-async function processSizes(sharpInstance, sizesArr, suffixesArr, filePath, cb) {
-    // img parent folder
-    const parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir);
+async function processSizes(cb) {
+    // get all image filename suffixes
+    const suffixes = Object.keys(imgSizes);
 
-    // get path to each file, relative to img dir
-    const newDir = files.dist + '/' + parentFolder;
+    // get all image sizes
+    const sizes = Object.values(imgSizes);
+    const sizesCount = sizes.length;
 
-    // create destination folder, if not there
-    mkdir(newDir, cb);
+    // get all images
+    const sourceFiles = _fn.glob.sync(config.files.src, {
+        ignore: config.files.exclude
+    });
 
-    // display the file being processed
-    console.log('========== Processing image: ' + filePath.dir + '/' + filePath.name + filePath.ext);
+    // put files into an array
+    const filesArray = Array.from(sourceFiles);
+    const filesCount = filesArray.length;
 
-    // image metadata
-    const metadata = await sharpInstance.metadata();
+    // process each file
+    for (let i = 0; i < filesCount; i++) {
+        // parse path to each file
+        const filePath = _fn.path.parse(filesArray[i]);
 
-    // number of sizes
-    const sizesCount = sizesArr.length;
+        // get file with sharp
+        const sharpInstance = sharpGetFile(filesArray[i]);
 
-    // used to prevent overwritting files when original size is
-    // smaller than requested, and no enlarge enabled
-    let lastFilePath = '';
+        // image metadata
+        const metadata = await sharpInstance.metadata();
 
-    for (let i = 0; i < sizesCount; i++) {
-        // processing options - dimensions, crop, fit... (object)
-        let options = sharpResizeOptions(sizesArr[i]);
+        // img parent folder
+        const parentFolder = _fn.path.relative(proj.dirs.src.images, filePath.dir);
 
-        // new filename suffix
-        let suffix = '-' + suffixesArr[i];
+        // get path to each file, relative to img dir
+        const newDir = config.files.dist + '/' + parentFolder;
 
-        // if doNotEnlarge true and required size is larger then the original image
-        if (build.doNotEnlarge && sizesArr[i].width > metadata.width) {
-            // set original image width
-            options.width = metadata.width;
-            suffix = '';
-        }
+        // create destination folder, if not there
+        mkdir(newDir);
 
-        // new filename
-        const newFileName = imgFileName(filePath, suffix);
+        // prevent overwritting files when original size is
+        // smaller than requested, and no enlarge enabled
+        let lastFilePath = '';
 
-        if (newDir + '/' + newFileName == lastFilePath) {
-            // console.log('========== skip file: ' + newDir + '/' + newFileName);
-        } else {
-            // set new file path
-            lastFilePath = newDir + '/' + newFileName;
+        // display the file being processed
+        console.log('========== Processing image: ' + filePath.dir + '/' + filePath.name + filePath.ext);
 
-            // rotate image (by EXIF), then resize, crop, fit
-            const resizeImg = sharpResize(sharpInstance, options);
+        for (let j = 0; j < sizesCount; j++) {
+            // processing options - dimensions, crop, fit... (object)
+            let options = sharpResizeOptions(sizes[j]);
 
-            // compress and output
-            sharpCompress(resizeImg, filePath.ext)
-                .toFile(newDir + '/' + newFileName, (err, info) => {
-                    // console.log(info);
-                    if (err) { console.log(err); }
-                });
+            // new filename suffix
+            let suffix = '-' + suffixes[j];
+
+            // if doNotEnlarge true and required size is larger then the original image
+            if (build.doNotEnlarge && sizes[j].width > metadata.width) {
+                // set original image width
+                options.width = metadata.width;
+                suffix = '';
+            }
+
+            // new filename
+            const newFileName = imgFileName(filePath, suffix);
+
+            if (newDir + '/' + newFileName == lastFilePath) {
+                // prevent overwritting files when original size is
+                // smaller than requested, and no enlarge enabled
+                // console.log('========== skip file: ' + newDir + '/' + newFileName);
+            } else {
+                // set new file path
+                lastFilePath = newDir + '/' + newFileName;
+
+                // rotate image (by EXIF), then resize, crop, fit
+                const resizeImg = sharpResize(sharpInstance, options);
+
+                // compress and output
+                sharpCompress(resizeImg, filePath.ext)
+                    .toFile(newDir + '/' + newFileName, (err, info) => {
+                        // console.log(info);
+                        if (err) { console.log(err); }
+                    });
+            }
         }
     }
 
@@ -343,56 +488,23 @@ async function processSizes(sharpInstance, sizesArr, suffixesArr, filePath, cb) 
 }
 
 
-// jpg, jpeg, png, webp files
-const main = function (cb) {
-    // get all image filename suffixes
-    const suffixes = Object.keys(imgSizes);
+// files array for watcher
+const watcher = function () {
+    // get all exclude folders
+    let exclude = config.files.exclude;
+    let excludeCount = exclude.length;
 
-    // get all image sizes
-    const sizes = Object.values(imgSizes);
+    // watch files array
+    let watchFiles = [];
+    watchFiles[0] = config.files.src;
+    watchFiles[1] = config.files.svg;
 
-    // get all images
-    const sourceFiles = _fn.glob.sync(files.src);
-
-    // create folder
-    mkdir(files.dist, cb);
-
-    // scss file for svg placeholders
-    let appendToFile;
-
-    // initialize the scss file if required
-    if (build.svgPlaceholders) {
-        initializeScss(cb);
-
-        // open file for writing - flags: 'a' - append, 'w' - write
-        appendToFile = _fn.fs.createWriteStream(proj.files.svgPlaceholders, { flags: 'a' });
+    // get exclude folders, and place them into the array
+    for (let i = 0; i < excludeCount; i++) {
+        watchFiles.push('!' + exclude[i]);
     }
 
-    // process each file
-    sourceFiles.forEach(function (file) {
-        // parse path to each file
-        const filePath = _fn.path.parse(file);
-
-        // get file with sharp
-        const sharpInstance = sharpGetFile(file);
-
-        // get image metadata - handle in async function (returns a promise)
-        const imgMeta = sharpInstance.metadata();
-
-        // process and output all image sizes
-        processSizes(sharpInstance, sizes, suffixes, filePath, cb);
-
-        // create placeholder image if required
-        // placeholder(source, imgMetadata, pathObject, scssFile, svgQuality, svgSize, callback)
-        if (build.svgPlaceholders) {
-            placeholder(sharpInstance, imgMeta, filePath, appendToFile, 94, 'l', cb); // large
-            placeholder(sharpInstance, imgMeta, filePath, appendToFile, 36, 's', cb); // small
-        }
-
-    });
-
-    // signal completion to gulp
-    cb();
+    return watchFiles;
 }
 
 
@@ -400,9 +512,9 @@ const main = function (cb) {
 exports.build = _fn.series(
     consoleInfo,
     cleanDist,
-    _fn.parallel(main, processSvg, humans),
+    _fn.parallel(processSizes, processSvg, placeholdersLarge, placeholdersSmall, humans),
     _fn.endSound,
 );
 
 // Source files to watch for changes with watch()
-exports.watch = [files.src, files.svg];
+exports.watch = watcher();

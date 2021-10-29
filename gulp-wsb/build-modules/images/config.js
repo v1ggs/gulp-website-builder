@@ -9,8 +9,11 @@ const _dist = _fn.serverCfg().assetsDist;
 /* *************************************************** */
 
 const files = {
+   // these folders will be watched for changes (string)
    src: _src + '/**/*.{jpg,jpeg,png,webp}',
-   svg: _src + '/svg/*.svg',
+   svg: _src + '/svg/**/*.svg',
+   // exclude these folders from the process and watcher (array) *** DO NOT USE NEGATIVE GLOB ***
+   exclude: [_src + '/svg/sprites/**/*'],
    dist: _dist + '/img',
 }
 
