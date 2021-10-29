@@ -9,15 +9,23 @@ const _dist = _fn.serverCfg().assetsDist;
 
 
 // ============== F U N C T I O N S ============== \\
+// console info about the running task
+const consoleInfo = function (cb) {
+    console.log('========== TASK: FILECOPY');
+
+    cb();
+}
+
+
 // delete the output folder
 const cleanDist = function (cb) {
-    const a_folders = config.folders;
+    const folders = config.folders;
 
-    for (let i = 0, n_foldersNo = a_folders.length; i < n_foldersNo; i++) {
+    for (let i = 0, foldersNo = folders.length; i < foldersNo; i++) {
         // check out the config
         if (config.build.cleanDist) {
-            if (_fn.fs.existsSync(_dist + '/' + a_folders[i])) {
-                _fn.del.sync([_dist + '/' + a_folders[i]]);
+            if (_fn.fs.existsSync(_dist + '/' + folders[i])) {
+                _fn.del.sync([_dist + '/' + folders[i]]);
             }
         }
     }
@@ -25,36 +33,16 @@ const cleanDist = function (cb) {
     cb();
 }
 
+
 const copyFiles = function (cb) {
-    let a_allDirs = [];
-    let n_allDirsNo = config.folders.length;
-
-    for (let i = 0; i < n_allDirsNo; i++) {
-        a_allDirs[i] = proj.dirs.src.root + '/' + config.folders[i] + '/**/*';
-    }
-
     // src({ base: }) - copy relative to the base dir
-    let filecopy = _fn.src(a_allDirs, { base: proj.dirs.src.root, allowEmpty: true })
+    let filecopy = _fn.src(config.folders, { base: proj.dirs.src.root, allowEmpty: true })
         .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
         .pipe(_fn.dest(_dist));
 
     cb();
 }
 
-// create full path for folders from config (for watch task)
-const foldersArray = function () {
-    let a_allDirs = [];
-    let n_allDirsNo = config.folders.length;
 
-    for (let i = 0; i < n_allDirsNo; i++) {
-        a_allDirs[i] = proj.dirs.src.root + '/' + config.folders[i] + '/**/*';
-    }
-
-    return a_allDirs;
-}
-
-const watchFolders = foldersArray();
-
-
-exports.filecopy = _fn.series(cleanDist, copyFiles, _fn.endSound);
-exports.watch = watchFolders;
+exports.filecopy = _fn.series(consoleInfo, cleanDist, copyFiles, _fn.endSound);
+exports.watch = config.folders;
