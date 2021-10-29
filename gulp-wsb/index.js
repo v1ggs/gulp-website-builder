@@ -42,42 +42,42 @@ const allTasks = function (cb) {
       let njk = require('./build-modules/nunjucks');
       // watch files for changes
       _fn.watch(njk.watch, { events: "all" }, njk.build);
-   } catch (err) { /* console.log(err); */ }
+   } catch (err) { console.log(err); }
 
    // SCSS
    try {
       let scss = require('./build-modules/scss');
       // watch files for changes
       _fn.watch(scss.watch, { events: "all" }, scss.build);
-   } catch (err) { /* console.log(err); */ }
+   } catch (err) { console.log(err); }
 
    // JS
    try {
       let js = require('./build-modules/javascript');
       // watch files for changes
       _fn.watch(js.watch, { events: "all" }, js.build);
-   } catch (err) { /* console.log(err); */ }
+   } catch (err) { console.log(err); }
 
    // IMG
    try {
       let images = require('./build-modules/images');
       // watch files for changes
       _fn.watch(images.watch, { events: "all" }, images.build);
-   } catch (err) { /* console.log(err); */ }
+   } catch (err) { console.log(err); }
 
    // SVG SPRITES
    try {
       let svgSprites = require('./build-modules/svg-sprites');
       // watch files for changes
       _fn.watch(svgSprites.watch, { events: "all" }, svgSprites.build);
-   } catch (err) { /* console.log(err); */ }
+   } catch (err) { console.log(err); }
 
    // FILECOPY
    try {
       let fc = require('./build-modules/filecopy');
       // watch files for changes
       _fn.watch(fc.watch, { events: "all" }, fc.filecopy);
-   } catch (err) { /* console.log(err); */ }
+   } catch (err) { console.log(err); }
 
    // ****************************************************************** \\
    // ****************************************************************** \\
