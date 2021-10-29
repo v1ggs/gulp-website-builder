@@ -43,15 +43,7 @@ const watcher = function () {
 
     // get source for each sprite, and place it into the array
     for (let i = 0; i < srcCount; i++) {
-        if (Array.isArray(source[i])) {
-
-            source[i].forEach(function (files) {
-                watchFiles.push(files);
-            });
-
-        } else {
-            watchFiles.push(source[i]);
-        }
+        watchFiles.push(source[i]);
     }
 
     return watchFiles;
@@ -59,8 +51,9 @@ const watcher = function () {
 
 
 // process svg files
-const processSvg = function (source, filename) {
-    return _fn.src(source, { base: proj.dirs.src.root, allowEmpty: true })
+// _fn.src(source, { base: proj.dirs.src.root }) did not work
+const processSvg = function (source, dist, filename) {
+    return _fn.src(source, { allowEmpty: true })
         .pipe(_fn.ren(function (file) {
             // remove spaces and prefix files, this will be svg's ID
             file.basename = 'icon-' + file.basename.split(' ').join('_');
@@ -78,7 +71,7 @@ const processSvg = function (source, filename) {
             basename: filename,
             extname: '.svg'
         }))
-        .pipe(_fn.dest(config.output));
+        .pipe(_fn.dest(config.output + '/' + dist));
 }
 
 
@@ -86,13 +79,22 @@ const processSvg = function (source, filename) {
 const main = function (cb) {
     // get all sprite filenames
     let filename = Object.keys(config.sprites);
-
     // get all sprite sources
     let source = Object.values(config.sprites);
+    let srcCount = source.length;
 
     // process each sprite
-    for (let i = 0; i < source.length; i++) {
-        processSvg(source[i], filename[i]);
+    for (let i = 0; i < srcCount; i++) {
+        // _fn.src(source, { base: proj.dirs.src.root }) did not work
+        // so sending the correct path too
+        if (source[i].indexOf('**') && source[i].indexOf('**') != 'undefined') {
+            let _dir = source[i].slice(0, source[i].indexOf('**'));
+
+            // parent folder name for map key in scss
+            const dist = _fn.path.relative(proj.dirs.src.root, _dir);
+
+            processSvg(source[i], dist, filename[i]);
+        }
     }
 
     cb();

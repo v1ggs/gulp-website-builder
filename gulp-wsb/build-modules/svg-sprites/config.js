@@ -4,23 +4,22 @@
 // import config
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
-const _src = proj.dirs.src.images;
+const _src = proj.dirs.src.root;
 const _dist = _fn.serverCfg().assetsDist;
-// svgs root src folder
-const _svgs = _src + '/svg/sprites';
 /* *************************************************** */
 
 const config = {
    sprites: {
-      // sprite source files (string | array)
+      // sprite source files (string)
       // svg filenames become <symbol> IDs, so no two files should have the same filename
       // sprite name (key) is sprite's filename
-      'main-sprite': [_svgs + '/main/**/*.svg'],
-      'svg-icons': [_svgs + '/icons/**/*.svg'],
+      'main-sprite': _src + '/img/svg/sprites/**/*.svg',
+      'icons-sprite': _src + '/icons/svg/sprites/**/*.svg',
    },
 
    // output folder
-   output: _dist + '/img/svg/sprites',
+   // files will be exported relative to the source root
+   output: _dist,
 
    // https://www.npmjs.com/package/gulp-svgmin
    minification: {
@@ -37,7 +36,7 @@ const config = {
          // https://github.com/svg/svgo#built-in-plugins
          { name: 'preset-default', active: true },
          { removeViewBox: false, },
-         { removeTitle: false },
+         { removeTitle: true },
          { removeDesc: true },
       ],
    },
