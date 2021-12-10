@@ -3,11 +3,11 @@
 const config = {
    project: {
       // project name
-      name: 'Example Dot Com',
+      name: 'IgorVracar.com',
       // project description
-      description: 'Web design and front-end for WordPress',
+      description: 'Web design and Front-end IgorVracar.com',
       // project domain without 'https://www.'
-      domain: 'example.com',
+      domain: 'igorvracar.com',
    },
 
    build: {
@@ -20,7 +20,7 @@ const config = {
       // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
       // to be able to inject CSS/JS, and stream/reload page on save
       // default: false
-      proxy: 'dev-yourdomain.com',
+      proxy: 'dev-igorvracar.com',
       // make sound on task completion
       signalEnd: true,
    },
@@ -43,16 +43,18 @@ const dirs = {
       scss: './' + config.dirname.source + '/scss',
       javascript: './' + config.dirname.source + '/js',
       images: './' + config.dirname.source + '/img',
+      icons: './' + config.dirname.source + '/icons',
    },
 }
 
 // (string | false)
 const files = {
    // cachebust file (json file with modification times)
-   cachebust: dirs.src.root + '/cachebust.json',
+   cachebust: dirs.src.html + '/config/cachebust.json',
 
-   // SCSS file that contains small, blurred SVG placeholder images as SCSS variables
-   svgPlaceholders: dirs.src.scss + '/base/_placeholders.scss',
+   // SCSS files that contains small, blurred SVG placeholder images as SCSS variables
+   placeholdersLarge: dirs.src.scss + '/base/_placeholders-large.scss',
+   placeholdersSmall: dirs.src.scss + '/base/_placeholders-small.scss',
 }
 
 exports.config = config;
