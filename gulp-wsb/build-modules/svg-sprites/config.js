@@ -4,22 +4,25 @@
 // import config
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
-const _src = proj.dirs.src.root;
-const _dist = _fn.serverCfg().assetsDist;
+// assets root dir
+const assets = _fn.serverCfg().assetsDist;
 /* *************************************************** */
 
 const config = {
+   // sprites (objects)
    sprites: {
-      // sprite source files (string)
-      // svg filenames become <symbol> IDs, so no two files should have the same filename
-      // sprite name (key) is sprite's filename
-      'main-sprite': _src + '/img/svg/sprites/**/*.svg',
-      'icons-sprite': _src + '/icons/svg/sprites/**/*.svg',
+      icons: {
+         // string
+         // svg filenames become <symbol> IDs, so no two files should have the same filename
+         src: proj.dirs.src.icons + '/svg/sprites/**/*.svg',
+         // string or array
+         // full path(s), with filenames as well
+         dest: [
+            assets + '/icons/svg/sprites/sprite-icons.svg',
+            proj.dirs.src.html + '/svg/sprite-icons.njk',
+         ],
+      },
    },
-
-   // output folder
-   // files will be exported relative to the source root
-   output: _dist,
 
    // https://www.npmjs.com/package/gulp-svgmin
    minification: {

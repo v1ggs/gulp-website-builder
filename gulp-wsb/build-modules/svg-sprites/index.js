@@ -36,64 +36,66 @@ const humans = function (cb) {
 const watcher = function () {
     // get all sprite sources
     let source = Object.values(config.sprites);
+    let srcCount = source.length;
 
     // watch files array
     let watchFiles = [];
-    let srcCount = source.length;
 
     // get source for each sprite, and place it into the array
     for (let i = 0; i < srcCount; i++) {
-        watchFiles.push(source[i]);
+        watchFiles.push(source[i].src);
     }
 
     return watchFiles;
 }
 
 
-// process svg files
-// _fn.src(source, { base: proj.dirs.src.root }) did not work
-const processSvg = function (source, dist, filename) {
-    return _fn.src(source, { allowEmpty: true })
-        .pipe(_fn.ren(function (file) {
-            // remove spaces and prefix files, this will be svg's ID
-            file.basename = 'icon-' + file.basename.split(' ').join('_');
-            // remove unwanted characters
-            file.basename = file.basename.replace(
-                /\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,|\./gi, ''
-            ).toLowerCase();
-
-            return file;
-        }))
-        .pipe(svgmin(config.minification))
-        .pipe(svgstore())
-        // rename sprite
-        .pipe(_fn.ren({
-            basename: filename,
-            extname: '.svg'
-        }))
-        .pipe(_fn.dest(config.output + '/' + dist));
-}
-
-
 // main task
 const main = function (cb) {
-    // get all sprite filenames
-    let filename = Object.keys(config.sprites);
-    // get all sprite sources
-    let source = Object.values(config.sprites);
-    let srcCount = source.length;
+    const sprites = Object.values(config.sprites);
+    const spritesCount = sprites.length;
 
-    // process each sprite
-    for (let i = 0; i < srcCount; i++) {
-        // _fn.src(source, { base: proj.dirs.src.root }) did not work
-        // so sending the correct path too
-        if (source[i].indexOf('**') && source[i].indexOf('**') != 'undefined') {
-            let _dir = source[i].slice(0, source[i].indexOf('**'));
+    // process all sprites
+    for (let i = 0; i < spritesCount; i++) {
+        let sourceFiles = _fn.src(sprites[i].src, { allowEmpty: true })
+            // clean filenames, they will be svg (symbol) ID's
+            .pipe(_fn.ren(function (file) {
+                // remove spaces and prefix files
+                file.basename = 'icon-' + file.basename.split(' ').join('_');
+                // remove unwanted characters
+                file.basename = file.basename.replace(
+                    /\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,|\./gi, ''
+                ).toLowerCase();
 
-            // parent folder name for map key in scss
-            const dist = _fn.path.relative(proj.dirs.src.root, _dir);
+                return file;
+            }))
+            .pipe(svgmin(config.minification))
+            .pipe(svgstore());
 
-            processSvg(source[i], dist, filename[i]);
+        // if multiple destinations
+        if (Array.isArray(sprites[i].dest)) {
+            let destCount = sprites[i].dest.length;
+
+            for (let j = 0; j < destCount; j++) {
+                let pathInfo = _fn.path.parse(sprites[i].dest[j]);
+
+                sourceFiles
+                    // rename sprite
+                    .pipe(_fn.ren({
+                        basename: pathInfo.name,
+                        extname: pathInfo.ext
+                    }))
+                    .pipe(_fn.dest(pathInfo.dir + '/'));
+            }
+        } else {
+            let pathInfo = _fn.path.parse(sprites[i].dest);
+            sourceFiles
+                // rename sprite
+                .pipe(_fn.ren({
+                    basename: pathInfo.name,
+                    extname: pathInfo.ext
+                }))
+                .pipe(_fn.dest(pathInfo.dir + '/'));
         }
     }
 
