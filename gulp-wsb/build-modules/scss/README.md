@@ -11,31 +11,30 @@
 
 ## Features
 
--  Sourcemaps are created for easier debugging
+-  [Sourcemaps](npmjs.com/package/gulp-sourcemaps) are created for easier debugging
 -  Assets folder can be cleaned before every build
 -  It can be configured what css comments to keep, only in the non-minified file
--  Autoprefixer is being used for necessary vendor prefixes
--  It is possible to purge the processed CSS and remove unused selectors
+-  [Autoprefixer](https://www.npmjs.com/package/autoprefixer) is being used for necessary vendor prefixes
+-  It is possible to purge the processed CSS and remove unused selectors ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
 -  When purging css, it produces a .rejected.css file to show what has been removed
 -  It's possible to group and sort media queries
--  It's possible to fix flex bugs (https://github.com/philipwalton/flexbugs)
+-  It's possible to [fix flex bugs](https://github.com/philipwalton/flexbugs)
 -  CSS minification (csso) can be enabled, it always removes all css comments
 -  A cachebusting file for CSS/JS can be created (here configured for nunjucks)
--  It's possible to inline svg images into CSS and minify them there (see https://www.npmjs.com/package/postcss-inline-svg for usage), svg minifier uses default preset
+-  It's possible to [inline svg images](https://www.npmjs.com/package/postcss-inline-svg) into CSS and minify them there, svg minifier uses default preset
 -  Doiuse info provided in console and in a .txt file with all used css features that are not supported by certain browsers
 -  A .txt file is created in the project root, with all TODOs and FIXMEs that you create in .scss files
--  Humans.txt is being updated on each build
+-  [Humans.txt](https://humanstxt.org/) is being updated on each build
 -  A header with developer or license info can be prepended to CSS files (in 'prod' environment)
 
 > If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
 > It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').
-> Such selectors purgeCSS can't see.
+> Such selectors [purgeCss](https://www.npmjs.com/package/gulp-purgecss) can't see.
 > Use SCSS config to add selectors that should always be kept.
 
 ## USAGE
 
 > Everything is configurable.
-
 > If using purgeCss, it is a good idea to use the processed (and minified) stylesheet in the development, to make sure it works. Sometimes certain selectors can be removed without your knowledge.
 
 ---

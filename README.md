@@ -38,7 +38,7 @@
 
 -  watch for file changes and run the appropriate task on each file change (save, delete, new file)
 -  restart gulp on any config change and apply new settings
--  tasks don't break on plugin errors (gulp-plumber)
+-  tasks don't break on plugin errors ([gulp-plumber](https://www.npmjs.com/package/gulp-plumber))
 -  web server with streaming CSS files on change, and reloading page on HTML and JS change
 
 ### Common
@@ -46,7 +46,7 @@
 -  process Nunjucks, SCSS, JavaSript, images, minify and inline svg, create svg sprites
 -  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (in src dir)
 -  sourcemaps (SCSS and JS)
--  create humans.txt file
+-  [create humans.txt file](https://humanstxt.org/)
 -  notification on plugin errors (so you don't have to keep the console open)
 -  sound on task completion (so you don't have to keep the console open)
 
@@ -55,7 +55,7 @@
 -  configure global variables and filters for usage in .njk files
 -  format output HTML
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
--  humans.txt is being updated on each build
+-  [Humans.txt](https://humanstxt.org/) is being updated on each build
 
 > Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src="/main.js?20211010212110").
 > Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
@@ -63,25 +63,25 @@
 ### SCSS
 
 -  clean output folder before every build
--  sourcemaps
+-  [sourcemaps](npmjs.com/package/gulp-sourcemaps)
 -  choose what comments to keep in non-minified files (minifier removes them all)
--  prefix CSS with autoprefixer
+-  prefix CSS with [autoprefixer](https://www.npmjs.com/package/autoprefixer)
 -  format CSS
--  remove unused selectors from CSS (purgeCss)
--  get removed selectors from CSS in a .rejected.css (purgeCss)
+-  remove unused selectors from CSS ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
+-  get removed selectors from CSS in a .rejected.css ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
 -  group media queries in CSS
--  fix flex bugs <https://github.com/philipwalton/flexbugs>
--  minify and inline svg files <https://www.npmjs.com/package/postcss-inline-svg>
--  doiuse .txt file in the root, with CSS features that are not supported by certain browsers
+-  [fix flex bugs](https://github.com/philipwalton/flexbugs)
+-  [minify and inline svg files](https://www.npmjs.com/package/postcss-inline-svg)
+-  [doiuse](https://www.npmjs.com/package/doiuse) .txt file in the root, with CSS features that are not supported by certain browsers
 -  minify with CSSO
 -  cachebusting (JSON file for usage with HTML processor)
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
--  add developer or license info (in a comment) at the top of CSS files (in 'prod' environment)
--  humans.txt is being updated on each build
+-  add developer or license info at the top of CSS files (in 'prod' environment)
+-  [Humans.txt](https://humanstxt.org/) is being updated on each build
 
 > If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
 > It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').
-> Such selectors purgeCSS can't see.
+> Such selectors [purgeCss](https://www.npmjs.com/package/gulp-purgecss) can't see.
 > Use SCSS config to add selectors that should always be kept.
 
 ### JavaScript
@@ -91,7 +91,7 @@
 -  different output folder can be set for each bundle
 -  sourcemaps
 -  cachebusting (JSON file for usage with HTML processor)
--  minification [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
+-  minification with [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
 -  console logs are being removed from the code during minification
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  add developer info (in a comment) at the top of JS bundles (in 'prod' environment)
