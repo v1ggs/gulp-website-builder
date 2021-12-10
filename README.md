@@ -63,7 +63,7 @@
 ### SCSS
 
 -  clean output folder before every build
--  [sourcemaps](npmjs.com/package/gulp-sourcemaps)
+-  [sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps)
 -  choose what comments to keep in non-minified files (minifier removes them all)
 -  prefix CSS with [autoprefixer](https://www.npmjs.com/package/autoprefixer)
 -  format CSS
@@ -77,7 +77,7 @@
 -  cachebusting (JSON file for usage with HTML processor)
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  add developer or license info at the top of CSS files (in 'prod' environment)
--  [Humans.txt](https://humanstxt.org/) is being updated on each build
+-  [humans.txt](https://humanstxt.org/) is being updated on each build
 
 > If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
 > It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').
@@ -94,8 +94,8 @@
 -  minification with [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
 -  console logs are being removed from the code during minification
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
--  add developer info (in a comment) at the top of JS bundles (in 'prod' environment)
--  humans.txt is being updated on each build
+-  add developer or license info at the top of JS bundles (in 'prod' environment)
+-  [humans.txt](https://humanstxt.org/) is being updated on each build
 
 ### Images
 
@@ -104,9 +104,9 @@
 -  blurred placeholder SVG, base64 encoded, placed in scss maps, in separate files for large and small placeholders
 -  create different image sizes (from one image), compress, crop if required
 -  compress images (jpg, png, webp, svg)
--  humans.txt is being updated on each build
+-  [humans.txt](https://humanstxt.org/) is being updated on each build
 
-> Read more about SVG placeholders at <https://css-tricks.com/the-blur-up-technique-for-loading-background-images/>
+> Read more about SVG placeholders at [css-tricks](https://css-tricks.com/the-blur-up-technique-for-loading-background-images)
 
 ### SVG Sprites
 
@@ -114,7 +114,7 @@
 -  create multiple sprites
 -  minify SVGs
 
-> Read more about SVG sprites at <https://css-tricks.com/svg-symbol-good-choice-icons/>
+> Read more about SVG sprites at [css-tricks](https://css-tricks.com/svg-symbol-good-choice-icons/)
 
 ### File Copy
 

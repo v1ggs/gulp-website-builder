@@ -17,7 +17,7 @@
 -  create multiple sprites
 -  minify SVGs
 
-> Read more about SVG sprites at <https://css-tricks.com/svg-symbol-good-choice-icons/>
+> Read more about SVG sprites at [css-tricks](https://css-tricks.com/svg-symbol-good-choice-icons/)
 
 ## USAGE
 

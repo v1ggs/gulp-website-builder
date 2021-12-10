@@ -11,7 +11,7 @@
 
 ## Features
 
--  [Sourcemaps](npmjs.com/package/gulp-sourcemaps) are created for easier debugging
+-  [Sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) are created for easier debugging
 -  Assets folder can be cleaned before every build
 -  It can be configured what css comments to keep, only in the non-minified file
 -  [Autoprefixer](https://www.npmjs.com/package/autoprefixer) is being used for necessary vendor prefixes

@@ -15,12 +15,12 @@
 
 -  clean output folder before every build
 -  keep or remove metadata
--  blurred placeholder SVG, base64 encoded, placed in scss variables (\_placeholders.scss)
+-  blurred placeholder SVG, base64 encoded, placed in scss maps, in separate files for large and small placeholders
 -  create different image sizes (from one image), compress, crop if required
 -  compress images (jpg, png, webp, svg)
--  humans.txt is being updated on each build
+-  [humans.txt](https://humanstxt.org/) is being updated on each build
 
-> Read more about SVG placeholders at <https://css-tricks.com/the-blur-up-technique-for-loading-background-images/>
+> Read more about SVG placeholders at [css-tricks](https://css-tricks.com/the-blur-up-technique-for-loading-background-images)
 
 ## USAGE
 
