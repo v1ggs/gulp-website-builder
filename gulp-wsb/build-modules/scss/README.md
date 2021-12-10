@@ -25,7 +25,7 @@
 -  Doiuse info provided in console and in a .txt file with all used css features that are not supported by certain browsers
 -  A .txt file is created in the project root, with all TODOs and FIXMEs that you create in .scss files
 -  Humans.txt is being updated on each build
--  A header with developers info can be prepended to CSS files (in production environment)
+-  A header with developer or license info can be prepended to CSS files (in 'prod' environment)
 
 > If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
 > It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').

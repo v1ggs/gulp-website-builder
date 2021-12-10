@@ -36,7 +36,7 @@
 
 ### Gulp
 
--  watch for file changes and run the appropriate task on ach file change (save, delete, new file)
+-  watch for file changes and run the appropriate task on each file change (save, delete, new file)
 -  restart gulp on any config change and apply new settings
 -  tasks don't break on plugin errors (gulp-plumber)
 -  web server with streaming CSS files on change, and reloading page on HTML and JS change
@@ -57,7 +57,7 @@
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  humans.txt is being updated on each build
 
-> Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src:"/main.js?20211010212110").
+> Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src="/main.js?20211010212110").
 > Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
 
 ### SCSS
@@ -76,7 +76,7 @@
 -  minify with CSSO
 -  cachebusting (JSON file for usage with HTML processor)
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
--  add developer info (in a comment) at the top of CSS files (in 'prod' environment)
+-  add developer or license info (in a comment) at the top of CSS files (in 'prod' environment)
 -  humans.txt is being updated on each build
 
 > If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
@@ -101,7 +101,7 @@
 
 -  clean output folder before every build
 -  keep or remove metadata
--  blurred placeholder SVG, base64 encoded, placed in scss variables (\_placeholders.scss)
+-  blurred placeholder SVG, base64 encoded, placed in scss maps, in separate files for large and small placeholders
 -  create different image sizes (from one image), compress, crop if required
 -  compress images (jpg, png, webp, svg)
 -  humans.txt is being updated on each build

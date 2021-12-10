@@ -21,7 +21,7 @@
 -  minification [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
 -  console logs are being removed from the code during minification
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
--  add developer info (in a comment) at the top of JS bundles (in 'prod' environment)
+-  add developer or license info (in a comment) at the top of JS bundles (in 'prod' environment)
 -  humans.txt is being updated on each build
 
 ## USAGE
