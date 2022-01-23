@@ -167,7 +167,7 @@ const imgFileName = function (pathObj, suffix) {
    return newFilename;
 };
 
-// svg template
+// svg template for LQIP
 const makeSvg = function (width, height, href) {
    // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
    return (svgFile =
@@ -194,7 +194,7 @@ const makeSvg = function (width, height, href) {
       "' x='0' y='0' height='100%' width='100%' /></svg>");
 };
 
-// initialize the scss file
+// initialize the scss file (for LQIP)
 const initializeScss = function (file, _map) {
    // data to write
    let data = `// technique explained on css tricks:\n// https://css-tricks.com/the-blur-up-technique-for-loading-background-images/\n\n// Import this file in your main.scss to be able to use these SVGs, like:\n// background-image: map-get($svg-b64-large-placeholders, "some-img-#{$i}-small-jpg");\n\n${_map}: (\n`;
@@ -202,10 +202,11 @@ const initializeScss = function (file, _map) {
    return _fn.writeFile(file, data);
 };
 
-// create small placeholder image, blurred with an svg filter, base64 encoded
-// and use it as background (scss file)
-// explained on css tricks:
-// https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
+// Low-Quality Image Placeholders (LQIP)
+// create small, base64 encoded, placeholder image, blurred with an svg filter
+// and place it in a scss map
+// explained on css tricks: https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
+// For larger images, like a hero image
 async function placeholdersLarge(cb) {
    // initialize the scss file if required
    if (build.svgPlaceholders) {
@@ -233,7 +234,7 @@ async function placeholdersLarge(cb) {
             // get original metadata (for svg dimensions, for correct aspect ratio)
             const metadata = await sharpInstance.metadata();
 
-            // process image and then get all the data from it (promise)
+            // process image and then get all the data from it
             const placeholderObj = await sharpPrepareFile(sharpInstance, 94);
 
             // parent folder name for map key in scss
@@ -327,6 +328,7 @@ async function placeholdersLarge(cb) {
    cb();
 }
 
+// For smaller images, like thumbnails
 async function placeholdersSmall(cb) {
    // initialize the scss file if required
    if (build.svgPlaceholders) {
