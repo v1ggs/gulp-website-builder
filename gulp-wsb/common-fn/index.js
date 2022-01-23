@@ -79,7 +79,7 @@ const serverCfg = function () {
       htmlDist = './' + proj.config.dirname.public_html;
       assetsReference = '';
    } else if (proj.config.build.type === 2) {
-      // static design for WordPress
+      // static design for future use with WordPress
       // assets links in html (script, stylesheet) point to assets in the WP theme dir
       // server is configured to run pages from the WP dir,
       // but server's root remains in the site's root
@@ -98,7 +98,7 @@ const serverCfg = function () {
    // static page design
    let _index = proj.config.build.serve;
    if (proj.config.build.type === 2) {
-      // static design for WordPress
+      // static design for future use with WordPress
       _index = wpDir + '/' + proj.config.build.serve;
    }
 
