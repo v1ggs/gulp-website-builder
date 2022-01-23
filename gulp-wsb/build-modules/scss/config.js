@@ -2,8 +2,8 @@
 
 /* *************************************************** */
 // import project config
-const proj = require('../../project-config.js');
-const _fn = require('../../common-fn');
+const proj = require("../../project-config.js");
+const _fn = require("../../common-fn");
 const _src = proj.dirs.src;
 const _dist = _fn.serverCfg().assetsDist;
 /* *************************************************** */
@@ -14,13 +14,13 @@ const config = {
       // (boolean) clean output dir
       cleanDist: true,
       // ('none' | 'important' | 'first' | 'all') what css comments to keep in non-minified files (minifier removes them all)
-      keepComments: 'important',
+      keepComments: "important",
       // (boolean) use autoprefixer
       prefix: true,
       // (boolean) remove unused selectors with purgecss (if true, see config below)
       purge: true,
       // (false | 'mobile-first' | 'desktop-first') combine and sort media queries
-      combineMQ: 'desktop-first',
+      combineMQ: "desktop-first",
       // fix flex bugs
       fixFlexbugs: true,
       // (boolean) minify files
@@ -30,22 +30,22 @@ const config = {
    files: {
       // source files
       src: [
-         _src.scss + '/main.scss',
-         _src.scss + '/pages/**/*.scss',
-         _src.scss + '/themes/**/*.scss',
+         _src.scss + "/main.scss",
+         _src.scss + "/pages/**/*.scss",
+         _src.scss + "/themes/**/*.scss",
       ],
 
       // files to watch for changes and build todos/fixmes file
       watch: [
-         _src.scss + '/**/*.scss',
+         _src.scss + "/**/*.scss",
          // don't build css on any change in images
-         '!' + proj.files.svgPlaceholders,
+         "!" + proj.files.placeholdersLarge,
+         "!" + proj.files.placeholdersSmall,
       ],
 
       // css output dir
-      output: _dist + '/css',
+      output: _dist + "/css",
    },
-
 
    // ******************* P L U G I N S ******************* \\
 
@@ -54,9 +54,9 @@ const config = {
       // reference files (searches in them for the selectors to keep)
       // mind node_modules folder
       analyze: [
-         _src.html + '/**/*.html',
-         _src.html + '/**/*.njk',
-         _src.javascript + '/**/*.js',
+         _src.html + "/**/*.html",
+         _src.html + "/**/*.njk",
+         _src.javascript + "/**/*.js",
       ],
 
       // choose what selectors to always keep
@@ -64,11 +64,7 @@ const config = {
          // matching selectors will be left in the final CSS
          standard: [],
          // matching selectors and their children will be left in the final CSS
-         deep: [
-            /-is-open$/,
-            /-is-visible$/,
-            /-is-hidden$/,
-         ],
+         deep: [/-is-open$/, /-is-visible$/, /-is-hidden$/],
          // selectors whose any part matches will be left in the final CSS
          greedy: [
             // /--/, // all BEM modifiers
@@ -94,11 +90,11 @@ const config = {
       // overrideBrowserslist (array): list of queries for target browsers. Try to not use it. The best practice is to use .browserslistrc config or browserslist key in package.json to share target browsers with Babel, ESLint and Stylelint.
       // IF USING .browserslistrc, COMMENT THIS OUT COMPLETELY: //overrideBrowserslist...
       overrideBrowserslist: [
-         '>0.5%',
-         'last 10 versions',
-         'not dead',
-         'not OperaMini all',
-         'not ie <=11'
+         ">0.5%",
+         "last 10 versions",
+         "not dead",
+         "not OperaMini all",
+         "not ie <=11",
       ],
 
       // grid: (false|"autoplace"|"no-autoplace")) - will enable - ms - prefixes for Grid Layout including some limited autoplacement support
@@ -115,10 +111,7 @@ const config = {
    // use svgo (below) to minify them
    inlineSvg: {
       // Array of paths where svgs can be found. Paths are tried in order, until an existing file is found.
-      paths: [
-         _src.images + '/inline-svg',
-         _src.images + '/test-svg',
-      ],
+      paths: [_src.images + "/inline-svg", _src.images + "/test-svg"],
       // removes all fill attributes before applying specified. Default: false
       removeFill: false,
       // removes all stroke attributes before applying specified. Default: false
@@ -134,7 +127,7 @@ const config = {
       // Optionally, you can customise the output by specifying the plugins option. You will need to provide the config in comma separated objects. https://github.com/svg/svgo/tree/master/plugins
       plugins: [
          // https://github.com/svg/svgo#configuration
-         { name: 'preset-default', },
+         { name: "preset-default" },
          // Enable builtin plugin not included in preset
          // 'moreBuiltinPlugin',
          // https://github.com/svg/svgo#built-in-plugins
@@ -153,9 +146,8 @@ const config = {
       // an optional array of features to ignore e.g. 'rem'
       ignore: [],
       // an optional array of file globs to match against original source file path, to ignore
-      ignoreFiles: ['**/normalize.scss'],
+      ignoreFiles: ["**/normalize.scss"],
    },
-}
-
+};
 
 exports.config = config;
