@@ -12,12 +12,12 @@ const _dist = serverCfg.htmlDist;
 
 const files = {
    // src files to build
-   src: [_src + '/pages/*.{njk,nj,nunjucks}'],
-   // files to watch for changes and build todos/fixmes file
-   watch: [_src + '/**/*.{njk,nj,nunjucks}'],
+   src: [_src + '/index.njk', _src + '/error.njk'],
+   // string/array - files to watch for changes and build todos/fixmes file
+   watch: _src + '/**/*.{njk,nj,nunjucks,json}',
    // output
    output: _dist,
-}
+};
 
 // nunjucks globals - set here and use across .njk files as variables or filters
 const manageEnvironment = function (environment) {
@@ -29,16 +29,16 @@ const manageEnvironment = function (environment) {
       domain: 'https://www.' + proj.config.project.domain, // notice 'https'
    });
 
-   // assets folders, use like e.g. "{{ assets.css }}/style.min.css"
+   // assets folders, use like e.g. 'src="{{ assets.css }}/style.min.css"'
    environment.addGlobal('assets', {
       root: assets,
-      css: assets + "/css",
-      js: assets + "/js",
-      img: assets + "/img",
-      fonts: assets + "/fonts",
-      ico: assets + "/icons",
-      sounds: assets + "/sounds",
-      videos: assets + "/videos"
+      css: assets + '/css',
+      js: assets + '/js',
+      img: assets + '/img',
+      fonts: assets + '/fonts',
+      ico: assets + '/icons',
+      sounds: assets + '/sounds',
+      videos: assets + '/videos',
    });
 
    // ------------ custom filters ------------ \\
@@ -61,18 +61,18 @@ const manageEnvironment = function (environment) {
    });
 
    // convert to JSON
-   environment.addFilter("json", function (value) {
+   environment.addFilter('json', function (value) {
       // convert the complete string imported by Nunjucks into JSON and return
       return JSON.parse(value);
    });
-}
+};
 
 // do not place before manageEnvironment
 const config = {
    // Relative path to templates - String or Array
    path: [_src],
    // Extension for compiled templates, pass null or empty string if you don't want any extension
-   ext: '.html',
+   ext: '.php',
    // Data passed to template
    data: {},
    // These are options provided for nunjucks Environment
@@ -97,30 +97,30 @@ const config = {
    manageEnv: manageEnvironment,
    // If provided, uses that as first parameter to Environment constructor. Otherwise, uses provided path
    loaders: null,
-}
+};
 
 // js-beautify config for formatting built HTML
 const formatHtml = {
-   "html": {
+   html: {
       // Initial indentation level [0]
-      "indent_level": 0,
-      "indent_char": " ",
-      "indent_size": 3,
-      "indent_with_tabs": false,
-      "preserve_newlines": true,
+      indent_level: 0,
+      indent_char: ' ',
+      indent_size: 3,
+      indent_with_tabs: false,
+      preserve_newlines: true,
       // Number of line-breaks to be preserved in one chunk [10]
-      "max_preserve_newlines": 1,
-      "end_with_newline": true,
+      max_preserve_newlines: 1,
+      end_with_newline: true,
       // JS in HTML
-      "js": {
-         "indent_size": 3
+      js: {
+         indent_size: 3,
       },
       // CSS in HTML
-      "css": {
-         "indent_size": 3
-      }
+      css: {
+         indent_size: 3,
+      },
    },
-}
+};
 
 exports.files = files;
 exports.config = config;
