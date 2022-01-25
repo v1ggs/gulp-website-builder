@@ -11,21 +11,23 @@
 
 ## Features
 
--  [Sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) are created for easier debugging
--  Assets folder can be cleaned before every build
--  It can be configured what css comments to keep, only in the non-minified file
--  [Autoprefixer](https://www.npmjs.com/package/autoprefixer) is being used for necessary vendor prefixes
--  It is possible to purge the processed CSS and remove unused selectors ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
--  When purging css, it produces a .rejected.css file to show what has been removed
--  It's possible to group and sort media queries
--  It's possible to [fix flex bugs](https://github.com/philipwalton/flexbugs)
--  CSS minification (csso) can be enabled, it always removes all css comments
--  A cachebusting file for CSS/JS can be created (here configured for nunjucks)
--  It's possible to [inline svg images](https://www.npmjs.com/package/postcss-inline-svg) into CSS and minify them there, svg minifier uses default preset
--  Doiuse info provided in console and in a .txt file with all used css features that are not supported by certain browsers
--  A .txt file is created in the project root, with all TODOs and FIXMEs that you create in .scss files
--  [Humans.txt](https://humanstxt.org/) is being updated on each build
--  A header with developer or license info can be prepended to CSS files (in 'prod' environment)
+-  clean output folder before every build
+-  [sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps)
+-  minification (csso)
+-  choose what comments to keep in minified files
+-  prefix CSS with [autoprefixer](https://www.npmjs.com/package/autoprefixer)
+-  format CSS
+-  remove unused selectors from CSS ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
+-  get removed selectors from CSS in a .rejected.css ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
+-  group media queries in CSS, depending on your design way (mobile/desktop first)
+-  [fix flex bugs](https://github.com/philipwalton/flexbugs)
+-  [minify and inline svg files](https://www.npmjs.com/package/postcss-inline-svg)
+-  [doiuse](https://www.npmjs.com/package/doiuse) .txt file in the root, with CSS features that are not supported by certain browsers
+-  minify with CSSO
+-  cachebusting (JSON file for usage with HTML processor)
+-  a TODO file (.txt) with all todos and fixmes in the project's root folder
+-  add developer or license info at the top of CSS files (in 'prod' environment)
+-  [humans.txt](https://humanstxt.org/) is being updated on each build
 
 > If the CSS does not work, check purgeCSS rejected file, to see if the selector has been removed.
 > It happens with selectors dinamically created with Javascript - e.g. element.classlist.add(someVar + '--some-modifier').

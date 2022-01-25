@@ -15,11 +15,12 @@
 
 -  clean output folder before every build
 -  multiple bundles can be created, with multiple transpilations for each
+-  choose what comments to keep in minified files, for each bundle
 -  different output folder can be set for each bundle
 -  [sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps)
 -  cachebusting (JSON file for usage with HTML processor)
 -  minification with [gulp-uglify](https://www.npmjs.com/package/gulp-uglify)
--  console logs are being removed from the code during minification
+-  console logs are being removed from the code during minification (in 'prod' environment)
 -  a TODO file (.txt) with all todos and fixmes in the project's root folder
 -  add developer or license info at the top of JS bundles (in 'prod' environment)
 -  [humans.txt](https://humanstxt.org/) is being updated on each build
