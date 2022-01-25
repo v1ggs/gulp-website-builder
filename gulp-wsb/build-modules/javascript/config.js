@@ -25,16 +25,23 @@ const config = {
    // ADD OR REMOVE BUNDLES AS REQUIRED
    // BUNDLE NAME IS FILE NAME
    // files will be concatenated in the same order as in the src array
-   // a bundle will be created for each type (each value in the array)
-   // unknonwn or [''] or false|null|undefined type will produce untranspiled bundle
-   // bundle filenames get suffix from transpilation type (except for 'default')
+   // a bundle will be created for each bundles.type (each value in the array)
+   // "unknonwn" or "['']" or "false|null|undefined" type will produce untranspiled bundle
+   // bundle filenames get suffix from transpilation type, except for 'default'
    bundles: {
       lib: {
-         // {array | false|null|undefined} transpilation config (config.transpilation)
-         // false for untranspiled, 'default' for default
+         // what comments to keep in a minified file {string}
+         // 'important' | 'all' | 'none'
+         comments: 'important',
+
+         // transpilation config (config.transpilation.<type>)
+         // {array | false|null|undefined}
+         // array of keys from config.transpilation, for all required transpilations:
+         // e.g.: ['default', 'modulesSupport']
+         // 'false|null|undefined' for untranspiled
          type: false,
 
-         // {array} src files, order will be respected
+         // {array} src files, *** order will be respected ***
          src: [
             _src + '/polyfills/**/*.js',
             _src + '/libs/**/*.js',
@@ -46,11 +53,18 @@ const config = {
       },
 
       main: {
-         // {array | false|null|undefined} transpilation config (config.transpilation)
-         // false for untranspiled, 'default' for default
-         type: ['default', 'es5'],
+         // what comments to keep in a minified file {string}
+         // 'important' | 'all' | 'none'
+         comments: 'none',
 
-         // {array} src files, order will be respected
+         // transpilation config (config.transpilation.<type>)
+         // {array | false|null|undefined}
+         // array of keys from config.transpilation, for all required transpilations:
+         // e.g.: ['default', 'modulesSupport']
+         // 'false|null|undefined' for untranspiled
+         type: ['default', 'modulesSupport'],
+
+         // {array} src files, *** order will be respected ***
          src: [
             _src + '/core/**/*.js',
             _src + '/components/**/*.js',

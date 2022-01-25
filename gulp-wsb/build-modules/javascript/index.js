@@ -9,7 +9,7 @@ const cfg = config.config;
 const files = config.files;
 
 // Gulp
-const babel = require("gulp-babel");
+const babel = require('gulp-babel');
 const stripDebug = require('gulp-strip-debug');
 const uglify = require('gulp-uglify');
 
@@ -18,7 +18,6 @@ const uglify = require('gulp-uglify');
 // console info about the running task
 const consoleInfo = function (cb) {
     console.log('========== TASK: JAVASCRIPT');
-
     cb();
 }
 
@@ -26,7 +25,6 @@ const consoleInfo = function (cb) {
 // delete the output folder
 const cleanDist = function (cb) {
     if (cfg.build.cleanDist) { _fn.rem(files.output, cb); }
-
     cb();
 }
 
@@ -34,9 +32,7 @@ const cleanDist = function (cb) {
 // write humans.txt
 const humans = function (cb) {
     let humans = _fn.humansTxt();
-
     if (humans.check) { _fn.writeFile(humans.file, humans.content); }
-
     cb();
 }
 
@@ -45,7 +41,6 @@ const humans = function (cb) {
 // Its content is appended to the src url as a query
 const cacheBust = function (cb) {
     _fn.cacheBust('javascript');
-
     cb();
 }
 
@@ -66,6 +61,22 @@ const todos = function (cb) {
 }
 
 
+// minification config for comments
+const minifyCfg = function (comments) {
+    var options = {};
+    // 'important' | 'all' | 'none'
+    if (comments === 'important') {
+        options = { output: { comments: /^!|@preserve|@license|@cc_on/i } };
+    } else if (comments === 'all') {
+        options = { output: { comments: 'all' } };
+    } else if (comments === 'none') {
+        options = { output: { comments: false } };
+    }
+
+    return options;
+}
+
+
 // manual minification (even if false in the config)
 const minifier = function (cb) {
     let header = _fn.headerCheck();
@@ -76,7 +87,7 @@ const minifier = function (cb) {
         // add suffix
         .pipe(_fn.ren({ suffix: '.min' }))
         // remove console, alert, and debugger statements
-        // replaced with: "void 0;" for safety, uglify removes it wherever ok
+        // replaced with: 'void 0;' for safety, uglify removes it wherever ok
         .pipe(stripDebug())
         // minify
         .pipe(uglify())
@@ -108,6 +119,9 @@ const main = function (cb) {
 
     // go through all packages (bundles)
     for (let i = 0, bnds = pkgObj.length; i < bnds; i++) {
+        // comments config for each bundle
+        let minCfg = minifyCfg(pkgObj[i].comments);
+
         // no output dir if false if config
         if (!pkgObj[i].outDir) { pkgObj[i].outDir = ''; }
 
@@ -128,7 +142,7 @@ const main = function (cb) {
             // do not transpile if config not found (file will still be processed)
             if (babelCfgIndex === false) { transpile = false; }
 
-            // suffix
+            // filename suffix
             let suffix = _type[j]
                 ? _type[j] === 'default' ? '' : '.' + _type[j]
                 : '';
@@ -160,7 +174,7 @@ const main = function (cb) {
                     _fn.ren({ suffix: '.min' })
                 ))
                 // remove console, alert, and debugger statements
-                // replaced with: "void 0;" for safety, uglify removes it wherever ok
+                // replaced with: 'void 0;' for safety, uglify removes it wherever ok
                 .pipe(_fn.gulpif(cfg.build.minify,
                     // do not strip with sourcemaps, they will break
                     _fn.gulpif(!checkSourcemaps,
@@ -168,7 +182,7 @@ const main = function (cb) {
                     )))
                 // minify
                 .pipe(_fn.gulpif(cfg.build.minify,
-                    uglify()
+                    uglify(minCfg)
                 ))
                 // write sourcemaps
                 .pipe(_fn.gulpif(cfg.build.minify,
