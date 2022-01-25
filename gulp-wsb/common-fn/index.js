@@ -1,36 +1,34 @@
 // ********* DO NOT MODIFY THIS FILE UNLESS IT'S NECESSARY ************ \\
 
-
 // ============== P R O J E C T   C O N F I G ============== \\
-const proj = require('../project-config');
-
+const proj = require("../project-config");
 
 // ============== N O D E ============== \\
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+const fs = require("fs");
+const path = require("path");
+const glob = require("glob");
 
 exports.fs = fs;
 exports.path = path;
 exports.glob = glob;
 
-
 // ============== G U L P ============== \\
 const { gulp, src, dest, watch, series, parallel } = require("gulp");
-const plumber = require('gulp-plumber');
+const sharp = require("sharp");
+const plumber = require("gulp-plumber");
 const del = require("del");
 const ren = require("gulp-rename");
-const smaps = require('gulp-sourcemaps');
-const concat = require('gulp-concat');
-const gulpif = require('gulp-if');
+const smaps = require("gulp-sourcemaps");
+const concat = require("gulp-concat");
+const gulpif = require("gulp-if");
 const fileHead = require("gulp-header");
 const gulptodo = require("gulp-todo");
-const merge2 = require('merge2');
-const browserSync = require('browser-sync').create();
-const spawn = require('child_process').spawn;
+const merge2 = require("merge2");
+const browserSync = require("browser-sync").create();
+const spawn = require("child_process").spawn;
 // gulp-notify - Windows 10 Note:
 // You might have to activate banner notification for the toast to show.
-const notify = require('gulp-notify');
+const notify = require("gulp-notify");
 // const { cwd } = require('process');
 
 exports.src = src;
@@ -39,6 +37,7 @@ exports.watch = watch;
 exports.series = series;
 exports.parallel = parallel;
 
+exports.sharp = sharp;
 exports.plumber = plumber;
 exports.del = del;
 exports.ren = ren;
@@ -51,12 +50,11 @@ exports.merge2 = merge2;
 exports.browserSync = browserSync;
 exports.spawn = spawn;
 
-
 // ============== C O M M O N   M O D U L E S ============== \\
 // DEVINFO
 let devinfo, devinfoCfg;
 try {
-   devinfo = require('../build-modules/devinfo');
+   devinfo = require("../build-modules/devinfo");
    devinfoCfg = devinfo.config;
 } catch (err) {
    /* console.log(err); */
@@ -64,11 +62,10 @@ try {
    devinfoCfg = false;
 }
 
-
 // ============== S E R V E R ============== \\
 const serverCfg = function () {
    // WordPress theme directory
-   const wpDir = '/wp-content/themes/' + proj.config.project.domain;
+   const wpDir = "/wp-content/themes/" + proj.config.project.domain;
    // output dir for html file
    let htmlDist;
    // used in assetsInHtml (html module - for global variables)
@@ -76,30 +73,30 @@ const serverCfg = function () {
 
    if (proj.config.build.type === 1) {
       // static page design
-      htmlDist = './' + proj.config.dirname.public_html;
-      assetsReference = '';
+      htmlDist = "./" + proj.config.dirname.public_html;
+      assetsReference = "";
    } else if (proj.config.build.type === 2) {
       // static design for future use with WordPress
       // assets links in html (script, stylesheet) point to assets in the WP theme dir
       // server is configured to run pages from the WP dir,
       // but server's root remains in the site's root
-      htmlDist = './' + proj.config.dirname.public_html + wpDir;
+      htmlDist = "./" + proj.config.dirname.public_html + wpDir;
       assetsReference = wpDir;
    }
 
    // assets dist dir
-   const assetsDist = htmlDist + '/' + proj.config.dirname.dist;
+   const assetsDist = htmlDist + "/" + proj.config.dirname.dist;
    // same dir as assetsDist but for usage with html module (for global variables)
-   const assetsInHtml = assetsReference + '/' + proj.config.dirname.dist;
+   const assetsInHtml = assetsReference + "/" + proj.config.dirname.dist;
 
    // server and proxy cannot be both defined at the same time
-   let _server = './' + proj.config.dirname.public_html;
+   let _server = "./" + proj.config.dirname.public_html;
    let _proxy = undefined;
    // static page design
    let _index = proj.config.build.serve;
    if (proj.config.build.type === 2) {
       // static design for future use with WordPress
-      _index = wpDir + '/' + proj.config.build.serve;
+      _index = wpDir + "/" + proj.config.build.serve;
    }
 
    // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
@@ -118,11 +115,13 @@ const serverCfg = function () {
       ghostMode: false, // 'true' mirrors interactions in other browsers
       online: true, // online: true - will not attempt to determine your network status, assumes you're online.
       open: true, // 'external' or 'local', to open in browser(s)
-      browser: [ /* 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */], // browsers to open the homepage (exe filenames)
+      browser: [
+         /* 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */
+      ], // browsers to open the homepage (exe filenames)
       notify: false, // browsersync notification on load/reload in the browser window
       logConnections: true, // Display connected browsers.
       timestamps: false, // Append timestamps to injected files
-   }
+   };
 
    return {
       config: cfg,
@@ -130,34 +129,115 @@ const serverCfg = function () {
       assetsDist: assetsDist,
       assetsInHtml: assetsInHtml,
    };
-}
+};
 
 exports.serverCfg = serverCfg;
 
 const startServer = function () {
    let cfg = serverCfg().config;
    browserSync.init(cfg);
-}
+};
 
 exports.startServer = startServer;
-
 
 const reloadPage = function (cb) {
    browserSync.reload();
 
    cb();
-}
+};
 
 exports.reloadPage = reloadPage;
+
+
+// =============== WORDPRESS SCREENSHOT AND CSS ================ \\
+/* Theme Screenshot
+https://codex.wordpress.org/Theme_Development#Screenshot
+
+Create a screenshot for your theme. The screenshot should be named screenshot.png, and should be placed in the top level
+directory. The screenshot should accurately show the theme design and saved in PNG format. While .jpg, .jpeg, and .gif
+are also valid extensions and file formats for the screenshot, they are not recommended.
+
+The recommended image size is 1200px wide by 900px tall. The screenshot will usually be shown smaller but the over-sized
+image allows for high-resolution viewing on HiDPI displays. Note that because the Manage Themes screen is responsive,
+the top and bottom of the screenshot image might not be viewable so keep graphics near the center. */
+const wpScreenshotContent = function () {
+   return `<svg viewbox="0 0 1200 900" width="1200" height="900" xmlns="http://www.w3.org/2000/svg"><style>.screenshot-title, .screenshot-description { display: block; fill: rgb(238, 238, 238); white-space: nowrap; text-anchor: middle; dominant-baseline: middle; }
+.screenshot-title { font: bold 92px sans-serif; }
+.screenshot-description { font: bold 22px sans-serif; }
+.screenshot-bgd { width: 100%; height: 100%; fill: #112266; stroke: none; }</style>
+<rect x="0" y="0" width="1200" height="900" fill="#112266" />
+<text x="50%" y="46%" class="screenshot-title">${proj.config.project.name}</text>
+<text x="50%" y="54%" class="screenshot-description">${proj.config.project.description}</text></svg>`;
+}
+
+// style.css that contains theme info
+const wpInfoCssContent = function () {
+   return `/*
+Theme Name: ${proj.config.project.name}
+Theme URI: ${proj.config.project.domain}
+Description: ${proj.config.project.description}
+Author: ${proj.config.project.description} // TODO:
+Author URI: ${proj.config.project.description} // TODO:
+Version: v1 // TODO:
+*/`;
+}
+
+// write style.css that contains theme info
+const wpInfoCss = function (servCfg) {
+   let content = wpInfoCssContent();
+   writeFile(servCfg.htmlDist + "/style.css", content);
+}
+
+// convert svg from above to png and save the screenshot
+// later create the real theme screenshot
+const wpScreenshot = async function (servCfg) {
+   let content = wpScreenshotContent();
+   const screenshotSvg = servCfg.htmlDist + '/screenshot.svg';
+
+   writeFile(screenshotSvg, content);
+
+   try {
+      const info = await sharp(screenshotSvg, { density: 300 })
+         .resize(1200, 900, { fit: 'cover' })
+         .toFormat('png')
+         .toFile(servCfg.htmlDist + "/screenshot.png");
+
+      if (fs.existsSync(screenshotSvg)) {
+         del.sync([screenshotSvg]);
+      }
+   } catch (err) {
+      console.log(err);
+   }
+}
+
+// initialise wp theme if developing for wp
+const wpInit = function () {
+   let servCfg = serverCfg();
+
+   // make files if they do not exist and we're developing for wp
+   if (proj.config.build.type === 2) {
+      if (
+         !fs.existsSync(servCfg.htmlDist + "/screenshot.png") ||
+         !fs.existsSync(servCfg.htmlDist + "/style.css")
+      ) {
+         wpInfoCss(servCfg);
+         wpScreenshot(servCfg);
+      }
+   }
+}
+
+exports.wpInit = wpInit;
 
 
 // ============== C O M M O N   F U N C T I O N S ============== \\
 // signal task end to the developer
 const endSound = function (cb) {
-   if (proj.config.build.signalEnd) { console.info('\x07'); }
+   if (proj.config.build.signalEnd) {
+      console.info("\x07");
+   }
 
    cb();
-}
+};
 
 exports.endSound = endSound;
 
@@ -165,34 +245,34 @@ exports.endSound = endSound;
 const todoCheck = function () {
    let todos = false;
    // create a TODO file with all todos and fixmes for css and js
-   if (proj.config.build.env === 'dev') { todos = true; }
+   if (proj.config.build.env === "dev") {
+      todos = true;
+   }
 
    return todos;
-}
+};
 
 exports.todoCheck = todoCheck;
-
 
 // dev header check
 const headerCheck = function () {
    let _make = false;
    let _content = false;
-   if (devinfo && proj.config.build.env === 'prod') {
+   if (devinfo && proj.config.build.env === "prod") {
       _make = devinfoCfg.build.header;
       _content = devinfoCfg.header;
    }
 
    return { check: _make, content: _content };
-}
+};
 
 exports.headerCheck = headerCheck;
-
 
 // humans.txt
 const humansTxt = function () {
    let _make = false;
    let _content = false;
-   let _file = './' + proj.config.dirname.public_html + '/humans.txt';
+   let _file = "./" + proj.config.dirname.public_html + "/humans.txt";
 
    if (devinfo) {
       // check in config (true|false)
@@ -209,35 +289,34 @@ const humansTxt = function () {
    }
 
    return { check: _make, file: _file, content: _content };
-}
+};
 
 exports.humansTxt = humansTxt;
-
 
 // sourcemaps check
 const sourcemapsCheck = function () {
    // header breaks sourcemaps
    let header = headerCheck();
    let sourcemaps = false;
-   if (!header.check && proj.config.build.env === 'dev') {
+   if (!header.check && proj.config.build.env === "dev") {
       sourcemaps = true;
    }
 
    return sourcemaps;
-}
+};
 
 exports.sourcemapsCheck = sourcemapsCheck;
 
-
 // delete file/folder
 const remove = function (path, cb) {
-   if (fs.existsSync(path)) { del.sync([path]); }
+   if (fs.existsSync(path)) {
+      del.sync([path]);
+   }
 
    cb();
-}
+};
 
 exports.rem = remove;
-
 
 // error handler for gulp-plumber, using gulp-notify
 const plumberErrHandler = function (error) {
@@ -245,11 +324,10 @@ const plumberErrHandler = function (error) {
       title: "Gulp: Error in " + error.plugin,
       message: "<%= error.message %>",
    })(error);
-   this.emit('end');
-}
+   this.emit("end");
+};
 
 exports.errHandler = plumberErrHandler;
-
 
 // Create a cacheBust file (JSON)
 // _key is a key in the JSON, named after the file type (js|css|...) where it's used
@@ -274,7 +352,7 @@ const cacheBust = function (_key) {
       // console.log(err);
 
       // create file
-      writeFile(filePath, '{}');
+      writeFile(filePath, "{}");
 
       const file = require(filePath);
       file[_key] = _content;
@@ -283,10 +361,9 @@ const cacheBust = function (_key) {
       // JSON.stringify(file, replacer function, spaces to indent)
       writeFile(filePath, JSON.stringify(file, null, 2));
    }
-}
+};
 
 exports.cacheBust = cacheBust;
-
 
 // time with leading zeros
 const getTime = function () {
@@ -294,17 +371,16 @@ const getTime = function () {
    let t = [];
 
    t.y = nd.getFullYear();
-   t.mn = ('0' + (nd.getMonth() + 1)).slice(-2);
-   t.d = ('0' + nd.getDate()).slice(-2);
-   t.h = ('0' + (nd.getHours())).slice(-2);
-   t.m = ('0' + (nd.getMinutes())).slice(-2);
-   t.s = ('0' + (nd.getSeconds())).slice(-2);
+   t.mn = ("0" + (nd.getMonth() + 1)).slice(-2);
+   t.d = ("0" + nd.getDate()).slice(-2);
+   t.h = ("0" + nd.getHours()).slice(-2);
+   t.m = ("0" + nd.getMinutes()).slice(-2);
+   t.s = ("0" + nd.getSeconds()).slice(-2);
 
    return t;
-}
+};
 
 exports.time = getTime;
-
 
 // write files to disk
 const writeFile = function (file, content) {
@@ -315,18 +391,13 @@ const writeFile = function (file, content) {
    let _md = fs.mkdirSync(_path.dir, { recursive: true });
 
    // then write the file
-   return fs.writeFileSync(
-      file,
-      content,
-      { encoding: 'utf8' },
-      function (err) {
-         if (err) {
-            console.log('========== WRITE FILE ERROR:');
-            console.log('========== ' + file);
-            console.log(err);
-         }
-      },
-   );
-}
+   return fs.writeFileSync(file, content, { encoding: "utf8" }, function (err) {
+      if (err) {
+         console.log("========== WRITE FILE ERROR:");
+         console.log("========== " + file);
+         console.log(err);
+      }
+   });
+};
 
 exports.writeFile = writeFile;

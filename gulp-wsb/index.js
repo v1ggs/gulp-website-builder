@@ -29,7 +29,11 @@ const allTasks = function (cb) {
    console.log('========== CTRL+S TO PAUSE GULP');
    console.log('==========');
 
+   // start browsersync
    _fn.startServer();
+
+   // if developing for wordpress, initialise wp theme
+   _fn.wpInit();
 
    // ****************************************************************** \\
    // ************************* M O D U L E S ************************** \\

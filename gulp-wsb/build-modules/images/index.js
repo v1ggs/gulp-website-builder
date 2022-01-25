@@ -10,7 +10,6 @@ const format = config.config.formats;
 const imgSizes = config.config.sizes;
 
 // Gulp
-const sharp = require('sharp');
 const svgmin = require('gulp-svgmin');
 
 // ============== S E T T I N G S ============== \\
@@ -92,7 +91,7 @@ const mkdir = function (path) {
 // get file with sharp
 const sharpGetFile = function (file) {
    // get file
-   let sharpInstance = sharp(file, {
+   let sharpInstance = _fn.sharp(file, {
       // by default halt processing and raise an error when loading invalid images. Set this flag to false if you'd rather apply a "best effort" to decode images, even if the data is corrupt or invalid. (optional, default true)
       failOnError: false,
    });

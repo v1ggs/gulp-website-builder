@@ -6,32 +6,34 @@ const config = {
       name: 'IgorVracar.com',
       // project description
       description: 'Web design and Front-end IgorVracar.com',
-      // project domain without 'https://www.'
+      // project domain WITHOUT 'https://www.'
       domain: 'igorvracar.com',
    },
 
    build: {
-      // environment: 'dev' | 'prod'
+      // environment: 'dev' or 'prod'
+      // dev does not minify css and js, displays console logs, creates sourcemaps, does not add developer header in css and js etc.
       env: 'dev',
-      // build type: 1: static page, 2: design for WordPress
-      type: 1,
-      // serve file (e.g. 'index.html') or proxy a domain (local dev, e.g. dev-yourdomain.com), if type === 3
+      // build type: 1: static page, 2: design with WordPress
+      type: 2,
+      // if type === 1 - serve page file
+      // string (e.g. 'index.html')
       serve: 'index.html',
-      // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
-      // to be able to inject CSS/JS, and stream/reload page on save
-      // default: false
+      // if type === 2 - to be able to stream CSS or reload page on HTML/JS save, proxy local WordPress site, e.g. dev-yourdomain.com (with xampp or similar local server, because browsersync can not serve php files)
+      // string (domain) or false
       proxy: 'dev-igorvracar.com',
       // make sound on task completion
       signalEnd: true,
    },
 
    dirname: {
-      // folder name (not path) for source files
+      // source files folder name (not path)
       source: 'src',
       // dist folder name (not path)
       dist: 'assets',
-      // folder name on server exposed to the internet (not project's but site's root)
-      public_html: 'htdocs',
+      // site's root folder name (folder on server exposed to the internet, not the project's root)
+      // public_html, htdocs etc.
+      public_html: 'public_html',
    },
 }
 
