@@ -9,25 +9,25 @@ const cfg = config.config;
 const files = config.config.files;
 
 // Gulp
-const sass = require("gulp-sass")(require('sass'));
+const sass = require('gulp-sass')(require('sass'));
 const postcss = require('gulp-postcss');
-const fixFlexbugs = require("postcss-flexbugs-fixes");
+const fixFlexbugs = require('postcss-flexbugs-fixes');
 // https://www.npmjs.com/package/postcss-inline-svg
 // reference an SVG file and control its attributes with CSS syntax
-const inlineSvg = require("postcss-inline-svg");
+const inlineSvg = require('postcss-inline-svg');
 // https://www.npmjs.com/package/postcss-svgo
 // Optimise inline SVG with PostCSS
-const svgo = require("postcss-svgo");
+const svgo = require('postcss-svgo');
 const autoprefixer = require('autoprefixer');
 const discardComments = require('postcss-discard-comments');
-const sortMediaQueries = require("postcss-sort-media-queries");
+const sortMediaQueries = require('postcss-sort-media-queries');
 const doiuse = require('doiuse');
 // https://www.npmjs.com/package/csso
-const csso = require("postcss-csso");
+const csso = require('postcss-csso');
 // @fullhuman/postcss-purgecss can't get rejected selectors
 const postcssPurgecss = require('@fullhuman/postcss-purgecss');
 // gulp-sourcemaps does not work with gulp-purgecss
-const purgecss = require("gulp-purgecss");
+const purgecss = require('gulp-purgecss');
 
 
 // ============== S E T T I N G S ============== \\
@@ -88,7 +88,7 @@ const postCssPlugins = function () {
             restructure: true,
             sourceMap: false,
             // comments: 'exclamation' or true | 'first-exclamation' | false (remove all)
-            comments: false,
+            comments: 'exclamation',
             // show additional debug information
             // true or number from 1 to 3 (greater number - more details)
             debug: false
@@ -104,7 +104,6 @@ const postCssPlugins = function () {
 // console info about the running task
 const consoleInfo = function (cb) {
     console.log('========== TASK: SCSS');
-
     cb();
 }
 
@@ -112,7 +111,6 @@ const consoleInfo = function (cb) {
 // delete the output folder
 const cleanDist = function (cb) {
     if (cfg.build.cleanDist) { _fn.rem(files.output, cb); }
-
     cb();
 }
 
@@ -120,9 +118,7 @@ const cleanDist = function (cb) {
 // write humans.txt
 const humans = function (cb) {
     let humans = _fn.humansTxt();
-
     if (humans.check) { _fn.writeFile(humans.file, humans.content); }
-
     cb();
 }
 
@@ -131,7 +127,6 @@ const humans = function (cb) {
 // Its content is appended to the src url as a query
 const cacheBust = function (cb) {
     _fn.cacheBust('css');
-
     cb();
 }
 
@@ -236,7 +231,7 @@ const minifier = function (cb) {
             restructure: true,
             sourceMap: false,
             // comments: 'exclamation' or true | 'first-exclamation' | false (remove all)
-            comments: false,
+            comments: 'exclamation',
             // show additional debug information
             // true or number from 1 to 3 (greater number - more details)
             debug: false
