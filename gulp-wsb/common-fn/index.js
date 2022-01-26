@@ -260,7 +260,7 @@ exports.headerCheck = headerCheck;
 const humansTxt = function () {
    let make = false;
    let content = false;
-   let file = './' + proj.config.dirname.public_html + '/humans.txt';
+   let file = proj.files.humansTxt;
 
    if (proj.developerInfo.build.humans) {
       // check in config (true|false)

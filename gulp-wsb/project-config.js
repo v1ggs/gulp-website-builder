@@ -46,6 +46,9 @@ const config = {
 }
 
 const dirs = {
+   // site's (not project's) root
+   siteRoot: './' + config.dirname.public_html,
+
    // source folders
    src: {
       root: './' + config.dirname.source,
@@ -65,6 +68,9 @@ const files = {
    // SCSS files that contains small, blurred SVG placeholder images as SCSS variables
    placeholdersLarge: dirs.src.scss + '/base/_placeholders-large.scss',
    placeholdersSmall: dirs.src.scss + '/base/_placeholders-small.scss',
+
+   // humans.txt file (https://humanstxt.org)
+   humansTxt: dirs.siteRoot + '/humans.txt',
 }
 
 const developerInfo = {
