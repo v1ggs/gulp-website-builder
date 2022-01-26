@@ -1,8 +1,14 @@
 # GULP WEBSITE BUILDER
 
+---
+
 > **_FOR GULP 4_**
 
+---
+
 > **_TESTED ON WINDOWS - NODE.JS 14_**
+
+---
 
 ## GNU GENERAL PUBLIC LICENSE
 
@@ -21,6 +27,8 @@
 -  [USAGE](#usage)
 -  [COPYRIGHT](#copyright)
 -  [LICENSE](#license)
+
+---
 
 ## GENERAL INFO
 
@@ -43,6 +51,8 @@
 
 > Use TODOs like: `TODO:` or `FIXME:` in an appropriate comment, to get all todos and fixmes in a .txt file in the root dir
 > Read more at: <https://www.npmjs.com/package/gulp-todo>
+
+---
 
 ## FEATURES
 
@@ -145,6 +155,8 @@
 -  clean output folders before every copy
 -  set array of folders in the 'src' folder to copy files without processing them
 
+---
+
 ## INSTALLATION
 
 > If adding a new plugin in the pipeline, if you're using Sourcemaps, the new plugin has to be compatible with gulp-sourcemaps.
@@ -205,6 +217,8 @@ It is also possible to add your own module for a specific language:
 -  Use existing files from other modules as an example for how to create config and index files
 -  Include this new module in the main index file (next to `project-config.js`), in the 'M O D U L E S' section (search for 'ADD ALL MODULES HERE'), and create a watcher, if required.
 
+---
+
 ## USAGE
 
 > **_Default config should be good for many users. Only source files/folders have to be modified._**
@@ -243,10 +257,35 @@ Each module has a README with usage information.
 
 > Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
 
+---
+
 ## COPYRIGHT
 
-**© 2021 [Igor Vračar](https://www.igorvracar.com)**
+## **© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
 ## LICENSE
 
-GNU GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE V3.0
+Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+
+Permissions:
+
+-  Commercial use
+-  Modification
+-  Distribution
+-  Patent use
+-  Private use
+
+Limitations:
+
+-  No Liability
+-  No Warranty
+
+Conditions:
+
+-  License and copyright notice
+-  State changes
+-  Disclose source
+-  Same license
+
+---
