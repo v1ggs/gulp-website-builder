@@ -12,6 +12,8 @@
 
 ## GNU GENERAL PUBLIC LICENSE
 
+---
+
 ## TABLE OF CONTENTS
 
 -  [GENERAL INFO](#general-info)
@@ -45,7 +47,7 @@
 
 ---
 
-> Browserslistrc file (.browserslistrc) is not used, because babel (for JS) has two different transpilations, whose settings are different from those for autoprefixer.
+> Browserslistrc file (.browserslistrc) is not used, because babel (for JS) can have different transpilations, whose settings can be different from those for autoprefixer.
 
 ---
 
