@@ -11,7 +11,7 @@ const config = {
    },
 
    // set if developing a wordpress theme, otherwise not important
-   // aLL: string | false
+   // all: string | false
    wpThemeInfo: {
       themeFolderName: 'igorvracar.com',
       authorName: 'vIGGS (Igor Vračar)',
@@ -59,6 +59,9 @@ const dirs = {
       images: './' + config.dirname.source + '/img',
       icons: './' + config.dirname.source + '/icons',
    },
+
+   // output dirs are configured programatically, depending on the config.build.type
+   // just set config.dirname.dist and config.dirname.public_html properly
 }
 
 // (string | false)

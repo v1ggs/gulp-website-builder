@@ -5,7 +5,7 @@
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const serverCfg = _fn.serverCfg();
-const assets = serverCfg.assetsInHtml; // assets links in html (global var)
+const assets = serverCfg.assetsForNunjucks; // assets links in html (global var)
 const _src = proj.dirs.src.html;
 const _dist = serverCfg.htmlDist;
 /* *************************************************** */
@@ -72,7 +72,8 @@ const config = {
    // Relative path to templates - String or Array
    path: [_src],
    // Extension for compiled templates, pass null or empty string if you don't want any extension
-   ext: '.php',
+   // do not set extension to any but 'html' because beautify will not work
+   ext: '.html',
    // Data passed to template
    data: {},
    // These are options provided for nunjucks Environment

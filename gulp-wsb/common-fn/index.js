@@ -56,42 +56,38 @@ const serverCfg = function () {
    const wpDir = '/wp-content/themes/' + proj.config.wpThemeInfo.themeFolderName;
    // output dir for html file
    let htmlDist;
-   // used in assetsInHtml (html module - for global variables)
+   // used in assetsForNunjucks (Nunjucks module - for global variables)
    let assetsReference;
 
    if (proj.config.build.type === 1) {
       // static page design
-      htmlDist = './' + proj.config.dirname.public_html;
+      htmlDist = proj.dirs.siteRoot;
       assetsReference = '';
    } else if (proj.config.build.type === 2) {
-      // static design for future use with WordPress
-      // assets links in html (script, stylesheet) point to assets in the WP theme dir
-      // server is configured to run pages from the WP dir,
-      // but server's root remains in the site's root
-      htmlDist = './' + proj.config.dirname.public_html + wpDir;
+      // design with WordPress
+      // 1. server is configured to proxy a domain
+      // 2. assets in html (e.g. logo image src) point to assets in the WP theme dir
+      htmlDist = proj.dirs.siteRoot + wpDir;
       assetsReference = wpDir;
    }
 
    // assets dist dir
    const assetsDist = htmlDist + '/' + proj.config.dirname.dist;
-   // same dir as assetsDist but for usage with html module (for global variables)
-   const assetsInHtml = assetsReference + '/' + proj.config.dirname.dist;
+   // same dir as assetsDist but for usage with nunjucks module (for global variables)
+   const assetsForNunjucks = assetsReference + '/' + proj.config.dirname.dist;
 
    // server and proxy cannot be both defined at the same time
-   let _server = './' + proj.config.dirname.public_html;
    let _proxy = undefined;
+   let _server = proj.dirs.siteRoot;
    // static page design
    let _index = proj.config.build.serve;
-   if (proj.config.build.type === 2) {
-      // static design for future use with WordPress
-      _index = wpDir + '/' + proj.config.build.serve;
-   }
 
-   // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
-   // to be able to inject CSS/JS, and stream/reload page on save
-   if (proj.config.build.proxy) {
-      _server = false;
+   // design with WordPress
+   if (proj.config.build.type === 2) {
+      // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
+      // to be able to inject CSS/JS, and stream/reload page on save
       _proxy = proj.config.build.proxy;
+      _server = false;
       _index = false;
    }
 
@@ -115,7 +111,7 @@ const serverCfg = function () {
       config: cfg,
       htmlDist: htmlDist,
       assetsDist: assetsDist,
-      assetsInHtml: assetsInHtml,
+      assetsForNunjucks: assetsForNunjucks,
    };
 };
 
