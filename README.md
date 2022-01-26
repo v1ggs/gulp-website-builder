@@ -17,8 +17,8 @@
    -  [File Copy](#file-copy)
 -  [INSTALLATION](#installation)
 -  [USAGE](#usage)
--  [Copyright](#copyright)
--  [License](#license)
+-  [COPYRIGHT](#copyright)
+-  [LICENSE](#license)
 
 ## GENERAL INFO
 
@@ -241,10 +241,10 @@ Each module has a README with usage information.
 
 > Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
 
-## Copyright
+## COPYRIGHT
 
 **© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
-## License
+## LICENSE
 
 GNU GENERAL PUBLIC LICENSE
