@@ -53,7 +53,7 @@ exports.spawn = spawn;
 // ============== S E R V E R ============== \\
 const serverCfg = function () {
    // WordPress theme directory
-   const wpDir = '/wp-content/themes/' + proj.config.project.domain;
+   const wpDir = '/wp-content/themes/' + proj.config.wpThemeInfo.themeFolderName;
    // output dir for html file
    let htmlDist;
    // used in assetsInHtml (html module - for global variables)
@@ -150,8 +150,8 @@ image allows for high-resolution viewing on HiDPI displays. Note that because th
 the top and bottom of the screenshot image might not be viewable so keep graphics near the center. */
 const wpScreenshotContent = function () {
    return `<svg viewbox="0 0 1200 900" width="1200" height="900" xmlns="http://www.w3.org/2000/svg"><style>.screenshot-title, .screenshot-description { display: block; fill: rgb(238, 238, 238); white-space: nowrap; text-anchor: middle; dominant-baseline: middle; }
-.screenshot-title { font: bold 92px sans-serif; }
-.screenshot-description { font: bold 22px sans-serif; }
+.screenshot-title { font: bold 80px sans-serif; }
+.screenshot-description { font: 28px sans-serif; }
 .screenshot-bgd { width: 100%; height: 100%; fill: #112266; stroke: none; }</style>
 <rect x="0" y="0" width="1200" height="900" fill="#112266" />
 <text x="50%" y="46%" class="screenshot-title">${proj.config.project.name}</text>
@@ -177,7 +177,7 @@ const wpInfoCss = function (servCfg) {
 }
 
 // convert svg from above to png and save the screenshot
-// later create the real theme screenshot
+// later create the real theme screenshot and replace this one manually
 const wpScreenshot = async function (servCfg) {
    let content = wpScreenshotContent();
    const screenshotSvg = servCfg.htmlDist + '/screenshot.svg';
@@ -185,7 +185,7 @@ const wpScreenshot = async function (servCfg) {
    writeFile(screenshotSvg, content);
 
    try {
-      const info = await sharp(screenshotSvg, { density: 300 })
+      const makeScreenShotPng = await sharp(screenshotSvg, { density: 300 })
          .resize(1200, 900, { fit: 'cover' })
          .toFormat('png')
          .toFile(servCfg.htmlDist + '/screenshot.png');

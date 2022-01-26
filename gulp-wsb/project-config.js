@@ -3,9 +3,9 @@
 const config = {
    project: {
       // project name
-      name: 'IgorVracar.com',
+      name: 'Igor Vracar Personal Web Site',
       // project description
-      description: 'Web design and Front-end IgorVracar.com',
+      description: 'Web design and Front-end igorvracar.com',
       // project domain WITHOUT 'https://www.'
       domain: 'igorvracar.com',
    },
@@ -13,6 +13,7 @@ const config = {
    // set if developing a wordpress theme, otherwise not important
    // aLL: string | false
    wpThemeInfo: {
+      themeFolderName: 'igorvracar.com',
       authorName: 'vIGGS (Igor Vračar)',
       authorUrl: 'https://www.igorvracar.com',
       themeVersion: 'v1',
