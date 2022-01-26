@@ -66,14 +66,14 @@
 
 ### General
 
--  easily add or remove modules (add your HTML processor instead of nunjucks)
--  possibility to proxy a domain (e.g. from local server), when working with php/wordpress
--  develop a static page or a design for wordpress (wp theme is initialised automatically - directory, screenshot and style.css)
+-  [easily add or remove modules](#addremove-a-module) (add your HTML processor instead of nunjucks)
+-  possibility to proxy a domain (e.g. from local server), when working with php/wordpress (config-project.js > config.build.type 2)
+-  develop a static page (config-project.js > config.build.type 1) or a design for wordpress (config-project.js > config.build.type 2) - wp theme is initialised automatically - directory, screenshot and style.css
 -  process Nunjucks, SCSS, JavaSript, images, minify and inline svg, create svg sprites
--  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (in src dir)
+-  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (src dir)
 -  'dev' and 'prod' mode: control minification, dev headers, sourcemaps, leave/remove js console logs etc.
 -  sourcemaps (SCSS and JS)
--  [create humans.txt file](https://humanstxt.org/)
+-  create [humans.txt](https://humanstxt.org/) file
 -  notification on plugin errors (so you don't have to keep the console open)
 -  sound on task completion (so you don't have to keep the console open)
 
