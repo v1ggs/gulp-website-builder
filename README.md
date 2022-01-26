@@ -12,6 +12,8 @@
 
 ## GNU GENERAL PUBLIC LICENSE
 
+> THIS IS A LICENSE FOR OTHER SOFTWARE (LIKE A MODIFIED VERSION OF THIS SOFTWARE) THAT INCLUDES THIS SOFTWARE OR ITS PARTS. YOU DO NOT HAVE TO LICENSE SITES MADE WITH THIS SOFTWARE WITH THIS SAME LICENSE, OF COURSE.
+
 ---
 
 ## TABLE OF CONTENTS
@@ -265,9 +267,16 @@ Each module has a README with usage information.
 
 ## **© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
+---
+
 ## LICENSE
 
+> THIS IS A LICENSE FOR OTHER SOFTWARE (LIKE A MODIFIED VERSION OF THIS SOFTWARE) THAT INCLUDES THIS SOFTWARE OR ITS PARTS. YOU DO NOT HAVE TO LICENSE SITES MADE WITH THIS SOFTWARE WITH THIS SAME LICENSE, OF COURSE.
+
+---
+
 GNU GENERAL PUBLIC LICENSE V3.0
+
 Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
 
 Permissions:
