@@ -1,12 +1,28 @@
 # GULP WEBSITE BUILDER
 
-> **_For Gulp 4, tested on Windows - Node.js 14_**
+> **_FOR GULP 4_** > **_TESTED ON WINDOWS - NODE.JS 14_**
 
 ## GNU GENERAL PUBLIC LICENSE
 
+## TABLE OF CONTENTS
+
+-  [GENERAL INFO](#general-info)
+-  [FEATURES](#features)
+   -  [General](#general)
+   -  [Nunjucks](#nunjucks)
+   -  [SCSS](#scss)
+   -  [JavaScript](#javascript)
+   -  [Images](#images)
+   -  [SVG Sprites](#svg-sprites)
+   -  [File Copy](#file-copy)
+-  [INSTALLATION](#installation)
+-  [USAGE](#usage)
+-  [Copyright](#copyright)
+-  [License](#license)
+
 ## GENERAL INFO
 
-> If you want to use this repository it is required that you're familiar with Gulp.
+> If you want to use this repository it is required that you're familiar with Gulp and Javascript.
 > It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
 
 ---
@@ -23,16 +39,29 @@
 
 ---
 
-> Use TODOs like: `TODO:` or `FIXME:` in an appropriate comment.
+> Use TODOs like: `TODO:` or `FIXME:` in an appropriate comment, to get all todos and fixmes in a .txt file in the root dir
 > Read more at: <https://www.npmjs.com/package/gulp-todo>
 
 ## FEATURES
 
-> Everything is configurable.
+> Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
 
 ---
 
-> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
+> Almost everything is configurable.
+
+### General
+
+-  easily add or remove modules (add your HTML processor instead of nunjucks)
+-  possibility to proxy a domain (e.g. from local server), when working with php/wordpress
+-  develop a static page or a design for wordpress (wp theme is initialised automatically - directory, screenshot and style.css)
+-  process Nunjucks, SCSS, JavaSript, images, minify and inline svg, create svg sprites
+-  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (in src dir)
+-  'dev' and 'prod' mode: control minification, dev headers, sourcemaps, leave/remove js console logs etc.
+-  sourcemaps (SCSS and JS)
+-  [create humans.txt file](https://humanstxt.org/)
+-  notification on plugin errors (so you don't have to keep the console open)
+-  sound on task completion (so you don't have to keep the console open)
 
 ### Gulp
 
@@ -40,15 +69,6 @@
 -  restart gulp on any config change and apply new settings
 -  tasks don't break on plugin errors ([gulp-plumber](https://www.npmjs.com/package/gulp-plumber))
 -  web server with streaming CSS files on change, and reloading page on HTML and JS change
-
-### Common
-
--  process Nunjucks, SCSS, JavaSript, images, minify and inline svg, create svg sprites
--  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (in src dir)
--  sourcemaps (SCSS and JS)
--  [create humans.txt file](https://humanstxt.org/)
--  notification on plugin errors (so you don't have to keep the console open)
--  sound on task completion (so you don't have to keep the console open)
 
 ### Nunjucks
 
@@ -160,13 +180,13 @@ npm install --global gulp-cli
 ### General Node Modules
 
 ```cmd
-npm install --save-dev gulp gulp-plumber del gulp-rename gulp-sourcemaps gulp-concat gulp-if gulp-header gulp-todo merge2 browser-sync gulp-notify
+npm install --save-dev gulp gulp-plumber del gulp-rename gulp-sourcemaps gulp-concat gulp-if gulp-header gulp-todo merge2 sharp browser-sync gulp-notify
 ```
 
 ### All other Node Modules
 
 ```cmd
-npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass postcss gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify sharp gulp-svgmin gulp-svgstore
+npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass postcss gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify gulp-svgmin gulp-svgstore
 ```
 
 It's understood that you navigate in your console where you want to install node_modules.
@@ -191,12 +211,12 @@ It is also possible to add your own module for a specific language:
 
    -  Set basic project info in `config-project.js`
    -  Set development environment in `config.build.env: 'dev'`
-   -  `config.build.type` configures output folder (for server and assets links )
-   -  set main directories in `config.dirname` (folder name, not path)
-   -  set source directories `const dirs` (path)
-   -  set specific files `const files` (path)
+   -  Set design type in `config.build.type`, static or wordpress - this configures the server and assets folder/links
+   -  set main folder names (not path) in `config.dirname`
+   -  set source directories (path) in `const dirs`
+   -  set specific files (cachebust, img placeholders) in `const files` (path)
 
-2. Configure each module's in its configuration file.
+2. Configure each module's config in its configuration file.
 
 3. Import in `gulpfile.js` (already done) like:
 
@@ -219,7 +239,7 @@ All found modules are imported automatically.
 
 Each module has a README with usage information.
 
-> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
 
 ## Copyright
 

@@ -16,7 +16,7 @@ Find all settings in the `config.js` file.
 
 > Everything is configurable.
 
-Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
+Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
 
 ## INSTALLATION
 

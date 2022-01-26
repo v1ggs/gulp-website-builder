@@ -4,7 +4,7 @@
 
 ## GENERAL INFO
 
-> If you want to use this repository it is required that you're familiar with Gulp.
+> If you want to use this repository it is required that you're familiar with Gulp and Javascript.
 > It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
 
 ---
@@ -28,13 +28,13 @@
 
 ---
 
-> Configuration files (`config.js`) are commented for explanations, which should be enough for those familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
 
 ## INSTALLATION
 
 ### Required node modules
 
-Required node modules: 'General Node Modules', sharp, gulp-svgmin.
+Required node modules: 'General Node Modules', gulp-svgmin.
 
 #### Install
 
