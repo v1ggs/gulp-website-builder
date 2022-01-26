@@ -10,10 +10,18 @@ const config = {
       domain: 'igorvracar.com',
    },
 
+   // set if developing a wordpress theme, otherwise not important
+   // aLL: string | false
+   wpThemeInfo: {
+      authorName: 'vIGGS (Igor Vračar)',
+      authorUrl: 'https://www.igorvracar.com',
+      themeVersion: 'v1',
+   },
+
    build: {
       // environment: 'dev' or 'prod'
       // dev does not minify css and js, displays console logs, creates sourcemaps, does not add developer header in css and js etc.
-      env: 'dev',
+      env: 'prod',
       // build type: 1: static page, 2: design with WordPress
       type: 2,
       // if type === 1 - serve page file
@@ -59,6 +67,42 @@ const files = {
    placeholdersSmall: dirs.src.scss + '/base/_placeholders-small.scss',
 }
 
+const developerInfo = {
+   // processed only when "config.build.env: 'prod'" in project-config.js
+   build: {
+      // (boolean) prepend dev header to processed files
+      header: true,
+      // create humans.txt - https://humanstxt.org
+      humans: true,
+   },
+
+   // developer(s) header content for CSS and JS, if build.header === true
+   // you can add the license info here
+   header: `/* Designer/Developer: vIGGS | https://www.igorvracar.com */\n`,
+
+   // humans.txt content, if build.humans === true
+   humans:
+      `/* AUTHOR */\n` +
+      `     Web Design/Front-end/WordPress: vIGGS\n` +
+      `     Location: Banja Luka, Bosnia and Herzegovina\n` +
+      `     Website: https://www.igorvracar.com\n` +
+      `     Github: https://github.com/v1ggs\n` +
+      `     Soundcloud: https://soundcloud.com/v1ggs\n` +
+      `     Flickr: https://www.flickr.com/photos/--viggs--/\n` +
+      `     Lichess: https://lichess.org/@/Iggz\n\n` +
+      `/* SITE */\n` +
+      `     Name: ${config.project.name}\n` +
+      `     Description: ${config.project.description}\n` +
+      `     Domain: ${config.project.domain}\n` +
+      `     Launched: 2020\n` +
+      `     Standards: HTML5, CSS3\n` +
+      `     Language: English\n` +
+      `     Built With: HTML5 (Nunjucks), CSS3 (SCSS), JavaScript, PHP, WordPress, .htaccess\n` +
+      `     Software: VSCode, Gulp (task runner), Filezilla\n` +
+      `     Last Update: `, // the 'last update' time is created programmatically. To change time format, edit content variable in humansTxt function, in the common-fn index.js file.
+}
+
 exports.config = config;
 exports.dirs = dirs;
 exports.files = files;
+exports.developerInfo = developerInfo;

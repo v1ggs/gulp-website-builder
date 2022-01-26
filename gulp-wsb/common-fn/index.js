@@ -1,34 +1,34 @@
 // ********* DO NOT MODIFY THIS FILE UNLESS IT'S NECESSARY ************ \\
 
 // ============== P R O J E C T   C O N F I G ============== \\
-const proj = require("../project-config");
+const proj = require('../project-config');
 
 // ============== N O D E ============== \\
-const fs = require("fs");
-const path = require("path");
-const glob = require("glob");
+const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
 
 exports.fs = fs;
 exports.path = path;
 exports.glob = glob;
 
 // ============== G U L P ============== \\
-const { gulp, src, dest, watch, series, parallel } = require("gulp");
-const sharp = require("sharp");
-const plumber = require("gulp-plumber");
-const del = require("del");
-const ren = require("gulp-rename");
-const smaps = require("gulp-sourcemaps");
-const concat = require("gulp-concat");
-const gulpif = require("gulp-if");
-const fileHead = require("gulp-header");
-const gulptodo = require("gulp-todo");
-const merge2 = require("merge2");
-const browserSync = require("browser-sync").create();
-const spawn = require("child_process").spawn;
+const { gulp, src, dest, watch, series, parallel } = require('gulp');
+const sharp = require('sharp');
+const plumber = require('gulp-plumber');
+const del = require('del');
+const ren = require('gulp-rename');
+const smaps = require('gulp-sourcemaps');
+const concat = require('gulp-concat');
+const gulpif = require('gulp-if');
+const fileHead = require('gulp-header');
+const gulptodo = require('gulp-todo');
+const merge2 = require('merge2');
+const browserSync = require('browser-sync').create();
+const spawn = require('child_process').spawn;
 // gulp-notify - Windows 10 Note:
 // You might have to activate banner notification for the toast to show.
-const notify = require("gulp-notify");
+const notify = require('gulp-notify');
 // const { cwd } = require('process');
 
 exports.src = src;
@@ -50,22 +50,10 @@ exports.merge2 = merge2;
 exports.browserSync = browserSync;
 exports.spawn = spawn;
 
-// ============== C O M M O N   M O D U L E S ============== \\
-// DEVINFO
-let devinfo, devinfoCfg;
-try {
-   devinfo = require("../build-modules/devinfo");
-   devinfoCfg = devinfo.config;
-} catch (err) {
-   /* console.log(err); */
-   devinfo = false;
-   devinfoCfg = false;
-}
-
 // ============== S E R V E R ============== \\
 const serverCfg = function () {
    // WordPress theme directory
-   const wpDir = "/wp-content/themes/" + proj.config.project.domain;
+   const wpDir = '/wp-content/themes/' + proj.config.project.domain;
    // output dir for html file
    let htmlDist;
    // used in assetsInHtml (html module - for global variables)
@@ -73,30 +61,30 @@ const serverCfg = function () {
 
    if (proj.config.build.type === 1) {
       // static page design
-      htmlDist = "./" + proj.config.dirname.public_html;
-      assetsReference = "";
+      htmlDist = './' + proj.config.dirname.public_html;
+      assetsReference = '';
    } else if (proj.config.build.type === 2) {
       // static design for future use with WordPress
       // assets links in html (script, stylesheet) point to assets in the WP theme dir
       // server is configured to run pages from the WP dir,
       // but server's root remains in the site's root
-      htmlDist = "./" + proj.config.dirname.public_html + wpDir;
+      htmlDist = './' + proj.config.dirname.public_html + wpDir;
       assetsReference = wpDir;
    }
 
    // assets dist dir
-   const assetsDist = htmlDist + "/" + proj.config.dirname.dist;
+   const assetsDist = htmlDist + '/' + proj.config.dirname.dist;
    // same dir as assetsDist but for usage with html module (for global variables)
-   const assetsInHtml = assetsReference + "/" + proj.config.dirname.dist;
+   const assetsInHtml = assetsReference + '/' + proj.config.dirname.dist;
 
    // server and proxy cannot be both defined at the same time
-   let _server = "./" + proj.config.dirname.public_html;
+   let _server = './' + proj.config.dirname.public_html;
    let _proxy = undefined;
    // static page design
    let _index = proj.config.build.serve;
    if (proj.config.build.type === 2) {
       // static design for future use with WordPress
-      _index = wpDir + "/" + proj.config.build.serve;
+      _index = wpDir + '/' + proj.config.build.serve;
    }
 
    // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
@@ -176,16 +164,16 @@ const wpInfoCssContent = function () {
 Theme Name: ${proj.config.project.name}
 Theme URI: ${proj.config.project.domain}
 Description: ${proj.config.project.description}
-Author: ${proj.config.project.description} // TODO:
-Author URI: ${proj.config.project.description} // TODO:
-Version: v1 // TODO:
+Author: ${proj.config.wpThemeInfo.authorName}
+Author URI: ${proj.config.wpThemeInfo.authorUrl}
+Version: ${proj.config.wpThemeInfo.themeVersion}
 */`;
 }
 
 // write style.css that contains theme info
 const wpInfoCss = function (servCfg) {
    let content = wpInfoCssContent();
-   writeFile(servCfg.htmlDist + "/style.css", content);
+   writeFile(servCfg.htmlDist + '/style.css', content);
 }
 
 // convert svg from above to png and save the screenshot
@@ -200,7 +188,7 @@ const wpScreenshot = async function (servCfg) {
       const info = await sharp(screenshotSvg, { density: 300 })
          .resize(1200, 900, { fit: 'cover' })
          .toFormat('png')
-         .toFile(servCfg.htmlDist + "/screenshot.png");
+         .toFile(servCfg.htmlDist + '/screenshot.png');
 
       if (fs.existsSync(screenshotSvg)) {
          del.sync([screenshotSvg]);
@@ -217,8 +205,8 @@ const wpInit = function () {
    // make files if they do not exist and we're developing for wp
    if (proj.config.build.type === 2) {
       if (
-         !fs.existsSync(servCfg.htmlDist + "/screenshot.png") ||
-         !fs.existsSync(servCfg.htmlDist + "/style.css")
+         !fs.existsSync(servCfg.htmlDist + '/screenshot.png') ||
+         !fs.existsSync(servCfg.htmlDist + '/style.css')
       ) {
          wpInfoCss(servCfg);
          wpScreenshot(servCfg);
@@ -233,7 +221,7 @@ exports.wpInit = wpInit;
 // signal task end to the developer
 const endSound = function (cb) {
    if (proj.config.build.signalEnd) {
-      console.info("\x07");
+      console.info('\x07');
    }
 
    cb();
@@ -245,7 +233,7 @@ exports.endSound = endSound;
 const todoCheck = function () {
    let todos = false;
    // create a TODO file with all todos and fixmes for css and js
-   if (proj.config.build.env === "dev") {
+   if (proj.config.build.env === 'dev') {
       todos = true;
    }
 
@@ -256,39 +244,39 @@ exports.todoCheck = todoCheck;
 
 // dev header check
 const headerCheck = function () {
-   let _make = false;
-   let _content = false;
-   if (devinfo && proj.config.build.env === "prod") {
-      _make = devinfoCfg.build.header;
-      _content = devinfoCfg.header;
+   let make = false;
+   let content = false;
+   if (proj.config.build.env === 'prod') {
+      make = proj.developerInfo.build.header;
+      content = proj.developerInfo.header;
    }
 
-   return { check: _make, content: _content };
+   return { check: make, content: content };
 };
 
 exports.headerCheck = headerCheck;
 
 // humans.txt
 const humansTxt = function () {
-   let _make = false;
-   let _content = false;
-   let _file = "./" + proj.config.dirname.public_html + "/humans.txt";
+   let make = false;
+   let content = false;
+   let file = './' + proj.config.dirname.public_html + '/humans.txt';
 
-   if (devinfo) {
+   if (proj.developerInfo.build.humans) {
       // check in config (true|false)
-      _make = devinfoCfg.build.humans;
+      make = proj.developerInfo.build.humans;
 
       // get the time
-      let _t = getTime();
+      let t = getTime();
 
       // file contents
-      _content = devinfoCfg.humans;
+      content = proj.developerInfo.humans;
 
       // last update time
-      _content += `${_t.y}/${_t.mn}/${_t.d} ${_t.h}:${_t.m} CET\n`;
+      content += `${t.y}/${t.mn}/${t.d} ${t.h}:${t.m} CET\n`;
    }
 
-   return { check: _make, file: _file, content: _content };
+   return { check: make, file: file, content: content };
 };
 
 exports.humansTxt = humansTxt;
@@ -298,7 +286,7 @@ const sourcemapsCheck = function () {
    // header breaks sourcemaps
    let header = headerCheck();
    let sourcemaps = false;
-   if (!header.check && proj.config.build.env === "dev") {
+   if (!header.check && proj.config.build.env === 'dev') {
       sourcemaps = true;
    }
 
@@ -321,29 +309,29 @@ exports.rem = remove;
 // error handler for gulp-plumber, using gulp-notify
 const plumberErrHandler = function (error) {
    notify.onError({
-      title: "Gulp: Error in " + error.plugin,
-      message: "<%= error.message %>",
+      title: 'Gulp: Error in ' + error.plugin,
+      message: '<%= error.message %>',
    })(error);
-   this.emit("end");
+   this.emit('end');
 };
 
 exports.errHandler = plumberErrHandler;
 
 // Create a cacheBust file (JSON)
-// _key is a key in the JSON, named after the file type (js|css|...) where it's used
-const cacheBust = function (_key) {
+// key is a key in the JSON, named after the file type (js|css|...) where it's used
+const cacheBust = function (key) {
    // get the time
-   let _t = getTime();
+   let t = getTime();
 
    // cacheBust contents (modification time)
-   let _content = `${_t.y}${_t.mn}${_t.d}${_t.h}${_t.m}${_t.s}`;
+   let content = `${t.y}${t.mn}${t.d}${t.h}${t.m}${t.s}`;
 
    // get absolute path to the cache bust file
    let filePath = path.resolve(proj.files.cachebust);
 
    try {
       const file = require(filePath);
-      file[_key] = _content;
+      file[key] = content;
 
       // write file
       // JSON.stringify(file, replacer function, spaces to indent)
@@ -352,10 +340,10 @@ const cacheBust = function (_key) {
       // console.log(err);
 
       // create file
-      writeFile(filePath, "{}");
+      writeFile(filePath, '{}');
 
       const file = require(filePath);
-      file[_key] = _content;
+      file[key] = content;
 
       // write file
       // JSON.stringify(file, replacer function, spaces to indent)
@@ -371,11 +359,11 @@ const getTime = function () {
    let t = [];
 
    t.y = nd.getFullYear();
-   t.mn = ("0" + (nd.getMonth() + 1)).slice(-2);
-   t.d = ("0" + nd.getDate()).slice(-2);
-   t.h = ("0" + nd.getHours()).slice(-2);
-   t.m = ("0" + nd.getMinutes()).slice(-2);
-   t.s = ("0" + nd.getSeconds()).slice(-2);
+   t.mn = ('0' + (nd.getMonth() + 1)).slice(-2);
+   t.d = ('0' + nd.getDate()).slice(-2);
+   t.h = ('0' + nd.getHours()).slice(-2);
+   t.m = ('0' + nd.getMinutes()).slice(-2);
+   t.s = ('0' + nd.getSeconds()).slice(-2);
 
    return t;
 };
@@ -391,10 +379,10 @@ const writeFile = function (file, content) {
    let _md = fs.mkdirSync(_path.dir, { recursive: true });
 
    // then write the file
-   return fs.writeFileSync(file, content, { encoding: "utf8" }, function (err) {
+   return fs.writeFileSync(file, content, { encoding: 'utf8' }, function (err) {
       if (err) {
-         console.log("========== WRITE FILE ERROR:");
-         console.log("========== " + file);
+         console.log('========== WRITE FILE ERROR:');
+         console.log('========== ' + file);
          console.log(err);
       }
    });
