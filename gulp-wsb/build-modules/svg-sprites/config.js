@@ -10,17 +10,23 @@ const assets = _fn.serverCfg().assetsDist;
 
 const config = {
    // sprites (objects)
+   // duplicate a sprite to create a new one, then modify name and options
    sprites: {
       icons: {
          // string
-         // svg filenames become <symbol> IDs, so no two files should have the same filename
+         // svg filenames become <symbol> IDs
          src: proj.dirs.src.icons + '/svg/sprites/**/*.svg',
+
          // string or array
          // full path(s), with filenames as well
          dest: [
             assets + '/icons/svg/sprites/sprite-icons.svg',
             proj.dirs.src.html + '/svg/sprite-icons.njk',
          ],
+
+         // boolean
+         // remove <?xml ?> and DOCTYPE from svg
+         removeDocType: true,
       },
    },
 

@@ -52,16 +52,28 @@ const watcher = function () {
 
 // main task
 const main = function (cb) {
-    const sprites = Object.values(config.sprites);
-    const spritesCount = sprites.length;
+    const spriteName = Object.keys(config.sprites);
+    const sprite = Object.values(config.sprites);
+    const spritesCount = sprite.length;
+    let parsePath; // dir name for ID prefix
 
     // process all sprites
     for (let i = 0; i < spritesCount; i++) {
-        let sourceFiles = _fn.src(sprites[i].src, { allowEmpty: true })
-            // clean filenames, they will be svg (symbol) ID's
+        let sourceFiles = _fn.src(sprite[i].src, {
+            base: proj.dirs.src.root,
+            allowEmpty: true,
+        })
+            .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
+            // clean and prefix filenames, they will be svg (symbol) ID's
             .pipe(_fn.ren(function (file) {
+                // dir name for ID prefix
+                parsePath = _fn.path.parse(file.dirname).base + '-';
+
                 // remove spaces and prefix files
-                file.basename = 'icon-' + file.basename.split(' ').join('_');
+                file.basename = spriteName + '-' +
+                    parsePath.split(' ').join('_') +
+                    file.basename.split(' ').join('_');
+
                 // remove unwanted characters
                 file.basename = file.basename.replace(
                     /\!|\@|\#|\$|\%|\^|\&|\(|\)|\+|\=|\[|\]|\{|\}|\'|\"|\,|\./gi, ''
@@ -70,14 +82,14 @@ const main = function (cb) {
                 return file;
             }))
             .pipe(svgmin(config.minification))
-            .pipe(svgstore());
+            .pipe(svgstore({ inlineSvg: sprite[i].removeDocType }));
 
         // if multiple destinations
-        if (Array.isArray(sprites[i].dest)) {
-            let destCount = sprites[i].dest.length;
+        if (Array.isArray(sprite[i].dest)) {
+            let destCount = sprite[i].dest.length;
 
             for (let j = 0; j < destCount; j++) {
-                let pathInfo = _fn.path.parse(sprites[i].dest[j]);
+                let pathInfo = _fn.path.parse(sprite[i].dest[j]);
 
                 sourceFiles
                     // rename sprite
@@ -88,7 +100,7 @@ const main = function (cb) {
                     .pipe(_fn.dest(pathInfo.dir + '/'));
             }
         } else {
-            let pathInfo = _fn.path.parse(sprites[i].dest);
+            let pathInfo = _fn.path.parse(sprite[i].dest);
             sourceFiles
                 // rename sprite
                 .pipe(_fn.ren({
