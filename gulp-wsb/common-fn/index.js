@@ -7,10 +7,12 @@ const proj = require('../project-config');
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const projectRoot = process.cwd();
 
 exports.fs = fs;
 exports.path = path;
 exports.glob = glob;
+exports.projectRoot = projectRoot;
 
 // ============== G U L P ============== \\
 const { gulp, src, dest, watch, series, parallel } = require('gulp');
@@ -18,6 +20,7 @@ const sharp = require('sharp');
 const plumber = require('gulp-plumber');
 const del = require('del');
 const ren = require('gulp-rename');
+const admZip = require('adm-zip');
 const smaps = require('gulp-sourcemaps');
 const concat = require('gulp-concat');
 const gulpif = require('gulp-if');
@@ -41,6 +44,7 @@ exports.sharp = sharp;
 exports.plumber = plumber;
 exports.del = del;
 exports.ren = ren;
+exports.admZip = admZip;
 exports.smaps = smaps;
 exports.concat = concat;
 exports.gulpif = gulpif;
@@ -49,169 +53,6 @@ exports.gulptodo = gulptodo;
 exports.merge2 = merge2;
 exports.browserSync = browserSync;
 exports.spawn = spawn;
-
-// ============== S E R V E R ============== \\
-const serverCfg = function () {
-   // WordPress theme directory
-   const wpDir = '/wp-content/themes/' + proj.config.wpThemeInfo.themeFolderName;
-   // output dir for html file
-   let htmlDist;
-   // used in assetsForNunjucks (Nunjucks module - for global variables)
-   let assetsReference;
-
-   if (proj.config.build.type === 1) {
-      // static page design
-      htmlDist = proj.dirs.siteRoot;
-      assetsReference = '';
-   } else if (proj.config.build.type === 2) {
-      // design with WordPress
-      // 1. server is configured to proxy a domain
-      // 2. assets in html (e.g. logo image src) point to assets in the WP theme dir
-      htmlDist = proj.dirs.siteRoot + wpDir;
-      assetsReference = wpDir;
-   }
-
-   // assets dist dir
-   const assetsDist = htmlDist + '/' + proj.config.dirname.dist;
-   // same dir as assetsDist but for usage with nunjucks module (for global variables)
-   const assetsForNunjucks = assetsReference + '/' + proj.config.dirname.dist;
-
-   // server and proxy cannot be both defined at the same time
-   let _proxy = undefined;
-   let _server = proj.dirs.siteRoot;
-   // static page design
-   let _index = proj.config.build.serve;
-
-   // design with WordPress
-   if (proj.config.build.type === 2) {
-      // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
-      // to be able to inject CSS/JS, and stream/reload page on save
-      _proxy = proj.config.build.proxy;
-      _server = false;
-      _index = false;
-   }
-
-   cfg = {
-      server: _server, // start server in folder
-      proxy: _proxy, // proxy a site (or XAMPP virtual host), default: undefined
-      index: _index, // file to serve as site index
-      host: null, // Type: String, Default: null - Override host detection if you know the correct IP to use (e.g. '192.168.42.95')
-      ghostMode: false, // 'true' mirrors interactions in other browsers
-      online: true, // online: true - will not attempt to determine your network status, assumes you're online.
-      open: true, // 'external' or 'local', to open in browser(s)
-      browser: [
-         /* 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */
-      ], // browsers to open the homepage (exe filenames)
-      notify: false, // browsersync notification on load/reload in the browser window
-      logConnections: true, // Display connected browsers.
-      timestamps: false, // Append timestamps to injected files
-   };
-
-   return {
-      config: cfg,
-      htmlDist: htmlDist,
-      assetsDist: assetsDist,
-      assetsForNunjucks: assetsForNunjucks,
-   };
-};
-
-exports.serverCfg = serverCfg;
-
-const startServer = function () {
-   let cfg = serverCfg().config;
-   browserSync.init(cfg);
-};
-
-exports.startServer = startServer;
-
-const reloadPage = function (cb) {
-   browserSync.reload();
-
-   cb();
-};
-
-exports.reloadPage = reloadPage;
-
-
-// =============== WORDPRESS SCREENSHOT AND CSS ================ \\
-/* Theme Screenshot
-https://codex.wordpress.org/Theme_Development#Screenshot
-
-Create a screenshot for your theme. The screenshot should be named screenshot.png, and should be placed in the top level
-directory. The screenshot should accurately show the theme design and saved in PNG format. While .jpg, .jpeg, and .gif
-are also valid extensions and file formats for the screenshot, they are not recommended.
-
-The recommended image size is 1200px wide by 900px tall. The screenshot will usually be shown smaller but the over-sized
-image allows for high-resolution viewing on HiDPI displays. Note that because the Manage Themes screen is responsive,
-the top and bottom of the screenshot image might not be viewable so keep graphics near the center. */
-const wpScreenshotContent = function () {
-   return `<svg viewbox="0 0 1200 900" width="1200" height="900" xmlns="http://www.w3.org/2000/svg"><style>.screenshot-title, .screenshot-description { display: block; fill: rgb(238, 238, 238); white-space: nowrap; text-anchor: middle; dominant-baseline: middle; }
-.screenshot-title { font: bold 80px sans-serif; }
-.screenshot-description { font: 28px sans-serif; }
-.screenshot-bgd { width: 100%; height: 100%; fill: #112266; stroke: none; }</style>
-<rect x="0" y="0" width="1200" height="900" fill="#112266" />
-<text x="50%" y="46%" class="screenshot-title">${proj.config.project.name}</text>
-<text x="50%" y="54%" class="screenshot-description">${proj.config.project.description}</text></svg>`;
-}
-
-// style.css that contains theme info
-const wpInfoCssContent = function () {
-   return `/*
-Theme Name: ${proj.config.project.name}
-Theme URI: ${proj.config.project.domain}
-Description: ${proj.config.project.description}
-Author: ${proj.config.wpThemeInfo.authorName}
-Author URI: ${proj.config.wpThemeInfo.authorUrl}
-Version: ${proj.config.wpThemeInfo.themeVersion}
-*/`;
-}
-
-// write style.css that contains theme info
-const wpInfoCss = function (servCfg) {
-   let content = wpInfoCssContent();
-   writeFile(servCfg.htmlDist + '/style.css', content);
-}
-
-// convert svg from above to png and save the screenshot
-// later create the real theme screenshot and replace this one manually
-const wpScreenshot = async function (servCfg) {
-   let content = wpScreenshotContent();
-   const screenshotSvg = servCfg.htmlDist + '/screenshot.svg';
-
-   writeFile(screenshotSvg, content);
-
-   try {
-      const makeScreenShotPng = await sharp(screenshotSvg, { density: 300 })
-         .resize(1200, 900, { fit: 'cover' })
-         .toFormat('png')
-         .toFile(servCfg.htmlDist + '/screenshot.png');
-
-      if (fs.existsSync(screenshotSvg)) {
-         del.sync([screenshotSvg]);
-      }
-   } catch (err) {
-      console.log(err);
-   }
-}
-
-// initialise wp theme if developing for wp
-const wpInit = function () {
-   let servCfg = serverCfg();
-
-   // make files if they do not exist and we're developing for wp
-   if (proj.config.build.type === 2) {
-      if (
-         !fs.existsSync(servCfg.htmlDist + '/screenshot.png') ||
-         !fs.existsSync(servCfg.htmlDist + '/style.css')
-      ) {
-         wpInfoCss(servCfg);
-         wpScreenshot(servCfg);
-      }
-   }
-}
-
-exports.wpInit = wpInit;
-
 
 // ============== C O M M O N   F U N C T I O N S ============== \\
 // signal task end to the developer
@@ -265,8 +106,13 @@ const humansTxt = function () {
       // get the time
       let t = getTime();
 
+      // Write BOM
+      // "UTF-8 might not require a BOM in sane OSes and apps, but under Windows it just about always does." from:
+      // https://stackoverflow.com/questions/13859218/nodejs-how-to-make-function-fs-writefile-write-with-bom
+      content = '\ufeff';
+
       // file contents
-      content = proj.developerInfo.humans;
+      content += proj.developerInfo.humans;
 
       // last update time
       content += `${t.y}/${t.mn}/${t.d} ${t.h}:${t.m} CET\n`;
@@ -291,13 +137,12 @@ const sourcemapsCheck = function () {
 
 exports.sourcemapsCheck = sourcemapsCheck;
 
+// TODO: remove this, use del
 // delete file/folder
-const remove = function (path, cb) {
+const remove = function (path) {
    if (fs.existsSync(path)) {
       del.sync([path]);
    }
-
-   cb();
 };
 
 exports.rem = remove;
@@ -374,7 +219,7 @@ const writeFile = function (file, content) {
    // make dir
    let _md = fs.mkdirSync(_path.dir, { recursive: true });
 
-   // then write the file
+   // write the file
    return fs.writeFileSync(file, content, { encoding: 'utf8' }, function (err) {
       if (err) {
          console.log('========== WRITE FILE ERROR:');
@@ -385,3 +230,118 @@ const writeFile = function (file, content) {
 };
 
 exports.writeFile = writeFile;
+
+const cleanString = function (str) {
+   return str.toLowerCase().replace(
+      // remove symbols
+      /\!|\?|\/|\\|\<|\>|\;|\:|\@|\#|\$|\%|\^|\&|\+|\=|\(|\)|\[|\]|\{|\}|\'|\"|\,/gi,
+      ''
+   );
+};
+
+exports.cleanString = cleanString;
+
+// str = string to modify
+// separator = where to split words
+// joiner = join words with
+function makeTitleCase(string, separator = ' ', joiner = ' ') {
+   let words = string.split(separator);
+   const wordsCount = words.length;
+
+   for (let i = 0; i < wordsCount; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+   }
+
+   return words.join(joiner);
+}
+
+exports.makeTitleCase = makeTitleCase;
+
+// ============== S E R V E R ============== \\
+const serverCfg = function (textDomain) {
+   // WordPress theme directory
+   let wpDirName = textDomain ? textDomain : '';
+   let wpDir = '';
+   // output dir for html file
+   let htmlDist = '';
+   // used in assetsForNunjucks (Nunjucks module - for global variables)
+   let assetsReference = '';
+
+   if (proj.config.build.type === 'static') {
+      // static page design
+      htmlDist = proj.dirs.siteRoot;
+      assetsReference = '';
+   } else if (proj.config.build.type === 'wp') {
+      // design with WordPress
+      // 1. server is configured to proxy a domain
+      // 2. output dir is set to theme dir
+      // 3. assets in html point to assets in the WP theme dir, but
+      // you will still use get_template_directory_uri() etc.
+
+      // WordPress theme directory
+      wpDir = textDomain ? '/wp-content/themes/' + wpDirName : '';
+      htmlDist = proj.dirs.siteRoot + wpDir;
+      assetsReference = wpDir;
+   }
+
+   // assets dist dir
+   const assetsDist = htmlDist + '/' + proj.config.dirname.dist;
+   // same dir as assetsDist but for usage with nunjucks module (for global variables)
+   const assetsForNunjucks = assetsReference + '/' + proj.config.dirname.dist;
+
+   // server and proxy cannot be both defined at the same time
+   let _proxy = undefined;
+   let _server = proj.dirs.siteRoot;
+   // static page design
+   let _index = proj.config.build.serve;
+
+   // design with WordPress
+   if (proj.config.build.type === 'wp') {
+      // proxy a domain, e.g. dev-yourdomain.com (local WordPress),
+      // to be able to inject CSS/JS, and stream/reload page on save
+      _proxy = proj.config.build.proxy;
+      _server = false;
+      _index = false;
+   }
+
+   cfg = {
+      server: _server, // start server in folder
+      proxy: _proxy, // proxy a site (or XAMPP virtual host), default: undefined
+      index: _index, // file to serve as site index
+      host: null, // Type: String, Default: null - Override host detection if you know the correct IP to use (e.g. '192.168.42.95')
+      ghostMode: false, // 'true' mirrors interactions in other browsers
+      online: true, // online: true - will not attempt to determine your network status, assumes you're online.
+      open: true, // 'external' or 'local', to open in browser(s)
+      browser: [
+         /* 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */
+      ], // browsers to open the homepage (exe filenames)
+      notify: false, // browsersync notification on load/reload in the browser window
+      logConnections: true, // Display connected browsers.
+      timestamps: false, // Append timestamps to injected files
+   };
+
+   return {
+      config: cfg,
+      htmlDist: htmlDist,
+      assetsDist: assetsDist,
+      assetsForNunjucks: assetsForNunjucks,
+      wpDirName: wpDirName,
+   };
+};
+
+exports.serverCfg = serverCfg;
+
+const startServer = function () {
+   let cfg = serverCfg().config;
+   browserSync.init(cfg);
+};
+
+exports.startServer = startServer;
+
+const reloadPage = function (cb) {
+   browserSync.reload();
+
+   cb();
+};
+
+exports.reloadPage = reloadPage;

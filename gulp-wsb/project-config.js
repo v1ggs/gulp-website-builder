@@ -6,26 +6,17 @@ const config = {
       name: 'Igor Vracar Personal Web Site',
       // project description
       description: 'Web design and Front-end igorvracar.com',
-      // project domain WITHOUT 'https://www.'
-      domain: 'igorvracar.com',
-   },
-
-   // set if developing a wordpress theme, otherwise not important
-   // all: string | false
-   wpThemeInfo: {
-      themeFolderName: 'igorvracar.com',
-      authorName: 'vIGGS (Igor Vračar)',
-      authorUrl: 'https://www.igorvracar.com',
-      themeVersion: 'v1',
+      // project's (site's) domain
+      domain: 'https://www.igorvracar.com',
    },
 
    build: {
       // environment: 'dev' or 'prod'
       // dev does not minify css and js, displays console logs, creates sourcemaps, does not add developer header in css and js etc.
-      env: 'prod',
-      // build type: 1: static page, 2: design with WordPress
-      type: 2,
-      // if type === 1 - serve page file
+      env: 'dev',
+      // build type: 'static': static page; 'wp': design with WordPress
+      type: 'wp',
+      // if type === 1 - serve a file you want to preview in browser
       // string (e.g. 'index.html')
       serve: 'index.html',
       // if type === 2 - to be able to stream CSS or reload page on HTML/JS save, proxy local WordPress site, e.g. dev-yourdomain.com (with xampp or similar local server, because browsersync can not serve php files)
@@ -44,7 +35,7 @@ const config = {
       // public_html, htdocs etc.
       public_html: 'public_html',
    },
-}
+};
 
 const dirs = {
    // site's (not project's) root
@@ -58,11 +49,12 @@ const dirs = {
       javascript: './' + config.dirname.source + '/js',
       images: './' + config.dirname.source + '/img',
       icons: './' + config.dirname.source + '/icons',
+      wordpress: './' + config.dirname.source + '/wp',
    },
 
    // output dirs are configured programatically, depending on the config.build.type
-   // just set config.dirname.dist and config.dirname.public_html properly
-}
+   // just set "config.dirname.dist" and "config.dirname.public_html" properly
+};
 
 // (string | false)
 const files = {
@@ -75,7 +67,7 @@ const files = {
 
    // humans.txt file (https://humanstxt.org)
    humansTxt: dirs.siteRoot + '/humans.txt',
-}
+};
 
 const developerInfo = {
    // processed only when "config.build.env: 'prod'" in project-config.js
@@ -93,7 +85,7 @@ const developerInfo = {
    // humans.txt content, if build.humans === true
    humans:
       `/* AUTHOR */\n` +
-      `     Web Design/Front-end/WordPress: vIGGS\n` +
+      `     Web Design/Front-end/WordPress: vIGGS (Igor Vračar)\n` +
       `     Location: Banja Luka, Bosnia and Herzegovina\n` +
       `     Website: https://www.igorvracar.com\n` +
       `     Github: https://github.com/v1ggs\n` +
@@ -107,10 +99,10 @@ const developerInfo = {
       `     Launched: 2020\n` +
       `     Standards: HTML5, CSS3\n` +
       `     Language: English\n` +
-      `     Built With: HTML5 (Nunjucks), CSS3 (SCSS), JavaScript, PHP, WordPress, .htaccess\n` +
+      `     Built With: HTML5 (Nunjucks), CSS3 (SCSS), JavaScript (vanilla), PHP, WordPress, .htaccess\n` +
       `     Software: VSCode, Gulp (task runner), Filezilla\n` +
       `     Last Update: `, // the 'last update' time is created programmatically. To change time format, edit content variable in humansTxt function, in the common-fn index.js file.
-}
+};
 
 exports.config = config;
 exports.dirs = dirs;

@@ -1,11 +1,9 @@
 // ********* DO NOT MODIFY THIS FILE UNLESS IT'S NECESSARY ************ \\
 // ********* FIND ALL SETTINGS IN THE CONFIG FILE ********************* \\
 
-
 // ============== C O N F I G ============== \\
 const proj = require('./project-config');
 const _fn = require('./common-fn');
-
 
 // ============== A L L   T A S K S ============== \\
 // set dir for watcher
@@ -17,6 +15,7 @@ const watchGulpCfg = [
    './gulpfile.js',
    './' + gulpCfg + '/**/*.js',
    './.browserslistrc',
+   './.babelrc',
 ];
 
 const allTasks = function (cb) {
@@ -32,66 +31,114 @@ const allTasks = function (cb) {
    // start browsersync
    _fn.startServer();
 
-   // if developing for wordpress, initialise wp theme
-   _fn.wpInit();
-
    // ****************************************************************** \\
    // ************************* M O D U L E S ************************** \\
    // ****************************************************************** \\
    // ********************** ADD ALL MODULES HERE ********************** \\
    // ****************************************************************** \\
 
+   // WORDPRESS
+   try {
+      let wp = require('./build-modules/wp');
+      // if developing for wordpress, initialise wp theme
+      // make required folder and files for the theme
+      wp.wpInit();
+      // watch files for changes
+      _fn.watch(wp.watch, { events: 'all' }, wp.build);
+   } catch (err) {
+      console.log('========== WORDPRESS module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
+
    // NUNJUCKS
    try {
       let njk = require('./build-modules/nunjucks');
       // watch files for changes
-      _fn.watch(njk.watch, { events: "all" }, njk.build);
-   } catch (err) { console.log(err); }
+      _fn.watch(njk.watch, { events: 'all' }, njk.build);
+   } catch (err) {
+      console.log('========== NUNJUCKS module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
 
    // SCSS
    try {
       let scss = require('./build-modules/scss');
       // watch files for changes
-      _fn.watch(scss.watch, { events: "all" }, scss.build);
-   } catch (err) { console.log(err); }
+      _fn.watch(scss.watch, { events: 'all' }, scss.build);
+   } catch (err) {
+      console.log('========== SCSS module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
 
    // JS
    try {
       let js = require('./build-modules/javascript');
       // watch files for changes
-      _fn.watch(js.watch, { events: "all" }, js.build);
-   } catch (err) { console.log(err); }
+      _fn.watch(js.watch, { events: 'all' }, js.build);
+   } catch (err) {
+      console.log('========== JAVASCRIPT module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
 
    // IMG
    try {
       let images = require('./build-modules/images');
       // watch files for changes
-      _fn.watch(images.watch, { events: "all" }, images.build);
-   } catch (err) { console.log(err); }
+      _fn.watch(images.watch, { events: 'all' }, images.build);
+   } catch (err) {
+      console.log('========== IMAGES module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
 
    // SVG SPRITES
    try {
       let svgSprites = require('./build-modules/svg-sprites');
       // watch files for changes
-      _fn.watch(svgSprites.watch, { events: "all" }, svgSprites.build);
-   } catch (err) { console.log(err); }
+      _fn.watch(svgSprites.watch, { events: 'all' }, svgSprites.build);
+   } catch (err) {
+      console.log('========== SVG SPRITES module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
 
    // FILECOPY
    try {
       let fc = require('./build-modules/filecopy');
       // watch files for changes
-      _fn.watch(fc.watch, { events: "all" }, fc.filecopy);
-   } catch (err) { console.log(err); }
+      _fn.watch(fc.watch, { events: 'all' }, fc.filecopy);
+   } catch (err) {
+      console.log('========== FILECOPY module:');
+      console.log('========== Something went wrong or module not found...');
+      console.log('==========');
+      // uncomment to debug
+      // console.log(err);
+   }
 
    // ****************************************************************** \\
    // ****************************************************************** \\
    // ****************************************************************** \\
-
 
    // GULP CONFIG FILES - Stop current task on file change
    _fn.watch(watchGulpCfg, function (cb) {
       console.log('==========');
-      console.log('========== STOPPING THE CURRENT TASK...');
+      console.log('========== STOPPING CURRENT TASK...');
       console.log('==========');
       cb();
       process.exit();
@@ -99,7 +146,7 @@ const allTasks = function (cb) {
 
    console.info('\x07'); // sound
    cb();
-}
+};
 
 // Restart allTasks - use this in gulpfile.js
 const gulpDefault = function (cb) {
@@ -115,7 +162,7 @@ const gulpDefault = function (cb) {
 
       cb();
    }
-}
+};
 
 // the default task in gulpfile.js
 exports.run = gulpDefault;

@@ -26,7 +26,7 @@ const manageEnvironment = function (environment) {
    environment.addGlobal('project', {
       name: proj.config.project.name,
       desription: proj.config.project.description,
-      domain: 'https://www.' + proj.config.project.domain, // notice 'https'
+      domain: proj.config.project.domain,
    });
 
    // assets folders, use like e.g. 'src="{{ assets.css }}/style.min.css"'

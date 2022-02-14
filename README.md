@@ -12,7 +12,8 @@
 
 ## GNU GENERAL PUBLIC LICENSE
 
-> THIS IS A LICENSE FOR OTHER SOFTWARE (LIKE A MODIFIED VERSION OF THIS SOFTWARE) THAT INCLUDES THIS SOFTWARE OR ITS PARTS. YOU DO NOT HAVE TO LICENSE SITES MADE WITH THIS SOFTWARE WITH THIS SAME LICENSE, OF COURSE.
+> **_YOU DO NOT HAVE TO LICENSE SITES MADE WITH THIS SOFTWARE WITH THIS SAME LICENSE, OF COURSE._**
+> THIS LICENSE IS FOR DERIVATIVE SOFTWARE, LIKE A MODIFIED VERSION OF THIS SOFTWARE OR A SOFTWARE THAT INCLUDES THIS CODE OR ITS PARTS.
 
 ---
 
@@ -37,7 +38,7 @@
 ## GENERAL INFO
 
 > If you want to use this repository it is required that you're familiar with Gulp and Javascript.
-> It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
+> It is also recommended that you're familiar with the node modules it uses.
 
 ---
 
@@ -49,7 +50,7 @@
 
 ---
 
-> If you're developing with WordPress, you have to have a local WordPress site (with local server, like XAMPP) to proxy it with browsersync, because browsersync can't serve php. The settings for that are made automatically, just edit the project config.
+> If you're developing with WordPress, you have to have a local WordPress site (with local server, like XAMPP) to proxy it with browsersync, because browsersync can't serve php. The settings for that are made automatically, just edit the project and wp config.
 
 ---
 
@@ -73,15 +74,23 @@
 ### General
 
 -  [easily add or remove modules](#addremove-a-module) (add your HTML processor instead of nunjucks)
--  possibility to proxy a domain (e.g. from local server), when working with php/wordpress (config-project.js > config.build.type 2)
--  develop a static page (config-project.js > config.build.type 1) or a design for wordpress (config-project.js > config.build.type 2) - wp theme is initialised automatically - directory, screenshot and style.css
+-  possibility to proxy a domain (e.g. from local server), when working with php/wordpress (config-project.js > config.build.type 'wp')
+-  develop a static page (config-project.js > config.build.type 'static') or with wordpress (config-project.js > config.build.type 'wp') - wp theme is initialised automatically - directory, index.php, screenshot and style.css
 -  process Nunjucks, SCSS, JavaSript, images, minify and inline svg, create svg sprites
 -  copy (to assets) files that don't have to be processed, e.g. fonts, sounds... so all source files can be in one place (src dir)
 -  'dev' and 'prod' mode: control minification, dev headers, sourcemaps, leave/remove js console logs etc.
 -  sourcemaps (SCSS and JS)
 -  create [humans.txt](https://humanstxt.org/) file
--  notification on plugin errors (so you don't have to keep the console open)
+-  \* notification on plugin errors (so you don't have to keep the console open)
 -  sound on task completion (so you don't have to keep the console open)
+
+---
+
+> \* Windows 10 Note: <br>
+> You might have to activate banner notification for the toast to show.<br>
+> You can make it work by going to System > Notifications & Actions. The 'toast' app needs to have Banners enabled. (You can activate banners by clicking on the 'toast' app and setting the 'Show notification banners' to On)
+
+---
 
 ### Gulp
 
@@ -99,6 +108,17 @@
 
 > Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src="/main.js?20211010212110").
 > Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
+
+### Wordpress
+
+-  unzip automatically [underscores theme template](https://underscores.me)
+-  replace placeholder slug and text-domain automatically, in all files, if required
+-  theme is initialised automatically - create theme folder, index.php, screenshot placeholder and style.css
+-  copy on change configured files to the destination
+-  populate all TODOs and FIXMEs from .php files into LOG-TODO-WP.txt, in the project root
+-  update [humans.txt](https://humanstxt.org/) on each build
+-  notification on plugin errors (so you don't have to keep the console open)
+-  sound on task completion (so you don't have to keep the console open)
 
 ### SCSS
 
@@ -180,7 +200,7 @@ Place this repository in your project root directory. File/folder structure shou
 
 -  .git
 -  .vscode
--  htdocs (will be created)
+-  htdocs (will be created and named from the config)
    -  assets
    -  humans.txt
    -  ... (other files/folders)
@@ -189,6 +209,7 @@ Place this repository in your project root directory. File/folder structure shou
    -  common-fn
    -  index.js
    -  project-config.js
+-  node_modules
 -  src
    -  img
    -  js
@@ -197,6 +218,8 @@ Place this repository in your project root directory. File/folder structure shou
    -  ... (other files/folders)
 -  gulpfile.js
 -  LICENSE
+-  package.json
+-  package-lock.json
 -  README.md
 
 ### Gulp-cli has to be installed globally
@@ -208,7 +231,7 @@ npm install --global gulp-cli
 ### General Node Modules
 
 ```cmd
-npm install --save-dev gulp gulp-plumber del gulp-rename gulp-sourcemaps gulp-concat gulp-if gulp-header gulp-todo merge2 sharp browser-sync gulp-notify
+npm install --save-dev gulp gulp-plumber adm-zip del gulp-rename gulp-sourcemaps gulp-concat gulp-if gulp-header gulp-todo merge2 sharp browser-sync gulp-notify
 ```
 
 ### All other Node Modules
@@ -251,7 +274,7 @@ It is also possible to add your own module for a specific language:
 3. The `gulpfile.js` file is already set:
 
    ```javascript
-   const gwsb = require("./gulp-wsb");
+   const gwsb = require('./gulp-wsb');
    exports.default = gwsb.run;
    ```
 
@@ -276,7 +299,8 @@ Each module has a README with usage information.
 
 ## LICENSE
 
-> THIS IS A LICENSE FOR OTHER SOFTWARE (LIKE A MODIFIED VERSION OF THIS SOFTWARE) THAT INCLUDES THIS SOFTWARE OR ITS PARTS. YOU DO NOT HAVE TO LICENSE SITES MADE WITH THIS SOFTWARE WITH THIS SAME LICENSE, OF COURSE.
+> **_YOU DO NOT HAVE TO LICENSE SITES MADE WITH THIS SOFTWARE WITH THIS SAME LICENSE, OF COURSE._**
+> THIS LICENSE IS FOR DERIVATIVE SOFTWARE, LIKE A MODIFIED VERSION OF THIS SOFTWARE OR A SOFTWARE THAT INCLUDES THIS CODE OR ITS PARTS.
 
 ---
 

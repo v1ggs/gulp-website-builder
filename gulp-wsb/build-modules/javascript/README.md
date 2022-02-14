@@ -5,7 +5,7 @@
 ## GENERAL INFO
 
 > If you want to use this repository it is required that you're familiar with Gulp and Javascript.
-> It is also recommended that you're familiar (perhaps not in depth) with the node modules it uses.
+> It is also recommended that you're familiar with the node modules it uses.
 
 ---
 
