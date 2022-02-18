@@ -260,8 +260,7 @@ exports.makeTitleCase = makeTitleCase;
 // ============== S E R V E R ============== \\
 const serverCfg = function (textDomain) {
    // WordPress theme directory
-   let wpDirName = textDomain ? textDomain : '';
-   let wpDir = '';
+   let wpDirName, wpDir;
    // output dir for html file
    let htmlDist = '';
    // used in assetsForNunjucks (Nunjucks module - for global variables)
@@ -279,6 +278,7 @@ const serverCfg = function (textDomain) {
       // you will still use get_template_directory_uri() etc.
 
       // WordPress theme directory
+      wpDirName = textDomain ? textDomain : '';
       wpDir = textDomain ? '/wp-content/themes/' + wpDirName : '';
       htmlDist = proj.dirs.siteRoot + wpDir;
       assetsReference = wpDir;

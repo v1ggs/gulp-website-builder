@@ -3,17 +3,31 @@
 /* *************************************************** */
 // project config
 const proj = require('../../project-config.js');
-// common functions for _fn.serverCfg()
-const _fn = require('../../common-fn');
-const serverCfg = _fn.serverCfg();
 // src dir
 const _src = proj.dirs.src.wordpress;
 /* *************************************************** */
 
 const files = {
    // array
-   // copy these files on modification
+   // copy these files
+   // use negative globs to exclude ('!**/*.ext)
+   // files from concatenate are automatically excluded
    copy: [_src + '/**/*.php', _src + '/**/*.pot'],
+
+   // array
+   // concatenate these files
+   // use filenames or folders to make them
+   // concatenate in a specific order
+   concatenate: {
+      // filename (copy-paste to add more files)
+      functions: {
+         // string - source files
+         src: _src + '/functions/**/*.php',
+         // string - folder name (NOT full path) in destination
+         // leave empty for default destination dir
+         dest: '',
+      },
+   },
 };
 
 const underscores = {

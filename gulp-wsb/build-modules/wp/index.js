@@ -367,10 +367,70 @@ const todos = function (cb) {
    cb();
 };
 
+// TASK concatenate files
+// WARNING: this will remove all occurences of '<?php' and '?>' in each file
+// they will be prepended/appended once to each produced file
+const concatenate = function (cb) {
+   let fileNames = Object.keys(config.files.concatenate);
+   let fileObject = Object.values(config.files.concatenate);
+   let filesCount = fileNames.length;
+
+   // for each file in concatenate config
+   for (let i = 0; i < filesCount; i++) {
+      let content = '<?php\n';
+
+      // get all files with glob.sync - returns array
+      let processFiles = _fn.glob
+         .sync(fileObject[i].src)
+         // process each file from node's glob.sync
+         .forEach((file) => {
+            // read file's text content
+            let fileContent = _fn.fs.readFileSync(file, 'utf8');
+            fileContent =
+               // append new line to each file
+               (fileContent + '\n')
+                  // remove '<?php' and '?>' from content
+                  .replaceAll(/\<\?php|\?\>/gi, '')
+                  // remove multiple new lines
+                  .replace(/(\r\n|\r|\n){2,}/g, '\n');
+            // remove last occurence of '?>' in content
+            // fileContent = fileContent.replace(/\?\>([^?>]*)$/, '$1');
+
+            // prepend once '<?php\n'
+            // then append all subsequent file contents
+            content += fileContent;
+         });
+
+      // when all processed, append '?>'
+      content += '\n?>';
+
+      let filename = fileNames[i] + '.php';
+      let outDir = fileObject[i].dest !== '' ? '/' + fileObject[i].dest : '';
+
+      let writeFile = _fn.writeFile(
+         `${allData.serverConfig.htmlDist}${outDir}/${filename}`,
+         content
+      );
+   }
+
+   cb();
+};
+
 // TASK main
 const main = function () {
+   let fileObject = Object.values(config.files.concatenate);
+   let exlSrc = [];
+
+   fileObject.forEach((file) => {
+      exlSrc.push('!' + file.src);
+   });
+
+   let srcFiles = `${config.files.copy.join(',')},${exlSrc.join(',')}`.split(
+      ','
+   );
+
    return _fn
-      .src(config.files.copy, { allowEmpty: true })
+      .src(srcFiles, { allowEmpty: true })
       .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
       .pipe(_fn.dest(allData.serverConfig.htmlDist));
 };
@@ -379,6 +439,7 @@ const main = function () {
 exports.build = _fn.series(
    consoleInfo,
    main,
+   concatenate,
    _fn.parallel(_fn.reloadPage, humans),
    todos, // todo takes too long (> 1sec) if in parallel with others
    _fn.endSound

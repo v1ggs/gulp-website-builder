@@ -83,13 +83,13 @@
 -  'dev' and 'prod' mode: control minification, dev headers, sourcemaps, leave/remove js console logs etc.
 -  sourcemaps (SCSS and JS)
 -  create [humans.txt](https://humanstxt.org/) file
--  \* notification on plugin errors (so you don't have to keep the console open)
+-  notification on plugin errors (so you don't have to keep the console open) (see :information_source: below)
 -  sound on task completion (so you don't have to keep the console open)
 
 ---
 
-> \* Windows 10 Note: <br>
-> You might have to activate banner notification for the toast to show.<br>
+> :information_source: Windows 10 Note:\
+> You might have to activate banner notification for the toast to show.\
 > You can make it work by going to System > Notifications & Actions. The 'toast' app needs to have Banners enabled. (You can activate banners by clicking on the 'toast' app and setting the 'Show notification banners' to On)
 
 ---
@@ -106,11 +106,18 @@
 -  unzip automatically [underscores theme template](https://underscores.me)
 -  replace placeholder slug and text-domain automatically, in all files, if required
 -  theme is initialised automatically - create theme folder, index.php, screenshot placeholder and style.css
--  copy on change configured files to the destination
+-  copy files to the destination on any file change
+-  concatenate files (see :information_source: below)
 -  populate all TODOs and FIXMEs from .php files into LOG-TODO-WP.txt, in the project root
 -  update [humans.txt](https://humanstxt.org/) on each build
 -  notification on plugin errors (so you don't have to keep the console open)
 -  sound on task completion (so you don't have to keep the console open)
+
+> :information_source: If you have many functions or filters that go into functions.php, that could also be documented (// commented) for usage, potential issues etc., then you can get a very long file, that is difficult to manage. That is the reason I created this option, that at first looks usless with PHP. This way you can split code in smaller files and concatenate them, to avoid unneccessary server side includes.
+
+---
+
+> :warning: **Concatenation removes all occurences of `<?php` and `?>` from each file. They will be prepended/appended to each produced file, which makes this option useful only for files that contain only php code.**
 
 ### Nunjucks
 
