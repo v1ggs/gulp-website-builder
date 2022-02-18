@@ -3,9 +3,14 @@
 const config = {
    project: {
       // project name
+      // if working with wordpress, this will be used to
+      // create theme name, text domain and theme slug
       name: 'Igor Vracar Personal Web Site',
+
       // project description
+      // if working with wordpress, this will be theme description
       description: 'Web design and Front-end igorvracar.com',
+
       // project's (site's) domain
       domain: 'https://www.igorvracar.com',
    },
@@ -14,29 +19,43 @@ const config = {
       // environment: 'dev' or 'prod'
       // dev does not minify css and js, displays console logs, creates sourcemaps, does not add developer header in css and js etc.
       env: 'dev',
+
       // build type: 'static': static page; 'wp': design with WordPress
       type: 'wp',
-      // if type === 1 - serve a file you want to preview in browser
+
+      // if type: 'static' - serve a file you want to preview in browser
       // string (e.g. 'index.html')
       serve: 'index.html',
-      // if type === 2 - to be able to stream CSS or reload page on HTML/JS save, proxy local WordPress site, e.g. dev-yourdomain.com (with xampp or similar local server, because browsersync can not serve php files)
+
+      // if type: 'wp' or output file is php - to be able to preview in browser
+      // and stream CSS or reload page on HTML/JS save,
+      // you have to proxy a local WordPress site,
+      // e.g. dev-yourdomain.com (with xampp or similar local server,
+      // because browsersync can not serve php files)
       // string (domain) or false
       proxy: 'dev-igorvracar.com',
+
       // make sound on task completion
       signalEnd: true,
    },
 
+   // these are folder names
    dirname: {
-      // source files folder name (not path)
+      // source folder name (not path) where all
+      // source files are
       source: 'src',
-      // dist folder name (not path)
+
+      // dist folder name (not path) where all
+      // processed assets go (css, js, images etc.)
       dist: 'assets',
-      // site's root folder name (folder on server exposed to the internet, not the project's root)
-      // public_html, htdocs etc.
+
+      // site's root folder name (folder on server exposed to the internet,
+      // not the project's root): public_html, htdocs etc.
       public_html: 'public_html',
    },
 };
 
+// these are full paths
 const dirs = {
    // site's (not project's) root
    siteRoot: './' + config.dirname.public_html,

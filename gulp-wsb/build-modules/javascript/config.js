@@ -5,7 +5,8 @@
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const _src = proj.dirs.src.javascript;
-const _dist = _fn.serverCfg().assetsDist;
+const textDomain = _fn.makeTextDomain(proj.config.project.name);
+const _dist = _fn.serverCfg(textDomain).assetsDist;
 /* *************************************************** */
 
 const files = {
@@ -13,7 +14,7 @@ const files = {
    watch: [_src + '/**/*.js'],
    // output folder
    output: _dist + '/js',
-}
+};
 
 // CONFIG
 const config = {
@@ -65,75 +66,85 @@ const config = {
          type: ['default', 'modulesSupport'],
 
          // {array} src files, *** order will be respected ***
-         src: [
-            _src + '/core/**/*.js',
-            _src + '/components/**/*.js',
-         ],
+         src: [_src + '/core/**/*.js', _src + '/components/**/*.js'],
 
          // {string | false|null|undefined} make dir in the dist (dir name, no slashes)
          outDir: false,
       },
    },
 
-
    // Transpilation name (key) is the filename suffix, except for the 'default', which goes without suffix.
    transpilation: {
       // These are being used in config.bundles.<bundle_name>.type array
       default: {
          compact: false, // a kind of minify
-         presets: [['@babel/env', {
-            modules: 'auto',
-            targets: [
-               '> 0.5%',
-               'last 2 versions',
-               'firefox esr',
-               'not dead',
-            ]
-         }]]
+         presets: [
+            [
+               '@babel/env',
+               {
+                  modules: 'auto',
+                  targets: [
+                     '> 0.5%',
+                     'last 2 versions',
+                     'firefox esr',
+                     'not dead',
+                  ],
+               },
+            ],
+         ],
       },
 
       // rename as required (e.g. es6)
       modulesSupport: {
          compact: false, // a kind of minify
-         presets: [['@babel/env', {
-            modules: 'auto',
-            targets: [
-               // support modules by default
-               // https://caniuse.com/?search=modules
-               'Chrome >= 61',
-               'Safari >= 11',
-               // 'Safari >= 10.1',
-               'iOS >= 11',
-               // 'iOS >= 10.3',
-               'Firefox >= 60',
-               'Edge >= 16',
-               'Opera >= 48',
+         presets: [
+            [
+               '@babel/env',
+               {
+                  modules: 'auto',
+                  targets: [
+                     // support modules by default
+                     // https://caniuse.com/?search=modules
+                     'Chrome >= 61',
+                     'Safari >= 11',
+                     // 'Safari >= 10.1',
+                     'iOS >= 11',
+                     // 'iOS >= 10.3',
+                     'Firefox >= 60',
+                     'Edge >= 16',
+                     'Opera >= 48',
+                  ],
+               },
             ],
-         }]]
+         ],
       },
 
       // rename as required (e.g. es5)
       noModulesSupport: {
          compact: false, // a kind of minify
-         presets: [['@babel/env', {
-            modules: 'auto',
-            targets: [
-               // do not support modules at all
-               // https://caniuse.com/?search=modules
-               'Chrome <= 59',
-               'Safari <= 10',
-               // 'Safari <= 10.1',
-               'iOS <= 10',
-               // 'iOS <= 10.3',
-               'Firefox <= 53',
-               'Edge <= 14',
-               'Opera <= 46',
-            ]
-         }]]
+         presets: [
+            [
+               '@babel/env',
+               {
+                  modules: 'auto',
+                  targets: [
+                     // do not support modules at all
+                     // https://caniuse.com/?search=modules
+                     'Chrome <= 59',
+                     'Safari <= 10',
+                     // 'Safari <= 10.1',
+                     'iOS <= 10',
+                     // 'iOS <= 10.3',
+                     'Firefox <= 53',
+                     'Edge <= 14',
+                     'Opera <= 46',
+                  ],
+               },
+            ],
+         ],
       },
    },
-}
-
+};
 
 exports.files = files;
 exports.config = config;

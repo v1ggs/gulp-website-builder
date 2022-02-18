@@ -5,7 +5,8 @@
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const _src = proj.dirs.src.images;
-const _dist = _fn.serverCfg().assetsDist;
+const textDomain = _fn.makeTextDomain(proj.config.project.name);
+const _dist = _fn.serverCfg(textDomain).assetsDist;
 /* *************************************************** */
 
 const files = {
@@ -15,7 +16,7 @@ const files = {
    // exclude these folders from the process and watcher (array) *** DO NOT USE NEGATIVE GLOB ***
    exclude: [_src + '/svg/sprites/**/*'],
    dist: _dist + '/img',
-}
+};
 
 const config = {
    build: {
@@ -28,7 +29,6 @@ const config = {
       // SCSS file that contains small, blurred SVG placeholder images as SCSS variables
       svgPlaceholders: true,
    },
-
 
    sizes: {
       // Add a size by duplicating and modifying an existing one
@@ -59,7 +59,6 @@ const config = {
          background: { r: 0, g: 0, b: 0, alpha: 1 }, // background when using fit:contain
       },
    },
-
 
    formats: {
       jpg: {
@@ -99,14 +98,13 @@ const config = {
             // https://github.com/svg/svgo#configuration
             // https://github.com/svg/svgo#built-in-plugins
             { name: 'preset-default', active: true },
-            { removeViewBox: false, },
+            { removeViewBox: false },
             { removeTitle: true },
             { removeDesc: true },
          ],
       },
    },
-}
-
+};
 
 exports.files = files;
 exports.config = config;

@@ -4,8 +4,9 @@
 // import project config
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
-const serverCfg = _fn.serverCfg();
-const assets = serverCfg.assetsForNunjucks; // assets links in html (global var)
+const textDomain = _fn.makeTextDomain(proj.config.project.name);
+const serverCfg = _fn.serverCfg(textDomain);
+const assets = serverCfg.assetsForNunjucks;
 const _src = proj.dirs.src.html;
 const _dist = serverCfg.htmlDist;
 /* *************************************************** */

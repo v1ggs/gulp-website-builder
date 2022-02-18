@@ -9,24 +9,6 @@ const config = require('./config.js');
 let allData;
 
 // ============== F U N C T I O N S ============== //
-const makeThemeSlug = function (str) {
-   return _fn
-      .cleanString(str)
-      .replaceAll(/-|\s|\./gi, '_')
-      .replaceAll('____', '_')
-      .replaceAll('___', '_')
-      .replaceAll('__', '_');
-};
-
-const makeTextDomain = function (str) {
-   return _fn
-      .cleanString(str)
-      .replaceAll(/_|\s|\./gi, '-')
-      .replaceAll('----', '-')
-      .replaceAll('---', '-')
-      .replaceAll('--', '-');
-};
-
 // get necessary data for the theme
 const getData = function (path) {
    if (!path) {
@@ -39,11 +21,11 @@ const getData = function (path) {
    // folder inside the zip file
    const zippedDir = parsePath.name;
    // strings to replace
-   const replaceTextDomain = makeTextDomain(zippedDir);
-   const replaceThemeSlug = makeThemeSlug(zippedDir);
+   const replaceTextDomain = _fn.makeTextDomain(zippedDir);
+   const replaceThemeSlug = _fn.makeThemeSlug(zippedDir);
    // replace with strings
-   const textDomain = makeTextDomain(config.theme.name);
-   const themeSlug = makeThemeSlug(config.theme.name);
+   const textDomain = _fn.makeTextDomain(proj.config.project.name);
+   const themeSlug = _fn.makeThemeSlug(proj.config.project.name);
    // found in the comment at the top of each file
    // e.g. @package Underscores_Starter_Theme
    const replacePackageName = _fn.makeTitleCase(replaceThemeSlug, '_', '_');
@@ -144,19 +126,19 @@ const wpScreenshotContent = function () {
 .screenshot-description { font: 28px sans-serif; }
 .screenshot-bgd { width: 100%; height: 100%; fill: #112266; stroke: none; }</style>
 <rect x="0" y="0" width="1200" height="900" fill="#112266" />
-<text x="50%" y="46%" class="screenshot-title">${config.theme.name}</text>
-<text x="50%" y="54%" class="screenshot-description">${config.theme.description}</text></svg>`;
+<text x="50%" y="46%" class="screenshot-title">${proj.config.project.name}</text>
+<text x="50%" y="54%" class="screenshot-description">${proj.config.project.description}</text></svg>`;
 };
 
 // style.css that contains theme info
 const wpStyleContent = function (textDomain) {
-   let content = `Theme Name: ${config.theme.name}\n`;
+   // name (*): Name of the theme.
+   let content = `Theme Name: ${proj.config.project.name}\n`;
+   // Description (*): A short description of the theme.
+   content += `Description: ${proj.config.project.description}\n`;
 
    if (config.theme.uri) {
       content += `Theme URI: ${config.theme.uri}\n`;
-   }
-   if (config.theme.description) {
-      content += `Description: ${config.theme.description}\n`;
    }
    if (config.theme.author) {
       content += `Author: ${config.theme.author}\n`;
@@ -189,6 +171,7 @@ const wpStyleContent = function (textDomain) {
       content += `Domain Path: ${config.theme.domainPath}\n`;
    }
 
+   // Text Domain (*): The string used for textdomain for translation.
    content += `Text Domain: ${textDomain}\n`;
 
    return content;
@@ -197,8 +180,8 @@ const wpStyleContent = function (textDomain) {
 // index.php
 const wpIndexContent = function () {
    return `<?php
- echo "Theme Name: ${config.theme.name}";
- echo "Description: ${config.theme.description}";
+ echo "Theme Name: ${proj.config.project.name}";
+ echo "Description: ${proj.config.project.description}";
  ?>`;
 };
 

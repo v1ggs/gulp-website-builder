@@ -2,7 +2,6 @@
 // ********* FIND ALL SETTINGS IN THE CONFIG FILE ********************* \\
 
 // ============== C O N F I G ============== \\
-const proj = require('./project-config');
 const _fn = require('./common-fn');
 
 // ============== A L L   T A S K S ============== \\

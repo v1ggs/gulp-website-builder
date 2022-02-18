@@ -44,12 +44,10 @@ const underscores = {
 // Items indicated with (*) are required for a theme in the WordPress Theme Repository.
 // https://developer.wordpress.org/themes/basics/main-stylesheet-style-css/
 const theme = {
-   // name (*): Name of the theme.
-   name: 'My New Theme',
+   // Theme name, Description and Text Domain are created programatically
+   // ===================================================================
    // The URL of a public web page where users can find more information about the theme.
    uri: '',
-   // Description (*): A short description of the theme.
-   description: proj.config.project.description,
    // author (*): The name of the individual or organization who developed the theme. Using the Theme Author’s wordpress.org username is recommended.
    author: 'vIGGS (Igor Vračar)',
    // Author URI: The URL of the authoring individual or organization.
@@ -66,8 +64,6 @@ const theme = {
    license: '',
    // License URI (*): The URL of the theme license.
    licenseURI: '',
-   // Text Domain (*): The string used for textdomain for translation.
-   // textDomain is created programatically in the index.js file
    // Tags: Words or phrases that allow users to find the theme using the tag filter. A full list of tags is in the Theme Review Handbook.
    tags: '',
    // Domain Path: Used so that WordPress knows where to find the translation when the theme is disabled. Defaults to /languages.

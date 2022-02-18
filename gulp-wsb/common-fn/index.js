@@ -257,6 +257,28 @@ function makeTitleCase(string, separator = ' ', joiner = ' ') {
 
 exports.makeTitleCase = makeTitleCase;
 
+const makeThemeSlug = function (str) {
+   return _fn
+      .cleanString(str)
+      .replaceAll(/-|\s|\./gi, '_')
+      .replaceAll('____', '_')
+      .replaceAll('___', '_')
+      .replaceAll('__', '_');
+};
+
+exports.makeThemeSlug = makeThemeSlug;
+
+const makeTextDomain = function (str) {
+   return _fn
+      .cleanString(str)
+      .replaceAll(/_|\s|\./gi, '-')
+      .replaceAll('----', '-')
+      .replaceAll('---', '-')
+      .replaceAll('--', '-');
+};
+
+exports.makeTextDomain = makeTextDomain;
+
 // ============== S E R V E R ============== \\
 const serverCfg = function (textDomain) {
    // WordPress theme directory

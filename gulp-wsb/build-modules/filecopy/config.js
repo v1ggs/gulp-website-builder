@@ -18,9 +18,9 @@ const config = {
    folders: [
       _src + '/fonts/**/*',
       _src + '/icons/**/*',
-      // processed with svg-sprites
+      // processed with svg-sprites module
       '!' + _src + '/icons/svg/**/*',
    ],
-}
+};
 
 exports.config = config;
