@@ -22,6 +22,8 @@
 -  [GENERAL INFO](#general-info)
 -  [FEATURES](#features)
    -  [General](#general)
+   -  [Gulp](#gulp)
+   -  [Wordpress](#wordpress)
    -  [Nunjucks](#nunjucks)
    -  [SCSS](#scss)
    -  [JavaScript](#javascript)
@@ -99,16 +101,6 @@
 -  tasks don't break on plugin errors ([gulp-plumber](https://www.npmjs.com/package/gulp-plumber))
 -  web server with streaming CSS files on change, and reloading page on HTML and JS change
 
-### Nunjucks
-
--  configure global variables and filters for usage in .njk files
--  format output HTML
--  a TODO file (.txt) with all todos and fixmes in the project's root folder
--  [Humans.txt](https://humanstxt.org/) is being updated on each build
-
-> Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src="/main.js?20211010212110").
-> Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
-
 ### Wordpress
 
 -  unzip automatically [underscores theme template](https://underscores.me)
@@ -119,6 +111,16 @@
 -  update [humans.txt](https://humanstxt.org/) on each build
 -  notification on plugin errors (so you don't have to keep the console open)
 -  sound on task completion (so you don't have to keep the console open)
+
+### Nunjucks
+
+-  configure global variables and filters for usage in .njk files
+-  format output HTML
+-  a TODO file (.txt) with all todos and fixmes in the project's root folder
+-  [Humans.txt](https://humanstxt.org/) is being updated on each build
+
+> Always build html after having finished bulding CSS and Javascript, to update their cachebust in HTML (e.g. src="/main.js?20211010212110").
+> Activating watcher for this (JSON) file is probably not a good idea, because it would build HTML on any change in JavaScript and SCSS files.
 
 ### SCSS
 
