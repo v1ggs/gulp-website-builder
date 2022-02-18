@@ -12,15 +12,13 @@ const files = config.files;
 const nunjucksRender = require('gulp-nunjucks-render');
 const beautifyHtml = require('gulp-jsbeautifier');
 
-
 // ============== F U N C T I O N S ============== \\
 // console info about the running task
 const consoleInfo = function (cb) {
-    console.log('========== TASK: NUNJUCKS');
+   console.log('========== TASK: NUNJUCKS');
 
-    cb();
+   cb();
 };
-
 
 // write humans.txt
 const humans = function (cb) {
@@ -32,7 +30,6 @@ const humans = function (cb) {
 
    cb();
 };
-
 
 // create todos
 const todos = function (cb) {
@@ -66,25 +63,34 @@ const todos = function (cb) {
    cb();
 };
 
-
 // main task
 const main = function () {
-    return _fn
-        .src(files.src, { allowEmpty: true })
-        .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
-        .pipe(nunjucksRender(cfg))
-        .pipe(beautifyHtml(config.formatHtml))
-        .pipe(_fn.dest(files.output));
-};
+   return (
+      _fn
+         .src(files.src, { allowEmpty: true })
+         .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
+         .pipe(nunjucksRender(cfg))
+         .pipe(beautifyHtml(config.formatHtml))
+         .pipe(
+            _fn.gulpif(
+               // change output file extension, if set in config
+               typeof config.files.extension === 'string',
+               _fn.ren({ extname: `.${config.files.extension}` })
+            )
+         )
+         // .pipe(_fn.ren({ extname: `.${config.files.extension}` }))
 
+         .pipe(_fn.dest(files.output))
+   );
+};
 
 // the complete process
 exports.build = _fn.series(
-    consoleInfo,
-    main,
-    _fn.parallel(_fn.reloadPage, humans),
-    todos, // todo takes too long (> 1sec) if in parallel with others
-    _fn.endSound
+   consoleInfo,
+   main,
+   _fn.parallel(_fn.reloadPage, humans),
+   todos, // todo takes too long (> 1sec) if in parallel with others
+   _fn.endSound
 );
 
 // source files to watch for changes

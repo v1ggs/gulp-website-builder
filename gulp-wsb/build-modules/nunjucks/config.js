@@ -17,6 +17,8 @@ const files = {
    watch: _src + '/**/*.{njk,nj,nunjucks,json}',
    // output
    output: _dist,
+   // string/boolean: false - change output file extension (without a dot)
+   extension: 'php',
 };
 
 // nunjucks globals - set here and use across .njk files as variables or filters
