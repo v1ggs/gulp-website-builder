@@ -237,7 +237,7 @@ npm install --save-dev gulp gulp-plumber adm-zip del gulp-rename gulp-sourcemaps
 ### All other Node Modules
 
 ```cmd
-npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass postcss gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify gulp-svgmin gulp-svgstore
+npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify gulp-svgmin gulp-svgstore
 ```
 
 It's understood that you navigate in your console where you want to install node_modules.
