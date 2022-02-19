@@ -33,7 +33,9 @@ let sharpResizeOptions = function (size) {
 // ============== F U N C T I O N S ============== //
 // console info about the running task
 const consoleInfo = function (cb) {
+   console.log('==========');
    console.log('========== TASK: IMAGES');
+   console.log('==========');
 
    cb();
 };

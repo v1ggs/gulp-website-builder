@@ -5,13 +5,14 @@
 const _fn = require('../../common-fn');
 const proj = require('../../project-config');
 const config = require('./config.js').config;
-const textDomain = _fn.makeTextDomain(proj.config.project.name);
-const _dist = _fn.serverCfg(textDomain).assetsDist;
+const _dist = _fn.dist.assets;
 
 // ============== F U N C T I O N S ============== \\
 // console info about the running task
 const consoleInfo = function (cb) {
+   console.log('==========');
    console.log('========== TASK: FILECOPY');
+   console.log('==========');
 
    cb();
 };

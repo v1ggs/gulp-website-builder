@@ -4,8 +4,7 @@
 // import config
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
-const textDomain = _fn.makeTextDomain(proj.config.project.name);
-const assets = _fn.serverCfg(textDomain).assetsDist;
+const assets = _fn.dist.assets;
 /* *************************************************** */
 
 const config = {
@@ -47,10 +46,10 @@ const config = {
       plugins: [
          // https://github.com/svg/svgo#configuration
          // https://github.com/svg/svgo#built-in-plugins
-         { name: 'preset-default', active: true },
-         { removeViewBox: false },
-         { removeTitle: true },
-         { removeDesc: true },
+         { name: 'preset-default' },
+         // 'removeViewBox', // uncomment to use
+         'removeTitle', // comment to disable
+         'removeDesc', // comment to disable
       ],
    },
 };

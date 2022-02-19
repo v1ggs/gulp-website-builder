@@ -4,11 +4,9 @@
 // import project config
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
-const textDomain = _fn.makeTextDomain(proj.config.project.name);
-const serverCfg = _fn.serverCfg(textDomain);
-const assets = serverCfg.assetsForNunjucks;
 const _src = proj.dirs.src.html;
-const _dist = serverCfg.htmlDist;
+const _dist = _fn.dist.html;
+const assets = _fn.dist.assetsForHtmlProcessor;
 /* *************************************************** */
 
 const files = {
@@ -22,7 +20,7 @@ const files = {
    output: _dist,
 
    // string/boolean: false - change output file extension (without a dot)
-   extension: 'php',
+   extension: false,
 };
 
 // NUNJUCKS SPECIFIC VARIABLE - REMOVE IF CREATING FOR ANOTHER HTML PREPROCESSOR

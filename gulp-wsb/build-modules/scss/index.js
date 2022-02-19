@@ -113,7 +113,9 @@ const postCssPlugins = function () {
 // ============== F U N C T I O N S ============== \\
 // console info about the running task
 const consoleInfo = function (cb) {
+   console.log('==========');
    console.log('========== TASK: SCSS');
+   console.log('==========');
    cb();
 };
 

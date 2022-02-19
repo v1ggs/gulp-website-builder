@@ -259,8 +259,7 @@ function makeTitleCase(string, separator = ' ', joiner = ' ') {
 exports.makeTitleCase = makeTitleCase;
 
 const makeThemeSlug = function (str) {
-   return _fn
-      .cleanString(str)
+   return cleanString(str)
       .replaceAll(/-|\s|\./gi, '_')
       .replaceAll('____', '_')
       .replaceAll('___', '_')
@@ -270,8 +269,7 @@ const makeThemeSlug = function (str) {
 exports.makeThemeSlug = makeThemeSlug;
 
 const makeTextDomain = function (str) {
-   return _fn
-      .cleanString(str)
+   return cleanString(str)
       .replaceAll(/_|\s|\./gi, '-')
       .replaceAll('----', '-')
       .replaceAll('---', '-')
@@ -286,7 +284,7 @@ const serverCfg = function (textDomain) {
    let wpDirName, wpDir;
    // output dir for html file
    let htmlDist = '';
-   // used in assetsForNunjucks (Nunjucks module - for global variables)
+   // used in assetsForHtmlProcessor (html processor module - for global variables)
    let assetsReference = '';
 
    if (proj.config.build.type === 'static') {
@@ -310,7 +308,8 @@ const serverCfg = function (textDomain) {
    // assets dist dir
    const assetsDist = htmlDist + '/' + proj.config.dirname.dist;
    // same dir as assetsDist but for usage with nunjucks module (for global variables)
-   const assetsForNunjucks = assetsReference + '/' + proj.config.dirname.dist;
+   const assetsForHtmlProcessor =
+      assetsReference + '/' + proj.config.dirname.dist;
 
    // server and proxy cannot be both defined at the same time
    let _proxy = undefined;
@@ -336,11 +335,11 @@ const serverCfg = function (textDomain) {
       index: _index,
       // Type: String, Default: null
       // Override host detection if you know the correct IP to use (e.g. '192.168.42.95')
-      host: null,
+      host: proj.config.build.ip ? proj.config.build.ip : null,
       // 'true' mirrors interactions in other browsers
       ghostMode: false,
       // online: true - will not attempt to determine your network status, assumes you're online.
-      online: true,
+      online: false,
       // 'external' or 'local', to open in browser(s)
       open: true,
       // browsers to open the homepage with automatically (exe filenames)
@@ -349,18 +348,23 @@ const serverCfg = function (textDomain) {
       ],
       // browsersync notification on load/reload in the browser window
       notify: false,
-      // Display connected browsers.
+      // Display connected browsers in console
       logConnections: true,
       // Append timestamps to injected files
       timestamps: false,
    };
 
    return {
+      // browsersync config
       config: cfg,
-      htmlDist: htmlDist,
-      assetsDist: assetsDist,
-      assetsForNunjucks: assetsForNunjucks,
-      wpDirName: wpDirName,
+      // site root
+      html: htmlDist,
+      // site root subfolder where all assets go (js, css, images...)
+      assets: assetsDist,
+      // path to assets to use inside html preprocessor config, for usage in html files
+      assetsForHtmlProcessor: assetsForHtmlProcessor,
+      // wordpress theme folder name
+      wpThemeDirName: wpDirName,
    };
 };
 
@@ -380,3 +384,11 @@ const reloadPage = function (cb) {
 };
 
 exports.reloadPage = reloadPage;
+
+const textDomain = makeTextDomain(proj.config.project.name);
+
+exports.textDomain = textDomain;
+
+const _dist = serverCfg(textDomain);
+
+exports.dist = _dist;

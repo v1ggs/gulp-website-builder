@@ -5,8 +5,7 @@
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const _src = proj.dirs.src;
-const textDomain = _fn.makeTextDomain(proj.config.project.name);
-const _dist = _fn.serverCfg(textDomain).assetsDist;
+const _dist = _fn.dist.assets;
 /* *************************************************** */
 
 // CONFIG

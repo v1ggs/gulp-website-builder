@@ -6,7 +6,6 @@ const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const config = require('./config.js');
 const cfg = config.config;
-const files = config.files;
 
 // Gulp
 const htmlProcessor = require('gulp-nunjucks-render');
@@ -15,7 +14,9 @@ const beautifyHtml = require('gulp-jsbeautifier');
 // ============== F U N C T I O N S ============== \\
 // console info about the running task
 const consoleInfo = function (cb) {
+   console.log('==========');
    console.log('========== TASK: NUNJUCKS');
+   console.log('==========');
 
    cb();
 };
@@ -36,15 +37,15 @@ const todos = function (cb) {
    var srcFiles = [];
 
    if (_fn.todoCheck()) {
-      if (Array.isArray(files.watch)) {
-         files.watch.forEach((element) => {
+      if (Array.isArray(config.files.watch)) {
+         config.files.watch.forEach((element) => {
             // exclude extensions
             let srcPath = element.replace(/json|jsonc/gi, '');
             srcFiles.push(srcPath);
          });
       } else {
          // exclude extensions
-         let srcPath = files.watch.replace(/json|jsonc/gi, '');
+         let srcPath = config.files.watch.replace(/json|jsonc/gi, '');
          srcFiles.push(srcPath);
       }
 
@@ -67,7 +68,7 @@ const todos = function (cb) {
 const main = function () {
    return (
       _fn
-         .src(files.src, { allowEmpty: true })
+         .src(config.files.src, { allowEmpty: true })
          .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
 
          // ==========================================
@@ -88,9 +89,7 @@ const main = function () {
                _fn.ren({ extname: `.${config.files.extension}` })
             )
          )
-         // .pipe(_fn.ren({ extname: `.${config.files.extension}` }))
-
-         .pipe(_fn.dest(files.output))
+         .pipe(_fn.dest(config.files.output))
    );
 };
 
@@ -104,4 +103,4 @@ exports.build = _fn.series(
 );
 
 // source files to watch for changes
-exports.watch = files.watch;
+exports.watch = config.files.watch;

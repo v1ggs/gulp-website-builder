@@ -9,7 +9,7 @@ const config = {
 
       // project description
       // if working with wordpress, this will be theme description
-      description: 'Web design and Front-end igorvracar.com',
+      description: 'Web design, Front-end and WordPress for igorvracar.com',
 
       // project's (site's) domain
       domain: 'https://www.igorvracar.com',
@@ -17,8 +17,8 @@ const config = {
 
    build: {
       // environment: 'dev' or 'prod'
-      // dev does not remove js console logs in browser, makes doiuse and todo logs,
-      // creates sourcemaps, does not add developer header in css and js
+      // prod removes js console logs in minified files, does not make doiuse and todo logs,
+      // does not create sourcemaps, adds developer header in css and js
       env: 'dev',
 
       // build type: 'static': static page | 'wp': design with WordPress
@@ -32,8 +32,13 @@ const config = {
       // browser and stream CSS or reload page on HTML/JS save, you have to
       // proxy a local WordPress site, e.g. dev-yourdomain.com (with xampp or
       // similar local server, because browsersync can not serve php files)
-      // string (domain) or false
+      // string (domain) or undefined (default)
       proxy: 'dev-igorvracar.com',
+
+      // Type: String, Default: null
+      // Override host detection if you know the correct IP to use (e.g. '192.168.44.88')
+      // use this IP in your browser (you must be connected to the internet)
+      ip: null,
 
       // make sound on every task completion
       // including changing gulp config

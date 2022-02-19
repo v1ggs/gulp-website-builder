@@ -5,8 +5,7 @@
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const _src = proj.dirs.src.javascript;
-const textDomain = _fn.makeTextDomain(proj.config.project.name);
-const _dist = _fn.serverCfg(textDomain).assetsDist;
+const _dist = _fn.dist.assets;
 /* *************************************************** */
 
 const files = {
@@ -67,7 +66,11 @@ const config = {
          type: ['default', 'modulesSupport'],
 
          // {array} src files, *** order will be respected ***
-         src: [_src + '/core/**/*.js', _src + '/components/**/*.js'],
+         src: [
+            _src + '/main.js',
+            _src + '/core/**/*.js',
+            _src + '/components/**/*.js',
+         ],
 
          // {string | false|null|undefined}
          // make dir in the dist (dir name, no slashes)

@@ -4,6 +4,8 @@
 const proj = require('../../project-config.js');
 const _fn = require('../../common-fn');
 const config = require('./config.js');
+const serverConfig = _fn.dist;
+const _dist = serverConfig.html;
 // necessary data for the theme
 // modified with wpInit()
 let allData;
@@ -46,7 +48,6 @@ const getData = function (path) {
       packageName: packageName,
       replaceCommentInfo: replaceCommentInfo,
       commentInfo: commentInfo,
-      serverConfig: serverCfg,
    });
 };
 
@@ -58,7 +59,9 @@ const unzipUnderscores = function (allData) {
    const zipEntries = zipfile.getEntries();
 
    // console info
+   console.log('==========');
    console.log('========== EXTRACTING _S:');
+   console.log('==========');
 
    // process each file inside zip
    const extractAndReplaceContent = zipEntries.forEach(function (zipEntry) {
@@ -189,8 +192,8 @@ const wpIndexContent = function () {
 // create later a real page screenshot and replace this one with it
 const wpScreenshot = async function (allData) {
    const content = wpScreenshotContent();
-   const screenshotSvg = allData.serverConfig.htmlDist + '/screenshot.svg';
-   const screenshotPng = allData.serverConfig.htmlDist + '/screenshot.png';
+   const screenshotSvg = _dist + '/screenshot.svg';
+   const screenshotPng = _dist + '/screenshot.png';
 
    _fn.writeFile(screenshotSvg, content);
 
@@ -215,13 +218,13 @@ const wpStyle = function (allData) {
    let content = '/*\n';
    content += wpStyleContent(allData.textDomain);
    content += '*/\n';
-   _fn.writeFile(allData.serverConfig.htmlDist + '/style.css', content);
+   _fn.writeFile(_dist + '/style.css', content);
 };
 
 // write index.php
 const wpIndex = function (allData) {
    let content = wpIndexContent();
-   return _fn.writeFile(allData.serverConfig.htmlDist + '/index.php', content);
+   return _fn.writeFile(_dist + '/index.php', content);
 };
 
 // initialise wp theme if developing for wp
@@ -236,12 +239,14 @@ const wpInit = function () {
             `${_fn.projectRoot}/${proj.dirs.src.wordpress}/_init/theme-data.js`
          )
       ) {
+         console.log('==========');
          console.log('========== Theme data file found.');
          themeData = require(`${_fn.projectRoot}/${proj.dirs.src.wordpress}/_init/theme-data.js`);
 
          // necessary data for the theme
          allData = themeData.data;
       } else if (_fn.glob.sync(`${proj.dirs.src.wordpress}/*.zip`)[0]) {
+         console.log('==========');
          console.log('========== Theme zip file found.');
 
          // get only the first found zip file
@@ -265,7 +270,7 @@ const wpInit = function () {
          content += `packageName: '${allData.packageName}',\n`;
          content += `replaceCommentInfo: '${allData.replaceCommentInfo}',\n`;
          content += `commentInfo: '${allData.commentInfo}',\n`;
-         content += `serverConfig: ${JSON.stringify(allData.serverConfig)},\n`;
+         content += `serverConfig: ${JSON.stringify(serverConfig)},\n`;
          content += `}\n`;
          content += `exports.data = data;\n`;
 
@@ -275,25 +280,30 @@ const wpInit = function () {
             content
          );
       } else {
+         console.log('==========');
          console.log('========== Theme Data and theme zip file not found.');
          return false;
       }
 
       // make theme basic files if they do not exist
-      if (!_fn.fs.existsSync(allData.serverConfig.htmlDist + '/index.php')) {
+      if (!_fn.fs.existsSync(_dist + '/index.php')) {
+         console.log('==========');
          console.log('========== Index.php not found.');
+         console.log('========== Creating it...');
          wpIndex(allData);
       }
 
-      if (
-         !_fn.fs.existsSync(allData.serverConfig.htmlDist + '/screenshot.png')
-      ) {
+      if (!_fn.fs.existsSync(_dist + '/screenshot.png')) {
+         console.log('==========');
          console.log('========== Screenshot.png not found.');
+         console.log('========== Creating it...');
          wpScreenshot(allData);
       }
 
-      if (!_fn.fs.existsSync(allData.serverConfig.htmlDist + '/style.css')) {
+      if (!_fn.fs.existsSync(_dist + '/style.css')) {
+         console.log('==========');
          console.log('========== Style.css not found.');
+         console.log('========== Creating it...');
          wpStyle(allData);
       }
    }
@@ -304,7 +314,9 @@ exports.wpInit = wpInit;
 // ============================ TASKS
 // TASK console info about the running task
 const consoleInfo = function (cb) {
+   console.log('==========');
    console.log('========== TASK: WORDPRESS');
+   console.log('==========');
 
    cb();
 };
@@ -390,10 +402,7 @@ const concatenate = function (cb) {
       let filename = fileNames[i] + '.php';
       let outDir = fileObject[i].dest !== '' ? '/' + fileObject[i].dest : '';
 
-      let writeFile = _fn.writeFile(
-         `${allData.serverConfig.htmlDist}${outDir}/${filename}`,
-         content
-      );
+      let writeFile = _fn.writeFile(`${_dist}${outDir}/${filename}`, content);
    }
 
    cb();
@@ -415,7 +424,7 @@ const main = function () {
    return _fn
       .src(srcFiles, { allowEmpty: true })
       .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
-      .pipe(_fn.dest(allData.serverConfig.htmlDist));
+      .pipe(_fn.dest(_dist));
 };
 
 // the complete process
