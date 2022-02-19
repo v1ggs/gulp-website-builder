@@ -14,18 +14,22 @@ const _dist = serverCfg.htmlDist;
 const files = {
    // src files to build
    src: [_src + '/index.njk', _src + '/error.njk'],
+
    // string/array - files to watch for changes and build todos/fixmes file
    watch: _src + '/**/*.{njk,nj,nunjucks,json}',
+
    // output
    output: _dist,
+
    // string/boolean: false - change output file extension (without a dot)
    extension: 'php',
 };
 
+// NUNJUCKS SPECIFIC VARIABLE - REMOVE IF CREATING FOR ANOTHER HTML PREPROCESSOR
 // nunjucks globals - set here and use across .njk files as variables or filters
 const manageEnvironment = function (environment) {
    // ------------ global variables ------------ \\
-   // project info - mught be needed
+   // project info - might be needed
    environment.addGlobal('project', {
       name: proj.config.project.name,
       desription: proj.config.project.description,
@@ -70,40 +74,54 @@ const manageEnvironment = function (environment) {
    });
 };
 
+// NUNJUCKS SPECIFIC VARIABLE - MODIFY IF CREATING FOR ANOTHER HTML PREPROCESSOR
 // do not place before manageEnvironment
 const config = {
    // Relative path to templates - String or Array
    path: [_src],
-   // Extension for compiled templates, pass null or empty string if you don't want any extension
-   // do not set extension to any but 'html' because beautify will not work
+
+   // Extension for compiled templates, pass null or empty string if you
+   // don't want any extension - set extension to 'html' because otherwise
+   // beautify will not work - you can change extension in nunjucks config
    ext: '.html',
+
    // Data passed to template
    data: {},
+
    // These are options provided for nunjucks Environment
    // More info https://mozilla.github.io/nunjucks/api.html#configure
    envOptions: {
       // escape special html characters
       autoescape: true,
+
       watch: false,
+
+      // set custom nunjucks tags
       tags: {
-         //blockStart: '<%',
-         //blockEnd: '%>',
-         //variableStart: '<$',
-         //variableEnd: '$>',
-         //commentStart: '<#',
-         //commentEnd: '#>'
+         // blockStart: '<%',
+         // blockEnd: '%>',
+         // variableStart: '<$',
+         // variableEnd: '$>',
+         // commentStart: '<#',
+         // commentEnd: '#>'
       },
    },
+
    // If true, uses same extension that is used for template
    inheritExtension: false,
-   // Hook for managing environment before compilation. Useful for adding custom filters, globals, etc
+
+   // Hook for managing environment before compilation.
+   // Useful for adding custom filters, globals, etc
    // https://www.npmjs.com/package/gulp-nunjucks-render#environment
    manageEnv: manageEnvironment,
-   // If provided, uses that as first parameter to Environment constructor. Otherwise, uses provided path
+
+   // If provided, uses that as first parameter to Environment constructor.
+   // Otherwise, uses provided path
    loaders: null,
 };
 
 // js-beautify config for formatting built HTML
+// WORKS ONLY IF OUTPUT IS HTML, I.E. NOT PHP (from config.ext above)
 const formatHtml = {
    html: {
       // Initial indentation level [0]

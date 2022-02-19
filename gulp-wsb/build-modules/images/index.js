@@ -92,7 +92,9 @@ const mkdir = function (path) {
 const sharpGetFile = function (file) {
    // get file
    let sharpInstance = _fn.sharp(file, {
-      // by default halt processing and raise an error when loading invalid images. Set this flag to false if you'd rather apply a "best effort" to decode images, even if the data is corrupt or invalid. (optional, default true)
+      // by default halt processing and raise an error when loading invalid images.
+      // Set this flag to false if you'd rather apply a "best effort" to decode images,
+      // even if the data is corrupt or invalid. (optional, default true)
       failOnError: false,
    });
 
@@ -122,7 +124,8 @@ const sharpPrepareFile = function (sharpInstance, quality) {
             force: true,
          })
          .resize({ width: 40 })
-         // Resolve the Promise with an Object containing data and info properties instead of resolving only with data.
+         // Resolve the Promise with an Object containing data and info
+         // properties instead of resolving only with data.
          .toBuffer({ resolveWithObject: true })
          .then(function (img) {
             return img; // return the image data and info
@@ -179,15 +182,15 @@ const makeSvg = function (width, height, href) {
       "' " +
       "viewBox='0 0 " +
       width +
-      " " +
+      ' ' +
       height +
       "'>" +
       "<filter id='blur' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'>" +
       "<feGaussianBlur stdDeviation='20 20' edgeMode='duplicate' />" +
-      "<feComponentTransfer>" +
+      '<feComponentTransfer>' +
       "<feFuncA type='discrete' tableValues='1 1' />" +
-      "</feComponentTransfer>" +
-      "</filter>" +
+      '</feComponentTransfer>' +
+      '</filter>' +
       "<image filter='url(#blur)' xlink:href='" +
       href +
       "' x='0' y='0' height='100%' width='100%' /></svg>");
@@ -202,9 +205,11 @@ const initializeScss = function (file, _map) {
 };
 
 // Low-Quality Image Placeholders (LQIP)
-// create small, base64 encoded, placeholder image, blurred with an svg filter
-// and place it in a scss map
-// explained on css tricks: https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
+// create small, base64 encoded, placeholder image,
+// blurred with an svg filter and place it in a scss map
+// explained on css tricks:
+// https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
+
 // For larger images, like a hero image
 async function placeholdersLarge(cb) {
    // initialize the scss file if required
@@ -281,7 +286,8 @@ async function placeholdersLarge(cb) {
             let svgFile = makeSvg(imgW, imgH, svgHref);
 
             /* https://codepen.io/yoksel/details/JDqvs/
-                We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers. If encode SVG using encodeURIComponent() it will work everywhere.
+                We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers.
+                If encode SVG using encodeURIComponent() it will work everywhere.
                 SVG must have attribute xmlns like this: xmlns='http://www.w3.org/2000/svg'. */
             let svgEnc = encodeURIComponent(svgFile);
 
@@ -403,7 +409,8 @@ async function placeholdersSmall(cb) {
             let svgFile = makeSvg(imgW, imgH, svgHref);
 
             /* https://codepen.io/yoksel/details/JDqvs/
-                We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers. If encode SVG using encodeURIComponent() it will work everywhere.
+                We can use SVG in CSS via data URI, but without encoding it works only in Webkit based browsers.
+                If encode SVG using encodeURIComponent() it will work everywhere.
                 SVG must have attribute xmlns like this: xmlns='http://www.w3.org/2000/svg'. */
             let svgEnc = encodeURIComponent(svgFile);
 

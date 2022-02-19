@@ -107,7 +107,8 @@ const humansTxt = function () {
       let t = getTime();
 
       // Write BOM
-      // "UTF-8 might not require a BOM in sane OSes and apps, but under Windows it just about always does." from:
+      // "UTF-8 might not require a BOM in sane OSes and apps,
+      // but under Windows it just about always does." from:
       // https://stackoverflow.com/questions/13859218/nodejs-how-to-make-function-fs-writefile-write-with-bom
       content = '\ufeff';
 
@@ -137,7 +138,6 @@ const sourcemapsCheck = function () {
 
 exports.sourcemapsCheck = sourcemapsCheck;
 
-// TODO: remove this, use del
 // delete file/folder
 const remove = function (path) {
    if (fs.existsSync(path)) {
@@ -159,7 +159,8 @@ const plumberErrHandler = function (error) {
 exports.errHandler = plumberErrHandler;
 
 // Create a cacheBust file (JSON)
-// key is a key in the JSON, named after the file type (js|css|...) where it's used
+// key is a key in the JSON, named after the file
+// type (js|css|...) for which it's being used
 const cacheBust = function (key) {
    // get the time
    let t = getTime();
@@ -327,19 +328,31 @@ const serverCfg = function (textDomain) {
    }
 
    cfg = {
-      server: _server, // start server in folder
-      proxy: _proxy, // proxy a site (or XAMPP virtual host), default: undefined
-      index: _index, // file to serve as site index
-      host: null, // Type: String, Default: null - Override host detection if you know the correct IP to use (e.g. '192.168.42.95')
-      ghostMode: false, // 'true' mirrors interactions in other browsers
-      online: true, // online: true - will not attempt to determine your network status, assumes you're online.
-      open: true, // 'external' or 'local', to open in browser(s)
+      // start server in folder
+      server: _server,
+      // proxy a site (or XAMPP virtual host), default: undefined
+      proxy: _proxy,
+      // file to serve as site index
+      index: _index,
+      // Type: String, Default: null
+      // Override host detection if you know the correct IP to use (e.g. '192.168.42.95')
+      host: null,
+      // 'true' mirrors interactions in other browsers
+      ghostMode: false,
+      // online: true - will not attempt to determine your network status, assumes you're online.
+      online: true,
+      // 'external' or 'local', to open in browser(s)
+      open: true,
+      // browsers to open the homepage with automatically (exe filenames)
       browser: [
-         /* 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */
-      ], // browsers to open the homepage (exe filenames)
-      notify: false, // browsersync notification on load/reload in the browser window
-      logConnections: true, // Display connected browsers.
-      timestamps: false, // Append timestamps to injected files
+         /* Use: 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */
+      ],
+      // browsersync notification on load/reload in the browser window
+      notify: false,
+      // Display connected browsers.
+      logConnections: true,
+      // Append timestamps to injected files
+      timestamps: false,
    };
 
    return {

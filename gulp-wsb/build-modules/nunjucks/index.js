@@ -9,7 +9,7 @@ const cfg = config.config;
 const files = config.files;
 
 // Gulp
-const nunjucksRender = require('gulp-nunjucks-render');
+const htmlProcessor = require('gulp-nunjucks-render');
 const beautifyHtml = require('gulp-jsbeautifier');
 
 // ============== F U N C T I O N S ============== \\
@@ -69,7 +69,17 @@ const main = function () {
       _fn
          .src(files.src, { allowEmpty: true })
          .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
-         .pipe(nunjucksRender(cfg))
+
+         // ==========================================
+         // IF YOU USE ANOTHER PREPROCESSOR:
+         // 1. create a new module
+         // 2. require your preprosessor at the top of this file, in:
+         //    "const htmlProcessor = require('gulp-nunjucks-render');"
+         // 3. in config file: modify "const config" and
+         //    remove "const manageEnvironment"
+         .pipe(htmlProcessor(cfg))
+         // ==========================================
+
          .pipe(beautifyHtml(config.formatHtml))
          .pipe(
             _fn.gulpif(

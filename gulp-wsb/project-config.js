@@ -17,40 +17,41 @@ const config = {
 
    build: {
       // environment: 'dev' or 'prod'
-      // dev does not minify css and js, displays console logs, creates sourcemaps, does not add developer header in css and js etc.
+      // dev does not remove js console logs in browser, makes doiuse and todo logs,
+      // creates sourcemaps, does not add developer header in css and js
       env: 'dev',
 
-      // build type: 'static': static page; 'wp': design with WordPress
+      // build type: 'static': static page | 'wp': design with WordPress
       type: 'wp',
 
-      // if type: 'static' - serve a file you want to preview in browser
-      // string (e.g. 'index.html')
+      // serve a file you want to preview in browser - if type: 'static'
+      // {string} (e.g. 'index.html')
       serve: 'index.html',
 
-      // if type: 'wp' or output file is php - to be able to preview in browser
-      // and stream CSS or reload page on HTML/JS save,
-      // you have to proxy a local WordPress site,
-      // e.g. dev-yourdomain.com (with xampp or similar local server,
-      // because browsersync can not serve php files)
+      // if type: 'wp' or output file is php - to be able to preview in
+      // browser and stream CSS or reload page on HTML/JS save, you have to
+      // proxy a local WordPress site, e.g. dev-yourdomain.com (with xampp or
+      // similar local server, because browsersync can not serve php files)
       // string (domain) or false
       proxy: 'dev-igorvracar.com',
 
-      // make sound on task completion
+      // make sound on every task completion
+      // including changing gulp config
       signalEnd: true,
    },
 
    // these are folder names
    dirname: {
-      // source folder name (not path) where all
-      // source files are
+      // source folder name (not path) where
+      // all source files are
       source: 'src',
 
       // dist folder name (not path) where all
       // processed assets go (css, js, images etc.)
       dist: 'assets',
 
-      // site's root folder name (folder on server exposed to the internet,
-      // not the project's root): public_html, htdocs etc.
+      // site's root folder name (folder on server exposed to the
+      // internet, not the project's root): public_html, htdocs etc.
       public_html: 'public_html',
    },
 };
@@ -81,6 +82,7 @@ const files = {
    cachebust: dirs.src.html + '/config/cachebust.json',
 
    // SCSS files that contains small, blurred SVG placeholder images as SCSS variables
+   // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
    placeholdersLarge: dirs.src.scss + '/base/_placeholders-large.scss',
    placeholdersSmall: dirs.src.scss + '/base/_placeholders-small.scss',
 
@@ -97,11 +99,11 @@ const developerInfo = {
       humans: true,
    },
 
-   // developer(s) header content for CSS and JS, if build.header === true
-   // you can add the license info here
+   // developer(s) header content for CSS and JS, if build.header is true.
+   // you can also add license info here
    header: `/* Designer/Developer: vIGGS | https://www.igorvracar.com */\n`,
 
-   // humans.txt content, if build.humans === true
+   // humans.txt content, if build.humans is true
    humans:
       `/* AUTHOR */\n` +
       `     Web Design/Front-end/WordPress: vIGGS (Igor Vračar)\n` +
@@ -120,7 +122,10 @@ const developerInfo = {
       `     Language: English\n` +
       `     Built With: HTML5 (Nunjucks), CSS3 (SCSS), JavaScript (vanilla), PHP, WordPress, .htaccess\n` +
       `     Software: VSCode, Gulp (task runner), Filezilla\n` +
-      `     Last Update: `, // the 'last update' time is created programmatically. To change time format, edit content variable in humansTxt function, in the common-fn index.js file.
+      // the 'last update' time is created programmatically.
+      // To change its time format, find humansTxt function and edit
+      // content variable, in the common-fn index.js file.
+      `     Last Update: `,
 };
 
 exports.config = config;

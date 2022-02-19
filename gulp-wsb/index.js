@@ -23,6 +23,7 @@ const allTasks = function (cb) {
    console.log('==========');
    console.log('========== WAIT FOR THE SERVER TO START');
    console.log('==========');
+   console.log('==========');
    console.log('========== CTRL+C TO STOP GULP');
    console.log('========== CTRL+S TO PAUSE GULP');
    console.log('==========');
@@ -147,7 +148,7 @@ const allTasks = function (cb) {
    cb();
 };
 
-// Restart allTasks - use this in gulpfile.js
+// Restart allTasks - use this one in gulpfile.js
 const gulpDefault = function (cb) {
    let spn = false;
 
@@ -156,7 +157,7 @@ const gulpDefault = function (cb) {
    spawnChildren(cb);
 
    function spawnChildren(cb) {
-      // ['watch'] is the task (exports.watch in gulpfile.js) that calls allTasks
+      // ['watch'] is the task (exports.watch in gulpfile.js) which calls allTasks
       spn = _fn.spawn('gulp', ['watch'], { stdio: 'inherit', shell: true });
 
       cb();

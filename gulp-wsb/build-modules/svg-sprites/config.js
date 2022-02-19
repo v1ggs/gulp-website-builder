@@ -10,7 +10,8 @@ const assets = _fn.serverCfg(textDomain).assetsDist;
 
 const config = {
    // sprites (objects)
-   // duplicate a sprite to create a new one, then modify name and options
+   // copy-paste a sprite to create a new one,
+   // then modify its name and options
    sprites: {
       icons: {
          // string
@@ -20,7 +21,9 @@ const config = {
          // string or array
          // full path(s), with filenames as well
          dest: [
+            // either include the file in browser, for caching
             assets + '/icons/svg/sprites/sprite-icons.svg',
+            // or inline it during html build
             proj.dirs.src.html + '/svg/sprite-icons.njk',
          ],
 
@@ -34,6 +37,7 @@ const config = {
    minification: {
       // Ensures the best optimization
       multipass: true,
+
       // beutify SVG
       js2svg: {
          pretty: false,

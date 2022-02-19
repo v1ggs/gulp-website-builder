@@ -14,17 +14,28 @@ const config = {
    build: {
       // clean output dir before build (boolean)
       cleanDist: true,
-      // what css comments to keep: ('none' | 'important' | 'first' | 'all')
+
+      // what css comments to keep in the development file.
+      // minification will remove all but important comments.
+      // ('none' | 'important' | 'first' | 'all')
       keepComments: 'important',
+
       // use autoprefixer (boolean)
+      // see config below
       prefix: true,
-      // (boolean)
-      // remove unused selectors with purgecss (see purgecss config below)
+
+      // remove unused selectors with purgecss (boolean)
+      // see config below
       purge: true,
-      // combine and sort media queries: (false | 'mobile-first' | 'desktop-first')
+
+      // combine and sort media queries
+      // (false | 'mobile-first' | 'desktop-first')
       combineMQ: 'desktop-first',
+
       // fix flex bugs (boolean)
+      // https://github.com/philipwalton/flexbugs
       fixFlexbugs: true,
+
       // minify files (boolean)
       minify: true,
    },

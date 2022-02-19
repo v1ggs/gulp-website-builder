@@ -24,13 +24,13 @@ const config = {
    },
 
    // ADD OR REMOVE BUNDLES AS REQUIRED
-   // BUNDLE NAME IS FILE NAME
+   // BUNDLE NAME (KEY) IS FILE NAME
    // files will be concatenated in the same order as in the src array
    // a bundle will be created for each bundles.type (each value in the array)
    // "unknonwn" or "['']" or "false|null|undefined" type will produce untranspiled bundle
    // bundle filenames get suffix from transpilation type, except for 'default'
    bundles: {
-      lib: {
+      vendor: {
          // what comments to keep in a minified file {string}
          // 'important' | 'all' | 'none'
          comments: 'important',
@@ -44,12 +44,13 @@ const config = {
 
          // {array} src files, *** order will be respected ***
          src: [
-            _src + '/polyfills/**/*.js',
             _src + '/libs/**/*.js',
             _src + '/plugins/**/*.js',
+            _src + '/vendor/**/*.js',
          ],
 
-         // {string | false|null|undefined} make dir in the dist (dir name, no slashes)
+         // {string | false|null|undefined}
+         // make dir in the dist (dir name, no slashes)
          outDir: false,
       },
 
@@ -68,12 +69,14 @@ const config = {
          // {array} src files, *** order will be respected ***
          src: [_src + '/core/**/*.js', _src + '/components/**/*.js'],
 
-         // {string | false|null|undefined} make dir in the dist (dir name, no slashes)
+         // {string | false|null|undefined}
+         // make dir in the dist (dir name, no slashes)
          outDir: false,
       },
    },
 
-   // Transpilation name (key) is the filename suffix, except for the 'default', which goes without suffix.
+   // Transpilation name (key) is the filename suffix,
+   // except for the 'default', which goes without suffix.
    transpilation: {
       // These are being used in config.bundles.<bundle_name>.type array
       default: {

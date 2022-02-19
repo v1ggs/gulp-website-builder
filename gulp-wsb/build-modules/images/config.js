@@ -11,30 +11,37 @@ const _dist = _fn.serverCfg(textDomain).assetsDist;
 
 const files = {
    // these folders will be watched for changes (string)
+   // *** DO NOT USE NEGATIVE GLOB ***
    src: _src + '/**/*.{jpg,jpeg,png,webp}',
    svg: _src + '/svg/**/*.svg',
-   // exclude these folders from the process and watcher (array) *** DO NOT USE NEGATIVE GLOB ***
+
+   // exclude these folders from the process and watcher (array)
+   // *** DO NOT USE NEGATIVE GLOB ***
    exclude: [_src + '/svg/sprites/**/*'],
    dist: _dist + '/img',
 };
 
 const config = {
    build: {
-      // clean output dir
+      // clean output dir on build
       cleanDist: true,
+
       // if false - remove metadata from images
       keepMetadata: false,
+
       // if true - will not enlarge images
       doNotEnlarge: true,
+
       // SCSS file that contains small, blurred SVG placeholder images as SCSS variables
+      // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
       svgPlaceholders: true,
    },
 
+   // Add a size by duplicating and modifying an existing one
+   // remove unnecessary sizes
+   // size (key) is filename suffix
+   // Settings info: https://sharp.pixelplumbing.com/api-resize
    sizes: {
-      // Add a size by duplicating and modifying an existing one
-      // remove unnecessary sizes
-      // size (key) is filename suffix
-      // Settings info: https://sharp.pixelplumbing.com/api-resize
       small: {
          width: 480, // set false for auto width (define height)
          height: false, // set false for auto height (define width), otherwise use fit
@@ -89,11 +96,13 @@ const config = {
       svg: {
          // Ensures the best optimization
          multipass: true,
+
          js2svg: {
             // Beutifies the SVG output instead of stripping all white space
             pretty: false,
             indent: 2,
          },
+
          plugins: [
             // https://github.com/svg/svgo#configuration
             // https://github.com/svg/svgo#built-in-plugins
