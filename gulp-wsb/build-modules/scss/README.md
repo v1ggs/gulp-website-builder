@@ -40,7 +40,7 @@
 -  choose what comments to keep
 -  prefix CSS with [autoprefixer](https://www.npmjs.com/package/autoprefixer)
 -  target browsers configuration for [autoprefixer](https://www.npmjs.com/package/autoprefixer) and [doiuse](https://www.npmjs.com/package/doiuse)
--  :information_source: remove unused selectors from CSS ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
+-  :warning: remove unused selectors from CSS ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
 -  get removed selectors from CSS in a .rejected.css ([purgeCss](https://www.npmjs.com/package/gulp-purgecss))
 -  group media queries in CSS, depending on your design way (mobile/desktop first)
 -  [fix flex bugs](https://github.com/philipwalton/flexbugs)

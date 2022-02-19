@@ -43,6 +43,9 @@
 -  populate all TODOs and FIXMEs from .php files into LOG-TODO-WP.txt, in the project root
 -  update [humans.txt](https://humanstxt.org/) on each build
 
+> This may look like an ordinary duplication of files, but I believe it's better to keep all source files in one place. This way you can zip the theme without anything that does not belong there.\
+> Another good thing is concatenating files, where you can have numerous small, well documented files in one folder, add or remove them and have them all concatenated into one file in the destination, like functions.php.
+>
 > :information_source: If you want to use underscores starter theme, then download it first, place it into the wordpress source dir, make all required configurations, and then run gulp. It will be unzipped and all config done automatically.
 >
 > :information_source: :information_source: Placeholder theme would be a theme that is created once, and used for all projects, with some particular name, which is used as theme slug and text domain placeholder which is easy to replace whithout errors.\
