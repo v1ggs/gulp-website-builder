@@ -326,9 +326,19 @@ const serverCfg = function (textDomain) {
       _index = false;
    }
 
+   let _https = false;
+   if (proj.config.build.key && proj.config.build.cert) {
+      _https = {
+         key: proj.config.build.key,
+         cert: proj.config.build.cert,
+      };
+   }
+
    cfg = {
       // start server in folder
       server: _server,
+      // use https
+      https: _https,
       // proxy a site (or XAMPP virtual host), default: undefined
       proxy: _proxy,
       // file to serve as site index
@@ -336,16 +346,17 @@ const serverCfg = function (textDomain) {
       // Type: String, Default: null
       // Override host detection if you know the correct IP to use (e.g. '192.168.42.95')
       host: proj.config.build.ip ? proj.config.build.ip : null,
+      // default port (3000)
+      port: 3000,
       // 'true' mirrors interactions in other browsers
-      ghostMode: false,
+      ghostMode: true,
       // online: true - will not attempt to determine your network status, assumes you're online.
-      online: false,
-      // 'external' or 'local', to open in browser(s)
-      open: true,
+      online: true,
+      // Decide which URL to open automatically when Browsersync starts.
+      // Defaults to "local" if none set. Can be true, local, external, ui, ui-external, tunnel or false
+      open: false,
       // browsers to open the homepage with automatically (exe filenames)
-      browser: [
-         /* Use: 'chrome', 'firefox', 'opera', 'msedge', 'iexplore' */
-      ],
+      browser: ['chrome', 'firefox', 'opera', 'msedge', 'iexplore'],
       // browsersync notification on load/reload in the browser window
       notify: false,
       // Display connected browsers in console

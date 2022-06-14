@@ -17,27 +17,34 @@ const config = {
 
    build: {
       // environment: 'dev' or 'prod'
-      // prod removes js console logs in minified files, does not make doiuse and todo logs,
+      // 'prod' removes js console logs in minified files, does not make doiuse and todo logs,
       // does not create sourcemaps, adds developer header in css and js
       env: 'dev',
 
-      // build type: 'static': static page | 'wp': design with WordPress
+      // build type:
+      // 'static': static page | 'wp': design with WordPress
       type: 'wp',
 
-      // serve a file you want to preview in browser - if type: 'static'
       // {string} (e.g. 'index.html')
+      // (if type: 'static') serve a file you want to preview in browser
       serve: 'index.html',
 
-      // if type: 'wp' or output file is php - to be able to preview in
-      // browser and stream CSS or reload page on HTML/JS save, you have to
-      // proxy a local WordPress site, e.g. dev-yourdomain.com (with xampp or
-      // similar local server, because browsersync can not serve php files)
-      // string (domain) or undefined (default)
+      // if type: 'wp' or output file is php:
+      // to be able to preview and reload a page in browser
+      // and stream CSS, you have to proxy a local WordPress site,
+      // e.g. dev-yourdomain.com (with a local server, like xampp),
+      // because browsersync can not serve php files
+      // type: string (domain) or undefined (default)
       proxy: 'dev-igorvracar.com',
 
-      // Type: String, Default: null
-      // Override host detection if you know the correct IP to use (e.g. '192.168.44.88')
+      // provide certificate to use https or set false
+      key: 'C:/xampp/mkcert-ssl/localhost-key.pem',
+      cert: 'C:/xampp/mkcert-ssl/localhost.pem',
+
+      // Override host detection:
+      // if you know the correct IP to use (e.g. '192.168.44.88')
       // use this IP in your browser (you must be connected to the internet)
+      // Default: null
       ip: null,
 
       // make sound on every task completion
@@ -90,7 +97,7 @@ const files = {
    // cachebust file (json file with modification times)
    cachebust: dirs.src.html + '/config/cachebust.json',
 
-   // SCSS files that contains small, blurred SVG placeholder images as SCSS variables
+   // SCSS files that contain small, blurred SVG placeholder images as SCSS variables
    // https://css-tricks.com/the-blur-up-technique-for-loading-background-images/
    placeholdersLarge: dirs.src.scss + '/base/_placeholders-large.scss',
    placeholdersSmall: dirs.src.scss + '/base/_placeholders-small.scss',
@@ -104,7 +111,7 @@ const developerInfo = {
    build: {
       // (boolean) prepend dev header to processed files
       header: true,
-      // create humans.txt - https://humanstxt.org
+      // create humans.txt file (https://humanstxt.org)
       humans: true,
    },
 
@@ -112,7 +119,7 @@ const developerInfo = {
    // you can also add license info here
    header: `/* Designer/Developer: vIGGS | https://www.igorvracar.com */\n`,
 
-   // humans.txt content, if build.humans is true
+   // humans.txt content (if developerInfo.build.humans is true)
    humans:
       `/* AUTHOR */\n` +
       `     Web Design/Front-end/WordPress: vIGGS (Igor Vračar)\n` +
