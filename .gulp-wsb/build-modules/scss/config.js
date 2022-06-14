@@ -73,6 +73,7 @@ const config = {
       analyze: [
          _src.html + '/**/*.html',
          _src.html + '/**/*.njk',
+         _src.wordpress + '/**/*.php',
          _src.javascript + '/**/*.js',
       ],
 
@@ -128,11 +129,11 @@ const config = {
    // use svgo (below) to minify them
    inlineSvg: {
       // Array of paths where svgs can be found. Paths are tried in order, until an existing file is found.
-      paths: [_src.images + '/inline-svg', _src.images + '/test-svg'],
+      paths: [_src.images + '/inline-svg'],
       // removes all fill attributes before applying specified. Default: false
-      removeFill: false,
+      removeFill: true,
       // removes all stroke attributes before applying specified. Default: false
-      removeStroke: false,
+      removeStroke: true,
       // Adds xmlns attribute to SVG if not present. Default: true
       xmlns: true,
    },
