@@ -73,7 +73,11 @@ const postCssPlugins = function () {
    if (proj.config.build.env === 'dev') {
       /* https://stackoverflow.com/questions/3459476/how-to-append-to-a-file-in-node/43370201#43370201
         not required to use stream.end(), default option is AutoClose:true, so file will end when process ends. */
-      let logFile = _fn.fs.createWriteStream('LOG-DOIUSE.txt', { flags: 'w' });
+      let logFile = _fn.fs.createWriteStream(
+         './' + proj.config.dirname.log + '/LOG-DOIUSE.txt',
+         { flags: 'w' }
+      );
+
       plugins.push(
          doiuse({
             // Lint for browser support and display info for unsupported
@@ -156,7 +160,7 @@ const todos = function (cb) {
                absolute: false,
             })
          )
-         .pipe(_fn.dest('.'));
+         .pipe(_fn.dest('./' + proj.config.dirname.log));
    }
 
    cb();

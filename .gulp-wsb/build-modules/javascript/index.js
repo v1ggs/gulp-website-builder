@@ -58,7 +58,7 @@ const todos = function (cb) {
                absolute: false, // get filenames relative to project root
             })
          )
-         .pipe(_fn.dest('.'));
+         .pipe(_fn.dest('./' + proj.config.dirname.log));
    }
 
    cb();

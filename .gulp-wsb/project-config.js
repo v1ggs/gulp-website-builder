@@ -58,6 +58,10 @@ const config = {
       // site's root folder name (folder on server exposed to the
       // internet, not the project's root): public_html, htdocs etc.
       public_html: 'public_html',
+
+      // dist folder name (not path) where all
+      // logs will go (todos, doiuse)
+      log: '.log',
    },
 };
 
