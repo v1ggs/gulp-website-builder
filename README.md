@@ -230,12 +230,12 @@ Each module has a README with usage information.
 Place this repository in your project root directory. File/folder structure should be like this (with default config):
 
 -  .git
+-  **.gulp-wsb <==============**
 -  .vscode
 -  htdocs (or public_html etc., depending on your config, will be created and named from the config)
    -  assets
    -  humans.txt
    -  ... (other files/folders)
--  **gulp-wsb <==============**
    -  build-modules
    -  common-fn
    -  index.js

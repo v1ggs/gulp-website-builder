@@ -1,5 +1,5 @@
 // gulp-website-builder
-const gwsb = require("./gulp-wsb");
+const gwsb = require('./.gulp-wsb');
 
 // main task - all modules \\
 exports.default = gwsb.run;
