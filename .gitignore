@@ -1,6 +1,5 @@
 # VSCode
 .vscode/*
-!.vscode/gulp-wsb.code-snippets
 
 # node.js
 node_modules/

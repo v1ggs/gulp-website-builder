@@ -259,21 +259,13 @@ Place this repository in your project root directory. File/folder structure shou
 npm install --global gulp-cli
 ```
 
-### General Node Modules
+### Install required modules
+
+Navigate in your console to the project root directory and type:
 
 ```cmd
-npm install --save-dev gulp gulp-plumber adm-zip del gulp-rename gulp-sourcemaps gulp-concat gulp-if gulp-header gulp-todo merge2 sharp browser-sync gulp-notify
+npm install
 ```
-
-### All other Node Modules
-
-```cmd
-npm install --save-dev gulp-nunjucks-render gulp-jsbeautifier sass gulp-sass gulp-postcss postcss-flexbugs-fixes postcss-inline-svg postcss-svgo autoprefixer postcss-discard-comments postcss-sort-media-queries doiuse postcss-csso @fullhuman/postcss-purgecss gulp-purgecss gulp-babel @babel/core @babel/preset-env gulp-strip-debug gulp-uglify gulp-svgmin gulp-svgstore
-```
-
-> :information_source: It's understood that you navigate in your console where you want to install node_modules.
->
-> Each module's README file contains all node modules required for it.
 
 ### Add/remove a gulp-wsb module
 
@@ -330,6 +322,6 @@ Conditions:
 
 ## COPYRIGHT
 
-## **© 2021 [Igor Vračar](https://www.igorvracar.com)**
+### **© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
 ---
