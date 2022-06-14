@@ -181,6 +181,9 @@ const buildSource = function () {
       .pipe(_fn.gulpif(checkSourcemaps, _fn.smaps.init()))
       .pipe(
          sass({
+            // An array of paths that sass can look in to attempt to
+            // resolve your @import declarations.
+            includePaths: cfg.files.includePaths,
             // nested | expanded | compact | compressed
             outputStyle: 'expanded',
             // 'space' | 'tab'

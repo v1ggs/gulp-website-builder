@@ -47,6 +47,10 @@ const config = {
          _src.scss + '/themes/**/*.scss',
       ],
 
+      // An array of paths that sass can look in to attempt to
+      // resolve your @import declarations.
+      includePaths: [proj.dirs.src.scss],
+
       // files to watch for changes and build todos/fixmes file
       watch: [
          _src.scss + '/**/*.scss',
