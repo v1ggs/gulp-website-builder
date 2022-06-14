@@ -125,8 +125,8 @@ the top and bottom of the screenshot image might not be viewable
 so keep graphics near the center. */
 const wpScreenshotContent = function () {
    return `<svg viewbox="0 0 1200 900" width="1200" height="900" xmlns="http://www.w3.org/2000/svg"><style>.screenshot-title, .screenshot-description { display: block; fill: rgb(238, 238, 238); white-space: nowrap; text-anchor: middle; dominant-baseline: middle; }
-.screenshot-title { font: bold 80px sans-serif; }
-.screenshot-description { font: 28px sans-serif; }
+.screenshot-title { font: bold 46px sans-serif; }
+.screenshot-description { font: 24px sans-serif; }
 .screenshot-bgd { width: 100%; height: 100%; fill: #112266; stroke: none; }</style>
 <rect x="0" y="0" width="1200" height="900" fill="#112266" />
 <text x="50%" y="46%" class="screenshot-title">${proj.config.project.name}</text>
@@ -182,10 +182,7 @@ const wpStyleContent = function (textDomain) {
 
 // index.php
 const wpIndexContent = function () {
-   return `<?php
- echo "Theme Name: ${proj.config.project.name}";
- echo "Description: ${proj.config.project.description}";
- ?>`;
+   return `<?php echo "Theme Name: ${proj.config.project.name}"; ?><br>\n<?php echo "Description: ${proj.config.project.description}"; ?><br>\n`;
 };
 
 // convert svg from above to png and save as a screenshot
@@ -222,7 +219,7 @@ const wpStyle = function (allData) {
 };
 
 // write index.php
-const wpIndex = function (allData) {
+const wpIndex = function () {
    let content = wpIndexContent();
    return _fn.writeFile(_dist + '/index.php', content);
 };
@@ -362,67 +359,10 @@ const todos = function (cb) {
    cb();
 };
 
-// TASK concatenate files
-// WARNING: this will remove all occurences of '<?php' and '?>' in each file
-// they will be prepended/appended once to each produced file
-const concatenate = function (cb) {
-   let fileNames = Object.keys(config.files.concatenate);
-   let fileObject = Object.values(config.files.concatenate);
-   let filesCount = fileNames.length;
-
-   // for each file in concatenate config
-   for (let i = 0; i < filesCount; i++) {
-      let content = '<?php\n';
-
-      // get all files with glob.sync - returns array
-      let processFiles = _fn.glob
-         .sync(fileObject[i].src)
-         // process each file from node's glob.sync
-         .forEach((file) => {
-            // read file's text content
-            let fileContent = _fn.fs.readFileSync(file, 'utf8');
-            fileContent =
-               // append new line to each file
-               (fileContent + '\n')
-                  // remove '<?php' and '?>' from content
-                  .replaceAll(/\<\?php|\?\>/gi, '')
-                  // remove multiple new lines
-                  .replace(/(\r\n|\r|\n){2,}/g, '\n');
-            // remove last occurence of '?>' in content
-            // fileContent = fileContent.replace(/\?\>([^?>]*)$/, '$1');
-
-            // prepend once '<?php\n'
-            // then append all subsequent file contents
-            content += fileContent;
-         });
-
-      // when all processed, append '?>'
-      content += '\n?>';
-
-      let filename = fileNames[i] + '.php';
-      let outDir = fileObject[i].dest !== '' ? '/' + fileObject[i].dest : '';
-
-      let writeFile = _fn.writeFile(`${_dist}${outDir}/${filename}`, content);
-   }
-
-   cb();
-};
-
 // TASK main
 const main = function () {
-   let fileObject = Object.values(config.files.concatenate);
-   let exlSrc = [];
-
-   fileObject.forEach((file) => {
-      exlSrc.push('!' + file.src);
-   });
-
-   let srcFiles = `${config.files.copy.join(',')},${exlSrc.join(',')}`.split(
-      ','
-   );
-
    return _fn
-      .src(srcFiles, { allowEmpty: true })
+      .src(config.files.copy, { allowEmpty: true })
       .pipe(_fn.plumber({ errorHandler: _fn.errHandler }))
       .pipe(_fn.dest(_dist));
 };
@@ -431,7 +371,6 @@ const main = function () {
 exports.build = _fn.series(
    consoleInfo,
    main,
-   concatenate,
    _fn.parallel(_fn.reloadPage, humans),
    todos, // todo takes too long (> 1sec) if in parallel with others
    _fn.endSound

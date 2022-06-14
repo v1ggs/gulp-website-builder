@@ -1,4 +1,4 @@
-/* ***************  W O R D P R E S S   THEME C O N F I G  *************** */
+/* ***************  W O R D P R E S S   T H E M E   C O N F I G  *************** */
 
 /* *************************************************** */
 // project config
@@ -11,23 +11,11 @@ const files = {
    // array
    // copy these files
    // use negative globs to exclude ('!**/*.ext)
-   // files from concatenate are automatically excluded
-   copy: [_src + '/**/*.php', _src + '/**/*.pot'],
-
-   // array
-   // concatenate these files
-   // use filenames or folders to make them
-   // concatenate in a specific order
-   concatenate: {
-      // filename (copy-paste to add more files)
-      functions: {
-         // string - source files
-         src: _src + '/functions/**/*.php',
-         // string - folder name (NOT full path) in destination
-         // leave empty for default destination dir
-         dest: '',
-      },
-   },
+   copy: [
+      _src + '/**/*.php',
+      _src + '/**/*.pot',
+      _src + '/_config/cachebust.json',
+   ],
 };
 
 const underscores = {
