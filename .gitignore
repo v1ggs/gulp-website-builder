@@ -1,0 +1,52 @@
+# VSCode
+.vscode/*
+!.vscode/gulp-wsb.code-snippets
+
+# node.js
+node_modules/
+
+# Project
+.log/
+src/
+dist/
+htdocs/
+public_html/
+**/*.html
+**/*.txt
+# *.json
+
+# Git
+.git/
+# .gitignore
+
+# Other
+# LICENSE
+
+# Info:
+
+# https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder
+# The pattern dir/ excludes a directory named dir and (implicitly) everything under it.
+# With dir/, Git will never look at anything under dir, and thus will never apply any of the "un-exclude" patterns to anything under dir.
+# The pattern dir/* says nothing about dir itself; it just excludes everything under dir.
+# With dir/*, Git will process the direct contents of dir, giving other patterns a chance to "un-exclude" some bit of the content (!dir/sub/).
+
+# https://git-scm.com/docs/gitignore
+# Two consecutive asterisks ("**") in patterns matched against full pathname may have special meaning:
+# - A leading "**" followed by a slash means match in all directories.
+# - A trailing "/**" matches everything inside.
+# - A slash followed by two consecutive asterisks then a slash matches zero or more directories.
+#   For example, "a/**/b" matches "a/b", "a/x/b", "a/x/y/b" and so on.
+# - Other consecutive asterisks are considered regular asterisks and will match according to the previous rules.
+
+# https://www.codegrepper.com/code-examples/whatever/gitignore+ignore+folder+anywhere
+# Ignore all directories, and all sub-directories, and it's contents:
+# */*
+#
+# Now ignore all files in the current directory
+# (This fails to ignore files without a ".", for example file.txt' works, but 'file' doesn't):
+# *.*
+#
+# Only Include these specific directories and subdirectories:
+# !wordpress/
+# !wordpress/*/wp-content/
+# ...

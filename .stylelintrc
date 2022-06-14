@@ -1,0 +1,27 @@
+{
+   "extends": [
+      "stylelint-config-standard-scss"
+   ],
+   "syntax": "scss",
+   "rules": {
+      "alpha-value-notation": "number",
+      "at-rule-empty-line-before": null,
+      "color-function-notation": "legacy",
+      "color-hex-length": null,
+      "comment-empty-line-before": null,
+      "declaration-empty-line-before": null,
+      "scss/dollar-variable-empty-line-before": null,
+      "indentation": [
+         3,
+         {
+            "baseIndentLevel": 0,
+            "indentClosingBrace": false
+         }
+      ],
+      "number-leading-zero": "always",
+      "property-no-vendor-prefix": null,
+      "selector-max-specificity": null,
+      "selector-max-id": null,
+      "selector-class-pattern": null
+   }
+}
