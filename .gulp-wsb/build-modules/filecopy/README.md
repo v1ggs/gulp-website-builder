@@ -9,33 +9,20 @@
 
 ## GNU GENERAL PUBLIC LICENSE
 
----
+## FEATURES
 
-## GENERAL INFO
-
-> If you want to use this repository it is required that you're familiar with Gulp and Javascript.
-> It is also recommended that you're familiar with the node modules it uses.
->
-> If you're familiar with Gulp and JavaScript then it's very easy for you to add new modules or modify modules behaviour.
->
-> Try not to modify any other but `config.js` files, unless you know what you are doing.
->
-> Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript. Almost everything is configurable.
->
-> If you're developing with WordPress, you have to have a local WordPress site (with local server, like XAMPP) to proxy it with browsersync, because browsersync can't serve php. The settings for that are made automatically, just edit the project and wp config.
->
-> Use TODOs like: `TODO:` or `FIXME:` in an appropriate comment (ex: // TODO: change this), to get all todos and fixmes in a .txt file in the root dir.\
-> Read more at: <https://www.npmjs.com/package/gulp-todo>
+- clean output folders before every copy
+- set array of folders in the 'src' folder to copy files without processing them
 
 ---
 
 ## USAGE
 
--  Edit configuration
--  Run gulp
--  Place files in their src dir, they will be processed automatically on any change (creating, copying, moving files)
+- Edit configuration
+- Run gulp
+- Place files in their src dir, they will be processed automatically on any change (creating, copying, moving files)
 
-> Configuration files (`config.js`) are commented for explanations, which should be fine for most people familiar with Gulp and JavaScript.
+> Configuration files (`config.js`) are commented for explanations.
 
 ---
 
@@ -57,28 +44,28 @@ Permissions of this strong copyleft license are conditioned on making available 
 
 Permissions:
 
--  Commercial use
--  Modification
--  Distribution
--  Patent use
--  Private use
+- Commercial use
+- Modification
+- Distribution
+- Patent use
+- Private use
 
 Limitations:
 
--  No Liability
--  No Warranty
+- No Liability
+- No Warranty
 
 Conditions:
 
--  License and copyright notice
--  State changes
--  Disclose source
--  Same license
+- License and copyright notice
+- State changes
+- Disclose source
+- Same license
 
 ---
 
 ## COPYRIGHT
 
-**© 2021 [Igor Vračar](https://www.igorvracar.com)**
+### **© 2021 [Igor Vračar](https://www.igorvracar.com)**
 
 ---

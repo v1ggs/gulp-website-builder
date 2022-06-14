@@ -35,11 +35,14 @@ const config = {
       // e.g. dev-yourdomain.com (with a local server, like xampp),
       // because browsersync can not serve php files
       // type: string (domain) or undefined (default)
-      proxy: 'dev-igorvracar.com',
+      proxy: undefined,
 
       // provide certificate to use https or set false
-      key: 'C:/xampp/mkcert-ssl/localhost-key.pem',
-      cert: 'C:/xampp/mkcert-ssl/localhost.pem',
+      // example:
+      //    key: 'C:/xampp/mkcert-ssl/localhost-key.pem',
+      //    cert: 'C:/xampp/mkcert-ssl/localhost.pem',
+      key: false,
+      cert: false,
 
       // Override host detection:
       // if you know the correct IP to use (e.g. '192.168.44.88')

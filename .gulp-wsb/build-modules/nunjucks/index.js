@@ -74,7 +74,7 @@ const main = function () {
          // ==========================================
          // IF YOU USE ANOTHER PREPROCESSOR:
          // 1. create a new module
-         // 2. require your preprosessor at the top of this file, in:
+         // 2. require your preprocessor at the top of this file, in:
          //    "const htmlProcessor = require('gulp-nunjucks-render');"
          // 3. in config file: modify "const config" and
          //    remove "const manageEnvironment"
