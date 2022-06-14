@@ -44,7 +44,7 @@
       "postcss-sort-media-queries": "^4.2.1",
       "postcss-svgo": "^5.0.4",
       "sass": "^1.49.8",
-      "sharp": "^0.30.1",
+      "sharp": "^0.30.5",
       "stylelint": "^14.5.1",
       "stylelint-config-standard": "^25.0.0",
       "stylelint-config-standard-scss": "^3.0.0"
