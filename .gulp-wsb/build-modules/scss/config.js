@@ -155,6 +155,7 @@ const config = {
 
    // https://www.npmjs.com/package/doiuse
    // uses config.autoprefixer.overrideBrowserslist
+   // you can turn off duiuse by setting "ignoreFiles" to "[ '**/*' ]"
    doiuse: {
       // an optional array of features to ignore e.g. 'rem'
       ignore: [],
