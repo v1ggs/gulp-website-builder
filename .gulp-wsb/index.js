@@ -46,8 +46,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(wp.watch, { events: 'all' }, wp.build);
    } catch (err) {
-      console.log('========== WORDPRESS module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== WORDPRESS module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
@@ -59,8 +59,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(njk.watch, { events: 'all' }, njk.build);
    } catch (err) {
-      console.log('========== NUNJUCKS module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== NUNJUCKS module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
@@ -72,8 +72,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(scss.watch, { events: 'all' }, scss.build);
    } catch (err) {
-      console.log('========== SCSS module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== SCSS module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
@@ -85,8 +85,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(js.watch, { events: 'all' }, js.build);
    } catch (err) {
-      console.log('========== JAVASCRIPT module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== JAVASCRIPT module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
@@ -98,8 +98,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(images.watch, { events: 'all' }, images.build);
    } catch (err) {
-      console.log('========== IMAGES module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== IMAGES module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
@@ -111,8 +111,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(svgSprites.watch, { events: 'all' }, svgSprites.build);
    } catch (err) {
-      console.log('========== SVG SPRITES module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== SVG SPRITES module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
@@ -124,8 +124,8 @@ const allTasks = function (cb) {
       // watch files for changes
       _fn.watch(fc.watch, { events: 'all' }, fc.filecopy);
    } catch (err) {
-      console.log('========== FILECOPY module:');
-      console.log('========== Something went wrong or module not found...');
+      console.log('========== FILECOPY module is inaccessible.');
+      console.log('========== Either it has been removed or contains errors.');
       console.log('==========');
       // uncomment to debug
       // console.log(err);
